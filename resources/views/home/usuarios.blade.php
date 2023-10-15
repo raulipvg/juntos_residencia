@@ -70,8 +70,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @dd($usuarios)
-                        @foreach ($usuarios as $usuario)  
+                        
+                        @foreach ($Usuarios as $usuario)  
                             <tr class="center-2">
                                 <th>{{ $usuario->Id }}</th>
                                 <td>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</td>
@@ -117,7 +117,7 @@
 </div>
 <!--end::Close-->
 </div>
-<form id="Formulario1" action="{{ route('') }}" method="post">
+<form id="Formulario1" action="" method="post">
 <div class="modal-body">
 <div id="AlertaError" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
 </div>
