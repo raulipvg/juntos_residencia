@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 */
 Route::get('/users', [HomeController::class, 'users'])->name('users');
 
+
 Route::get('/', function () {
     return view('welcome');
 });

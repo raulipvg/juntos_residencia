@@ -1,5 +1,6 @@
 @extends('layout.main')
 @section('main-content')
+
 <!--begin::Toolbar-->
 <div class="toolbar py-2" id="kt_toolbar">
     <!--begin::Container-->
@@ -69,15 +70,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        @dd($usuarios)
+                        @foreach ($usuarios as $usuario)  
                             <tr class="center-2">
-                                <th>1</th>
-                                <td>Jose Parra</td>
-                                <td>jparra</td>
-                                <td>jparra@juntosresidencia.cl</td>
-                                <td>Administrador</td>
+                                <th>{{ $usuario->Id }}</th>
+                                <td>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</td>
+                                <td>{{ $usuario->Username }}</td>
+                                <td>{{ $usuario->Correo }}</td>
+                                <td>{{ $usuario->RolId }}</td>
                                 <td data-search="Enabled" >										
-                                    <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span>
+                                    <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">{{ $usuario->EstadoId}}</span>
                                 </td>
                                 <td  class="text-center p-0">
                                 <div class="btn-group btn-group-sm" role="group">
@@ -86,58 +88,7 @@
                                         </div>
                                 </td>
                             </tr>
-
-                            <tr class="center-2">
-                                <th>2</th>
-                                <td>Jeremy Ormeño</td>
-                                <td>jormeno</td>
-                                <td>jormeno@juntosresidencia.cl</td>
-                                <td>Comite</td>
-                                <td data-search="Enabled" >										
-                                    <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span>										
-                                </td>
-                                <td  class="text-center p-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="2">Ver</a>
-                                    <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="2">Editar</a>
-                                </div>
-                                </td>
-                            </tr>
-
-                            <tr class="center-2">
-                                <th>3</th>
-                                <td>Valentin Salgado</td>
-                                <td>vsalgado</td>
-                                <td>vsalgado@juntosresidencia.cl</td>
-                                <td>Copropietario</td>
-                                <td data-search="Disabled">
-                                    <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span>						
-                                </td>
-                                <td class="text-center p-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="3">Ver</a>
-                                        <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="3">Editar</a>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr class="center-2">
-                                <th>4</th>
-                                <td>Raul Muñoz</td>
-                                <td>rmunoz</td>
-                                <td>rmunoz@juntosresidencia.cl</td>
-                                <td>Residente</td>
-                                <td data-search="Disabled" >										
-                                    <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span>						
-                                </td>
-                                <td  class="text-center p-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                            <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="">Ver</a>
-                                            <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="">Editar</a>
-                                        </div>
-                                </td>
-                            </tr>
-                        
+                            @endforeach
                     </tbody>
             </table>
         </div>
@@ -166,7 +117,7 @@
 </div>
 <!--end::Close-->
 </div>
-<form id="Formulario1" method="post">
+<form id="Formulario1" action="{{ route('') }}" method="post">
 <div class="modal-body">
 <div id="AlertaError" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
 </div>
@@ -257,7 +208,5 @@
 </div>
 </div>
 <!--end::modal-->
-
-
 
 @endsection
