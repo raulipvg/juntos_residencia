@@ -77,9 +77,9 @@
                                 <td>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</td>
                                 <td>{{ $usuario->Username }}</td>
                                 <td>{{ $usuario->Correo }}</td>
-                                <td>{{ $usuario->RolId }}</td>
+                                <td>{{ $usuario->rol->Nombre }}</td>
                                 <td data-search="Enabled" >										
-                                    <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">{{ $usuario->EstadoId}}</span>
+                                    <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">{{ $usuario->estado_usuario->Nombre}}</span>
                                 </td>
                                 <td  class="text-center p-0">
                                 <div class="btn-group btn-group-sm" role="group">
