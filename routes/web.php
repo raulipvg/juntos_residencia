@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +14,9 @@ use App\Http\Controllers\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/users', [HomeController::class, 'users'])->name('users');
+Route::get('/usuario', [UserController::class, 'index'])->name('usuarios');
 
+Route::post('/usuario/registrar', [UserController::class, 'save'])->name('GuardarUsuario');
 
 Route::get('/', function () {
     return view('welcome');

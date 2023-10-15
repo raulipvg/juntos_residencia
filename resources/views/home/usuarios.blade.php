@@ -1,6 +1,10 @@
 @extends('layout.main')
 @section('main-content')
 
+@push('css')
+<link href='{{ asset('css/datatables/datatables.bundle.css?id=2') }}' rel='stylesheet' type="text/css"/>
+@endpush
+
 <!--begin::Toolbar-->
 <div class="toolbar py-2" id="kt_toolbar">
     <!--begin::Container-->
@@ -164,10 +168,9 @@
         <div class="form-floating fv-row">
             <select id="RolIdInput" name="Rol" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                 <option></option>
-                <option value="1">Administrador</option>
-                <option value="2">Copropietario</option>
-                <option value="3">Residente</option>
-                <option value="4">Comite</option>
+                @foreach($Roles as $rol)
+                    <option value="{{ $rol->Id }}">{{ $rol->Nombre }}</option>
+                @endforeach
             </select>
             <label for="RolIdInput" class="form-label">Rol</label>
         </div>
@@ -176,8 +179,9 @@
         <div class="form-floating fv-row">
             <select id="EstadoIdInput" name="Estado" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                 <option></option>
-                <option value="1">Enabled</option>
-                <option value="2">Disabled</option>            
+                @foreach($Estados as $estado)
+                    <option value="{{ $estado->Id }}">{{ $estado->Nombre }}</option>
+                @endforeach          
             </select>
             <label for="EstadoIdInput" class="form-label">Estado</label>
         </div>
@@ -210,3 +214,19 @@
 <!--end::modal-->
 
 @endsection
+
+@push('Script')
+    <script>
+        const guardarURL = "{{ route('GuardarUsuario') }}" ;
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    </script>
+    <!-- Datatables y Configuracion de la Tabla -->
+    <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/general.js?id=2') }}"></script>
+    <!--- Eventos de la pagina -->
+    <script src="{{ asset('js/eventos/usuario.js?id=2') }}"></script>
+    <script src="{{ asset('js/amcharts/certificado.js?id=1') }}"></script>
+	<!--end::Javascript-->
+    
+@endpush
