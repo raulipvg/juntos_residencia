@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     //
-    public function index(){
+    public function Index(){
         $usuarios = Usuario::all();
         $roles = Rol::select('Id', 'Nombre')->get();
         $estado = EstadoUsuario::select('Id', 'Nombre')->get();
@@ -27,7 +27,7 @@ class UserController extends Controller
     }
 
 
-    public function Save(Request $request){
+    public function Guardar(Request $request){
               
 
         $request = $request->input('data');
@@ -97,7 +97,7 @@ class UserController extends Controller
             $userEdit->fill($request);
 
             $userEdit->save();
-             
+
             return response()->json([
                 'success' => true,
                 'message' => 'Modelo recibido y procesado']);

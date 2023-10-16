@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComunidadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -16,11 +17,42 @@ use App\Http\Controllers\UserController;
 */
 
 
-Route::get('/usuario', [UserController::class, 'index'])->name('usuarios');
+Route::group(['prefix' => '/usuario'], function () {
+    Route::get('/', [UserController::class, 'Index'])->name('Usuario');
+    Route::post('/registrar', [UserController::class, 'Guardar'])->name('GuardarUsuario');
+    Route::post('/ver', [UserController::class, 'VerId'])->name('VerUsuario');
+    Route::post('/editar', [UserController::class, 'Editar'])->name('EditarUsuario');
+});
 
-Route::post('/usuario/registrar', [UserController::class, 'Save'])->name('GuardarUsuario');
-Route::post('/usuario/ver', [UserController::class, 'VerId'])->name('VerUsuario');
-Route::post('/usuario/editar', [UserController::class, 'Editar'])->name('EditarUsuario');
+
+Route::group(['prefix' => '/comunidad'], function () {
+    Route::get('/', [ComunidadController::class, 'Index'])->name('Comunidad');
+    Route::post('/registrar', [ComunidadController::class, 'Guardar'])->name('GuardarComunidad');
+    Route::post('/ver', [ComunidadController::class, 'VerId'])->name('VerComunidad');
+    Route::post('/editar', [ComunidadController::class, 'Editar'])->name('EditarComunidad');
+});
+
+
+Route::group(['prefix' => '/copropietario'], function () {
+    Route::get('/', [CopropietarioController::class, 'Index'])->name('Copropietario');
+    Route::post('/registrar', [CopropietarioController::class, 'Guardar'])->name('GuardarCopropietario');
+    Route::post('/ver', [CopropietarioController::class, 'VerId'])->name('VerCopropietario');
+    Route::post('/editar', [CopropietarioController::class, 'Editar'])->name('EditarCopropietario');
+});
+
+Route::group(['prefix' => '/residente'], function () {
+    Route::get('/', [ResidenteController::class, 'Index'])->name('Residente');
+    Route::post('/registrar', [ResidenteController::class, 'Guardar'])->name('GuardarResidente');
+    Route::post('/ver', [ResidenteController::class, 'VerId'])->name('VerResidente');
+    Route::post('/editar', [ResidenteController::class, 'Editar'])->name('EditarResidente');
+});
+
+Route::group(['prefix' => '/tipocobro'], function () {
+    Route::get('/', [ResidenteController::class, 'Index'])->name('TipoCobro');
+    Route::post('/registrar', [ResidenteController::class, 'Guardar'])->name('GuardarTipoCobro');
+    Route::post('/ver', [ResidenteController::class, 'VerId'])->name('VerTipoCobro');
+    Route::post('/editar', [ResidenteController::class, 'Editar'])->name('EditarTipoCobro');
+});
 
 
 
