@@ -158,15 +158,15 @@
 <div class="row">
     <div class="col-md-12 mb-2">
         <div class="form-floating fv-row">
-            <input type="email" class="form-control" placeholder="Ingrese el apellido" id="EmailInput" name="Email" />
-            <label for="EmailInput" class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="Ingrese el apellido" id="CorreoInput" name="Correo" />
+            <label for="CorreoInput" class="form-label">Email</label>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-6 mb-2">
         <div class="form-floating fv-row">
-            <select id="RolIdInput" name="Rol" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+            <select id="RolIdInput" name="RolId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                 <option></option>
                 @foreach($Roles as $rol)
                     <option value="{{ $rol->Id }}">{{ $rol->Nombre }}</option>
@@ -177,7 +177,7 @@
     </div>
     <div class="col-md-6 mb-2">
         <div class="form-floating fv-row">
-            <select id="EstadoIdInput" name="Estado" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+            <select id="EstadoIdInput" name="EstadoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                 <option></option>
                 @foreach($Estados as $estado)
                     <option value="{{ $estado->Id }}">{{ $estado->Nombre }}</option>

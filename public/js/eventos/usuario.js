@@ -66,7 +66,7 @@ $(document).ready(function() {
                             }
                         }
                     },
-                    'Email': {
+                    'Correo': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -76,14 +76,14 @@ $(document).ready(function() {
                             }
                         }
                     },       
-                    'Rol': {
+                    'RolId': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             }
                         }
                     },
-                    'Estado': {
+                    'EstadoId': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -211,7 +211,7 @@ $(document).ready(function() {
                                 }
                             },
                             error: function (e) {
-                                console.log(e)
+                                //console.log(e)
                                 //alert('Error');
                                 Swal.fire({
                                     text: "Error",

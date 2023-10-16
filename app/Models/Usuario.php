@@ -8,6 +8,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class Usuario
@@ -31,7 +33,7 @@ class Usuario extends Model
 {
 	protected $table = 'Usuario';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
 	public $timestamps = false;
 
 	protected $casts = [
@@ -64,4 +66,23 @@ class Usuario extends Model
 	{
 		return $this->hasMany(AccesoComunidad::class, 'UsuarioId');
 	}
+
+	public function validate(array $data)
+    {
+        $rules = [
+            'Nombre' => 'required|string',
+            'Apellido' => 'required|string|max:255',
+            'Username' => 'required|string|max:255|unique:Usuario',
+            'Correo' => 'required|email|max:255|unique:Usuario',
+            'Password' => 'required|string|min:8|max:12',
+            'EstadoId' => 'required|max:255',
+            'RolId' => 'required'
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }
