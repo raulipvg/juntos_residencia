@@ -14,9 +14,16 @@ use App\Http\Controllers\UserController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
 Route::get('/usuario', [UserController::class, 'index'])->name('usuarios');
 
-Route::post('/usuario/registrar', [UserController::class, 'save'])->name('GuardarUsuario');
+Route::post('/usuario/registrar', [UserController::class, 'Save'])->name('GuardarUsuario');
+Route::post('/usuario/ver', [UserController::class, 'VerId'])->name('VerUsuario');
+Route::post('/usuario/editar', [UserController::class, 'Editar'])->name('EditarUsuario');
+
+
+
 
 Route::get('/', function () {
     return view('welcome');

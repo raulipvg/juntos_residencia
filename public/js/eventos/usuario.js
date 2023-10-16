@@ -125,9 +125,10 @@ $(document).ready(function() {
     }
 
      // Evento al presionar el Boton de Registrar
-    $("#AddBtn").on("click", function () {
+    $("#AddBtn").on("click", function (e ) {
         //Inicializacion
         //console.log("AddBtn")
+        e.preventDefault();
         $("#modal-titulo").empty().html("Registrar Usuario");
         $("input").val('').prop("disabled",false);
         $('#RolIdInput').val("").trigger("change").prop("disabled",false);
@@ -155,7 +156,7 @@ $(document).ready(function() {
             validator.validate().then(function (status) {
                  actualizarValidSelect2();
 
-                console.log('validated!');
+                //console.log('validated!');
                 //status
                 if (status == 'Valid') {
                     // Show loading indication
@@ -184,7 +185,7 @@ $(document).ready(function() {
 
                         $.ajax({
                             type: 'POST',
-                            url: guardarURL,
+                            url: GuardarUsuario,
                             data: { 
                                     _token: csrfToken,    
                                     data: keyValueObject 
@@ -230,6 +231,269 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    const target = document.querySelector("#div-bloquear");
+    const blockUI = new KTBlockUI(target);
+
+    //Evento al presionar el Boton Editar
+    $("#tabla-usuario tbody").on("click",'.editar', function (e) {
+        e.preventDefault();
+        //Inicializacion
+        $("#modal-titulo").empty().html("Editar Usuario");
+        $("input").val('').prop("disabled",false);
+        $('#RolIdInput').val("").trigger("change").prop("disabled",false);
+        $('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
+
+        $("#AddSubmit").hide();
+        $("#EditSubmit").show();
+        $("#IdInput").prop("disabled",false);
+        $("#AlertaError").hide();
+
+        validator.resetForm();
+        actualizarValidSelect2();
+
+        let id = Number($(this).attr("info"));
+
+        blockUI.block();
+
+        $.ajax({
+            type: 'POST',
+            url: VerUsuario,
+            data: {
+                _token: csrfToken,
+                data: id},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                
+                if(data.success){
+                    data=data.data;
+                    //console.log("wena");
+                    //Agrego los valores al formulario
+                    $("#IdInput").val(data.Id);
+                    $("#UsernameInput").val(data.Username);
+                    $("#PasswordInput").val("********");
+
+                    $("#NombreInput").val(data.Nombre);
+                    $("#ApellidoInput").val(data.Apellido);
+                    $("#CorreoInput").val(data.Correo);
+                  
+                    $('#RolIdInput').val(data.RolId).trigger("change");
+                    $('#EstadoIdInput').val(data.EstadoId).trigger("change");
+
+                    blockUI.release();
+                }else{
+                    //console.log("error");
+                    blockUI.release();
+
+                    Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+                    $(".btn-cerrar").on("click", function () {
+                            //console.log("Error");
+                            $('#registrar').modal('toggle');
+                    });
+                }
+            },
+            error: function () {
+                //alert('Error en editar el usuario');
+                blockUI.release();
+                Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+
+                     $(".btn-cerrar").on("click", function () {
+                            //console.log("Error");
+                            $('#registrar').modal('toggle');
+                     });
+            }
+        });
+    });
+    // Manejador al presionar el submit de Editar
+    const submitEditButton = document.getElementById('EditSubmit');
+    submitEditButton.addEventListener('click', function (e) {
+            // Prevent default button action
+            e.preventDefault();
+            $("#AlertaError").hide();
+             $("#AlertaError").empty();
+
+            // Validate form before submit
+            if (validator) {
+                validator.validate().then(function (status) {
+                    actualizarValidSelect2();
+                    //console.log('validated!');
+                    //status
+                    if (status == 'Valid') {
+                        // Show loading indication
+                        submitEditButton.setAttribute('data-kt-indicator', 'on');
+                        // Disable button to avoid multiple click
+                        submitEditButton.disabled = true;
+                        // Remove loading indication
+                            submitEditButton.removeAttribute('data-kt-indicator');
+
+                            // Enable button
+                            submitEditButton.disabled = false;
+
+                            
+
+                            let form1= $("#Formulario1");
+                            var fd = form1.serialize();
+                            const pairs = fd.split('&');
+
+                            const keyValueObject = {};
+
+                            for (let i = 0; i < pairs.length; i++) {
+                                const pair = pairs[i].split('=');
+                                const key = decodeURIComponent(pair[0]);
+                                const value = decodeURIComponent(pair[1]);
+                                keyValueObject[key] = value;
+                            }
+
+                             $.ajax({
+                                type: 'POST',
+                                url: EditarUsuario,
+                                data: {
+                                    _token: csrfToken,
+                                    data: keyValueObject},
+                                //content: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    //console.log(data.errors);
+                                    if(data.success){
+                                        //console.log("exito");
+                                         location.reload();
+                                    }else{
+                                        console.log(data.message)
+
+                                        html = '<ul><li style="">'+data.message+'</li></ul>';
+                                        $("#AlertaError").append(html);
+
+                                        $("#AlertaError").show();
+                                       //console.log("error");
+                                    }
+                                },
+                                error: function () {
+                                    //alert('Error');
+                                    Swal.fire({
+                                        text: "Error",
+                                        icon: "error",
+                                        buttonsStyling: false,
+                                        confirmButtonText: "OK",
+                                        customClass: {
+                                            confirmButton: "btn btn-danger btn-cerrar"
+                                        }
+                                    });
+                                }
+                            });
+                            //form.submit(); // Submit form
+                        } //endif
+                 });
+            }
+    });
+
+    $("#tabla-usuario tbody").on("click",'.ver', function () {
+        //console.log("wena");
+        $("#modal-titulo").empty().html("Ver Usuario");
+        $("input").val('');
+        $('#RolIdInput').val("").trigger("change");
+        $('#EstadoIdInput').val("").trigger("change");
+        $("#AddSubmit").hide();
+        $("#EditSubmit").hide();
+        $("#IdInput").prop("disabled",false);
+        $("#AlertaError").hide();
+
+        validator.resetForm();
+        actualizarValidSelect2();
+
+        let id = Number($(this).attr("info"));
+        blockUI.block();
+
+        $.ajax({
+            type: 'POST',
+            url: VerUsuario,
+            data: {
+                _token: csrfToken,
+                data: id},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if(data){
+
+                    data= data.data
+                    //console.log("wena");
+                    //Agrego los valores al formulario
+                    $("#IdInput").val(data.Id);
+                    $("#UsernameInput").val(data.Username).prop("disabled", true);;
+                    $("#PasswordInput").val("********").prop("disabled", true);;
+                    $("#NombreInput").val(data.Nombre).prop("disabled", true);;
+                    $("#ApellidoInput").val(data.Apellido).prop("disabled", true);;
+                    $("#CorreoInput").val(data.Correo).prop("disabled", true);;
+                  
+                    $('#RolIdInput').val(data.RolId).trigger("change").prop("disabled", true);;
+                    $('#EstadoIdInput').val(data.EstadoId).trigger("change").prop("disabled", true);;
+                    
+                    blockUI.release();
+
+                }else{
+                    //console.log("error");
+                    blockUI.release();
+
+                    Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+
+                     $(".btn-cerrar").on("click", function () {
+                            console.log("Error");
+                            $('#registrar').modal('toggle');
+                     });
+
+                }
+
+
+            },
+            error: function () {
+                //alert('Error en editar el usuario');
+                blockUI.release();
+
+                Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+
+                     $(".btn-cerrar").on("click", function () {
+                            console.log("Error");
+                            $('#registrar').modal('toggle');
+                     });
+            }
+        });
+
+
     });
 
 });

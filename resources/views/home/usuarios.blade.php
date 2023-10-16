@@ -82,13 +82,20 @@
                                 <td>{{ $usuario->Username }}</td>
                                 <td>{{ $usuario->Correo }}</td>
                                 <td>{{ $usuario->rol->Nombre }}</td>
+                                @if ($usuario->RolId == 1 )
                                 <td data-search="Enabled" >										
                                     <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">{{ $usuario->estado_usuario->Nombre}}</span>
                                 </td>
+                                @else
+                                <td data-search="Disabled" >										
+                                    <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">{{ $usuario->estado_usuario->Nombre}}</span>
+                                </td>
+                                @endif
+                                
                                 <td  class="text-center p-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                            <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="1">Ver</a>
-                                            <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="1">Editar</a>
+                                            <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $usuario->Id }}">Ver</a>
+                                            <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $usuario->Id }}">Editar</a>
                                         </div>
                                 </td>
                             </tr>
@@ -217,7 +224,10 @@
 
 @push('Script')
     <script>
-        const guardarURL = "{{ route('GuardarUsuario') }}" ;
+        const GuardarUsuario = "{{ route('GuardarUsuario') }}";
+        const VerUsuario = "{{ route('VerUsuario') }}";
+        const EditarUsuario = "{{ route('EditarUsuario') }}";
+        
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     </script>

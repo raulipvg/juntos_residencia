@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 
 /**
  * Class Usuario
@@ -69,11 +70,23 @@ class Usuario extends Model
 
 	public function validate(array $data)
     {
+		$id = $data['Id'];
+
         $rules = [
             'Nombre' => 'required|string',
             'Apellido' => 'required|string|max:255',
-            'Username' => 'required|string|max:255|unique:Usuario',
-            'Correo' => 'required|email|max:255|unique:Usuario',
+            'Username' => [
+						'required',
+						'string',
+						'max:255',
+						Rule::unique('Usuario','Username')->ignore($id, 'Id'),
+					],
+            'Correo' => [
+						'required',
+						'email',
+						'max:255',
+						Rule::unique('Usuario','Correo')->ignore($id, 'Id'),
+					],
             'Password' => 'required|string|min:8|max:12',
             'EstadoId' => 'required|max:255',
             'RolId' => 'required'
