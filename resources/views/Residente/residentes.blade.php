@@ -14,7 +14,7 @@
             <!--begin::Page title-->
             <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
                 <!--begin::Title-->
-                <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Comunidades
+                <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Residentes
                 <!--begin::Separator-->
                 <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
                 <!--end::Separator-->
@@ -55,48 +55,40 @@
     <div class="card mx-5">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-1">
-                <h3 class="card-title text-uppercase">Comunidades</h3>
+                <h3 class="card-title text-uppercase">Residentes</h3>
 
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
             </div>
-            <table id="tabla-comunidad" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
+            <table id="tabla-residente" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
                     <thead>
                         <tr class="fw-bolder text-uppercase">
                             <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
                             <th scope="col">RUT</th>
-                            <th scope="col">Cantidad Propiedades</th>
-                            <th scope="col">Fecha Registro</th>
-                            <th scope="col">Enabled</th>
-                            <th scope="col">Tipo Comunidad</th>
+                            <th scope="col">Nombre Completo</th>
+                            <th scope="col">Propiedad</th>
+                            <th scope="col">Rol</th>
+                            <th scope="col">Fecha Inicio</th>
+                            <th scope="col">Fecha Fin</th>
                             <th class="text-center" scope="col">Accion</th>
                         </tr>
                     </thead>
                     <tbody>
                         
-                        @foreach ($Comunidades as $comunidad)  
+                        @foreach ($Residentes as $residente)  
                             <tr class="center-2">
-                                <th>{{ $comunidad->Id }}</th>
-                                <td>{{ $comunidad->Nombre }}</td>
-                                <td>{{ $comunidad->RUT }}</td>
-                                <td>{{ $comunidad->CantPropiedades }}</td>
-                                <td>{{ $comunidad->FechaRegistro }}</td>
-                                @if ($comunidad->Enabled == 1 )
-                                <td data-search="Enabled" >										
-                                    <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span>
-                                </td>
-                                @else
-                                <td data-search="Disabled" >										
-                                    <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span>
-                                </td>
-                                @endif
-                                <td>{{ $comunidad->tipo_comunidad->Nombre }}</td>          
+                                <th>{{ $residente->Id }}</th>
+                                <th>{{ $residente->persona->RUT }}</th>
+                                <td>{{ $residente->persona->Nombre }} {{ $residente->persona->Apellido }}</td>
+                                <td>{{ $residente->propiedad->Numero }}</td>
+                                <td>{{ $residente->rol_residente->Nombre }}</td>
+                                <td>{{ $residente->FechaInicio }}</td>
+                                <td>{{ $residente->FechaFin }}</td>
                                 <td  class="text-center p-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                            <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $comunidad->Id }}">Ver</a>
-                                            <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $comunidad->Id }}">Editar</a>
+                                            <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $residente->Id }}">Ver</a>
+                                            <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $residente->Id }}">Editar</a>
                                         </div>
                                 </td>
                             </tr>
@@ -114,7 +106,7 @@
 <div class="modal-dialog mt-20">
 <div class="modal-content" id="div-bloquear">
 <div class="modal-header bg-light p-2 ps-5">
-<h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Comunidad</h2>
+<h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Residente</h2>
 
 <!--begin::Close-->
 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -133,91 +125,62 @@
 <div class="modal-body">
 <div id="AlertaError" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
 </div>
-<div class="row">
-    <div class="col-md-6 mb-2">
-        <div class="form-floating fv-row">
-            <input type="text" class="form-control" placeholder="Ingrese el nombre" id="NombreInput" name="Nombre" />
-            <label for="NombreInput" class="form-label">Nombre</label>
-            <input hidden type="number" id="IdInput" name="Id" />
 
-        </div>
-    </div>
-    <div class="col-md-6 mb-2">
-        <div class="form-floating fv-row">
-            <input type="text" class="form-control"  placeholder="Ingrese el RUT" id="RUTInput" name="RUT" />
-            <label for="RUTInput" class="form-label">RUT</label>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12 mb-2">
-        <div class="form-floating fv-row">
-            <input type="email" class="form-control" placeholder="Ingrese el correo" id="CorreoInput" name="Correo" />
-            <label for="CorreoInput" class="form-label">Correo</label>
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col-md-6 mb-2">
         <div class="form-floating fv-row">
-            <input type="number" class="form-control" placeholder="Ingrese el Numero Cuenta" id="NumeroCuentaInput" name="NumeroCuenta" />
-            <label for="NumeroCuentaInput" class="form-label">Numero Cuenta</label>
-        </div>
-    </div>
-    <div class="col-md-6 mb-2">
-        <div class="form-floating fv-row">
-            <input type="text" class="form-control" placeholder="Ingrese el Tipo cuenta" id="TipoCuentaInput" name="TipoCuenta" />
-            <label for="TipoCuentaInput" class="form-label">Tipo Cuenta</label>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6 mb-2">
-        <div class="form-floating fv-row">
-            <input type="text" class="form-control" placeholder="Ingrese el Banco" id="BancoInput" name="Banco" />
-            <label for="BancoInput" class="form-label">Banco</label>
-        </div>
-    </div>
-    <div class="col-md-6 mb-2">
-        <div class="form-floating fv-row">
-            <input type="number" class="form-control" placeholder="Ingrese la cantidad de propiedades" id="CantPropiedadesInput" name="CantPropiedades" />
-            <label for="CantPropiedadesInput" class="form-label">Cantidad Propiedades</label>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6 mb-2">
-        <div class="form-floating fv-row">
-            <input type="date" class="form-control" placeholder="Ingrese la fecha registro" id="FechaRegistroInput" name="FechaRegistro" />
-            <label for="FechaRegistroInput" class="form-label">Fecha Registro</label>
-        </div>
-    </div>
-    <div class="col-md-6 mb-2">
-        <div class="form-floating fv-row">
-            <select id="EnabledInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+            <input hidden type="number" id="IdInput" name="Id" />
+            <select id="PersonaIdInput" name="PersonaId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                 <option></option>
-                    <option value="1">Enabled</option>
-                    <option value="2">Disabled</option>
-            </select>
-            <label for="TipoComunidadIdInput" class="form-label">Estado</label>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6 mb-2">
-        <div class="form-floating fv-row">
-            <select id="TipoComunidadIdInput" name="TipoComunidadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
-                <option></option>
-                @foreach($TipoComunidad as $tipo)
-                    <option value="{{ $tipo->Id }}">{{ $tipo->Nombre }}</option>
+                @foreach($Personas as $persona)
+                    <option value="{{ $persona->Id }}">{{ $persona->Nombre }} {{ $persona->Apellido }}</option>
                 @endforeach
             </select>
-            <label for="TipoComunidadIdInput" class="form-label">Tipo Comunidad</label>
+            <label for="RolIdInput" class="form-label">Persona</label>
+        </div>
+    </div>
+    <div class="col-md-6 mb-2">
+        <div class="form-floating fv-row">
+            <select id="PropiedadIdInput" name="PropiedadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                <option></option>
+                @foreach($Propiedades as $propiedad)
+                    <option value="{{ $propiedad->Id }}">{{ $propiedad->Numero }}</option>
+                @endforeach          
+            </select>
+            <label for="EstadoIdInput" class="form-label">Propiedad</label>
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-6 mb-2">
+        <div class="form-floating fv-row">
+            <select id="RolIdInput" name="RolId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                <option></option>
+                @foreach($Roles as $rol)
+                    <option value="{{ $rol->Id }}">{{ $rol->Nombre }}</option>
+                @endforeach
+            </select>
+            <label for="RolIdInput" class="form-label">Rol</label>
+        </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-md-6 mb-2">
+            <div class="form-floating fv-row">
+                <input type="date" class="form-control" placeholder="Ingrese la fecha inicio" id="FechaInicioInput" name="FechaInicio" />
+                <label for="FechaInicioInput" class="form-label">Fecha Inicio</label>
+            </div>
+        </div>
+    <div class="col-md-6 mb-2">
+        <div class="form-floating fv-row">
+            <input type="date" class="form-control" placeholder="Ingrese la fecha fin" id="FechaFinInput" name="FechaFin" />
+            <label for="FechaInicioInput" class="form-label">Fecha Fin</label>
+        </div>
+    </div>
 
 </div>
+</div>
+
 <div class="modal-footer bg-light p-2">
 <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>
 <button id="AddSubmit" type="submit" class="btn btn-success">
@@ -246,18 +209,18 @@
 
 @push('Script')
     <script>
-        const GuardarComunidad = "{{ route('GuardarComunidad') }}";
-        const VerComunidad = "{{ route('VerComunidad') }}";
-        const EditarComunidad = "{{ route('EditarComunidad') }}";
+        const GuardarResidente = "{{ route('GuardarResidente') }}";
+        const VerResidente = "{{ route('VerResidente') }}";
+        const EditarResidente = "{{ route('EditarResidente') }}";
         
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     </script>
     <!-- Datatables y Configuracion de la Tabla -->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/comunidad.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/residente.js?id=2') }}"></script>
     <!--- Eventos de la pagina -->
-    <script src="{{ asset('js/eventos/comunidad.js?id=2') }}"></script>
+    <script src="{{ asset('js/eventos/residente.js?id=2') }}"></script>
 	<!--end::Javascript-->
     
 @endpush

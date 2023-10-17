@@ -8,6 +8,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class Residente
@@ -63,4 +65,27 @@ class Residente extends Model
 	{
 		return $this->belongsTo(RolResidente::class, 'RolId');
 	}
+
+	public function validate(array $data)
+    {
+		if(isset($data['Id'])){
+			$id = $data['Id'];
+		}else{
+			$id = null;
+		}
+		
+
+        $rules = [
+			'PersonaId' => 'required',
+			'PropiedadId' => 'required',
+			'RolId' => 'required',
+			'FechaInicio' => 'required|date',
+			'FechaFin' => 'date|nullable'
+        ];
+
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }

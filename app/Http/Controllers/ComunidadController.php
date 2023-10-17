@@ -12,7 +12,6 @@ class ComunidadController extends Controller
     public function Index(){
         $comunidades = Comunidad::all();
         $tipocomunidad = TipoComunidad::select('Id', 'Nombre')->get();
-
         return View('Comunidad.comunidades')->with([
             'Comunidades' => $comunidades,
             'TipoComunidad' => $tipocomunidad,

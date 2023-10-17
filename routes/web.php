@@ -4,6 +4,8 @@ use App\Http\Controllers\ComunidadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ResidenteController;
+use App\Http\Controllers\TipoCobro;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,9 +50,9 @@ Route::group(['prefix' => '/residente'], function () {
 });
 
 Route::group(['prefix' => '/tipocobro'], function () {
-    Route::get('/', [ResidenteController::class, 'Index'])->name('TipoCobro');
-    Route::post('/registrar', [ResidenteController::class, 'Guardar'])->name('GuardarTipoCobro');
-    Route::post('/ver', [ResidenteController::class, 'VerId'])->name('VerTipoCobro');
+    Route::get('/', [TipoCobro::class, 'Index'])->name('TipoCobro');
+    Route::post('/registrar', [TipoCobro::class, 'Guardar'])->name('GuardarTipoCobro');
+    Route::post('/ver', [TipoCobro::class, 'VerId'])->name('VerTipoCobro');
     Route::post('/editar', [ResidenteController::class, 'Editar'])->name('EditarTipoCobro');
 });
 
