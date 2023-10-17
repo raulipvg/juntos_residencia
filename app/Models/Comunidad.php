@@ -9,6 +9,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 
 /**
  * Class Comunidad
@@ -80,4 +83,37 @@ class Comunidad extends Model
 	{
 		return $this->hasMany(GastoMe::class, 'ComunidadId');
 	}
+
+	public function validate(array $data)
+    {
+		if(isset($data['Id'])){
+			$id = $data['Id'];
+		}else{
+			$id = null;
+		}
+		
+
+        $rules = [
+			'Nombre' => 'required|string|max:50',
+			'RUT' => [
+				'required',
+				'string',
+				'max:50',
+				Rule::unique('Comunidad','RUT')->ignore($id, 'Id'),
+			],
+			'Correo' => 'required|email|max:50',
+			'NumeroCuenta' => 'required|numeric',
+			'TipoCuenta' => 'required|string',
+			'Banco' => 'required|string',
+			'CantPropiedades' => 'required|numeric',
+			'FechaRegistro' => 'required|date',
+			'Enabled' => 'required|min:1|max:2',
+			'TipoComunidadId' => 'required',
+        ];
+
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }
