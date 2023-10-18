@@ -293,7 +293,7 @@
                                     <span class="menu-icon me-0">
                                         <i class="ki-outline ki-notification-status fs-2x"></i>
                                     </span>
-                                    <span class="menu-title">Pages</span>
+                                    <span class="menu-title">Admin</span>
                                 </span>
                                 <!--end:Menu link-->
                                 <!--begin:Menu sub-->
@@ -302,11 +302,73 @@
                                     <div class="menu-item">
                                         <!--begin:Menu content-->
                                         <div class="menu-content">
-                                            <span class="menu-section fs-5 fw-bolder ps-1 py-1">Pages</span>
+                                            <span class="menu-section fs-5 fw-bolder ps-1 py-1">Mantenedores</span>
                                         </div>
                                         <!--end:Menu content-->
                                     </div>
                                     <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{route('Usuario') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Usuario</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{route('Comunidad') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Comunidad</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{route('Copropietario') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Copropietario</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{route('Residente') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Residente</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{route('TipoCobro') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Tipo Cobro</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+
                                     <!--begin:Menu item-->
                                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                         <!--begin:Menu link-->
@@ -314,7 +376,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">User Profile</span>
+                                            <span class="menu-title">Usuario</span>
                                             <span class="menu-arrow"></span>
                                         </span>
                                         <!--end:Menu link-->

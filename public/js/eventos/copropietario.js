@@ -42,7 +42,7 @@ $(document).ready(function() {
                             }
                         }
                     },
-                    'RUT': {
+                    'Rut': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -90,7 +90,8 @@ $(document).ready(function() {
                                 message: 'Requerido'
                             }
                         }
-                    },'Propiedad': {
+                    },
+                    'Propiedad': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -165,7 +166,7 @@ $(document).ready(function() {
             validator.validate().then(function (status) {
                  actualizarValidSelect2();
 
-                //console.log('validated!');
+                console.log('validated!');
                 //status
                 if (status == 'Valid') {
                     // Show loading indication

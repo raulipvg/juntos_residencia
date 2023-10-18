@@ -70,7 +70,11 @@ class Usuario extends Model
 
 	public function validate(array $data)
     {
-		$id = $data['Id'];
+		if(isset($data['Id'])){
+			$id = $data['Id'];
+		}else{
+			$id = null;
+		}
 
         $rules = [
             'Nombre' => 'required|string',

@@ -31,7 +31,7 @@ class Residente extends Model
 {
 	protected $table = 'Residente';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
 	public $timestamps = false;
 
 	protected $casts = [

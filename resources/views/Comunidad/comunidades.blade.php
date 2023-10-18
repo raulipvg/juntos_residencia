@@ -82,7 +82,7 @@
                                 <td>{{ $comunidad->Nombre }}</td>
                                 <td>{{ $comunidad->RUT }}</td>
                                 <td>{{ $comunidad->CantPropiedades }}</td>
-                                <td>{{ $comunidad->FechaRegistro }}</td>
+                                <td>{{\Carbon\Carbon::parse($comunidad->FechaRegistro)->format('d-m-Y')}}</td>
                                 @if ($comunidad->Enabled == 1 )
                                 <td data-search="Enabled" >										
                                     <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span>
@@ -110,7 +110,7 @@
 <!--end::Content-->
 
 <!--begin::modal-->
-<div class="modal fade" tabindex="-1" id="registrar">
+<div class="modal fade" tabindex="-1" id="registrar"  data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
 <div class="modal-dialog mt-20">
 <div class="modal-content" id="div-bloquear">
 <div class="modal-header bg-light p-2 ps-5">

@@ -8,13 +8,78 @@ $(document).ready(function() {
             form,
             {
                 fields: {
-                    'PersonaId': {
+                    'Nombre': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            },
+                            stringLength: {
+                                min: 3,
+                                max: 20,
+                                message: 'Entre 3 y 20 caracteres'
+                            },
+                            regexp: {
+                                regexp: /^[a-zñáéíóú\s]+$/i,
+                                message: 'Solo letras de la A-Z '
+                            }
+                        }
+                    },
+                    'Apellido': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            },
+                            stringLength: {
+                                min: 3,
+                                max: 20,
+                                message: 'Entre 3 y 20 caracteres'
+                            },
+                            regexp: {
+                                regexp: /^[a-zñáéíóú\s]+$/i,
+                                message: 'Solo letras de la A-Z '
+                            }
+                        }
+                    },
+                    'Rut': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            },
+                            stringLength: {
+                                min: 9,
+                                max: 10,
+                                message: 'Entre 3 y 20 caracteres'
+                            },
+                            regexp: {
+                                regexp: /^[0-9kK-\s]+$/i,
+                                message: 'Solo caracteres de la 0-9 y K '
+                            }
+                        }
+                    },            
+                    'SexoId': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            }
+                        }
+                    },          
+                    'NacionalidadId': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             }
                         }
                     },
+                    'Telefono': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            }
+                        },
+                        numeric: {
+                          message: 'Ingrese solo números'
+                        }
+                    },                      
                     'PropiedadId': {
                         validators: {
                             notEmpty: {
@@ -34,8 +99,23 @@ $(document).ready(function() {
                             notEmpty: {
                                 message: 'Requerido'
                             }
-                        }
-                    },       
+                        },
+                        date: {
+                            format: 'DD/MM/YYYY',
+                            message: 'Ingrese una fecha válida en el formato dd/mm/aaaa'
+                          }
+                    },
+                    'FechaFin': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            }
+                        },
+                        date: {
+                            format: 'DD/MM/YYYY',
+                            message: 'Ingrese una fecha válida en el formato dd/mm/aaaa'
+                          }
+                    },   
                 },
 
                 plugins: {
@@ -77,9 +157,7 @@ $(document).ready(function() {
         e.preventDefault();
         $("#modal-titulo").empty().html("Registrar Residente");
         $("input").val('').prop("disabled",false);
-        $('#PersonaIdInput').val("").trigger("change").prop("disabled",false);
-        $('#PropiedadIdInput').val("").trigger("change").prop("disabled",false);
-        $('#RolIdInput').val("").trigger("change").prop("disabled",false);
+        $('.form-select').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit").show();
         $("#EditSubmit").hide();
@@ -103,7 +181,7 @@ $(document).ready(function() {
             validator.validate().then(function (status) {
                  actualizarValidSelect2();
 
-                //console.log('validated!');
+                console.log('validated!');
                 //status
                 if (status == 'Valid') {
                     // Show loading indication
@@ -189,9 +267,7 @@ $(document).ready(function() {
         //Inicializacion
         $("#modal-titulo").empty().html("Editar Residente");
         $("input").val('').prop("disabled",false);
-        $('#PersonaIdInput').val("").trigger("change").prop("disabled",false);
-        $('#PropiedadIdInput').val("").trigger("change").prop("disabled",false);
-        $('#RolIdInput').val("").trigger("change").prop("disabled",false);
+        $('.form-select').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit").hide();
         $("#EditSubmit").show();
@@ -218,17 +294,27 @@ $(document).ready(function() {
                 
                 if(data.success){
                     data=data.data;
-                    var fechaFormateada = moment.utc(data.FechaInicio).format('YYYY-MM-DD');
-                    var fechaFormateada2 = moment.utc(data.FechaFin).format('YYYY-MM-DD');
+                    var fechaFormateada = moment.utc(data[0].FechaInicio).format('YYYY-MM-DD');
+                    var fechaFormateada2 = moment.utc(data[0].FechaFin).format('YYYY-MM-DD');
                     //console.log("wena");
                     //Agrego los valores al formulario
-                    $("#IdInput").val(data.Id);
-                    $("#PersonaIdInput").val(data.PersonaId).trigger("change");
-                    $("#PropiedadIdInput").val(data.PropiedadId).trigger("change");
+                    $("#IdInput").val(data[0].Id);
+                    $("#NombreInput").val(data[1].Nombre)
+                    $("#ApellidoInput").val(data[1].Apellido)
+                    $("#RutInput").val(data[1].RUT)
 
-                    $("#RolIdInput").val(data.RolId).trigger("change");
+                    $("#SexoIdInput").val(data[1].Sexo).trigger("change");
+                    $("#NacionalidadInput").val(data[1].NacionalidadId).trigger("change");
+                    $("#TelefonoInput").val(data[1].Telefono)
+
+                    $("#PropiedadIdInput").val(data[0].PropiedadId).trigger("change");                   
+                    $("#RolIdInput").val(data[0].RolId).trigger("change");
+
                     $("#FechaInicioInput").val(fechaFormateada);
                     $("#FechaFinInput").val(fechaFormateada2);
+
+                    $("#EnabledInput").val(data[1].Enabled).trigger("change");
+
 
                     blockUI.release();
                 }else{
@@ -382,17 +468,27 @@ $(document).ready(function() {
                 console.log(data);
                 if(data){
 
-                    data= data.data
-                    var fechaFormateada = moment.utc(data.FechaInicio).format('YYYY-MM-DD');
-                    var fechaFormateada2 = moment.utc(data.FechaFin).format('YYYY-MM-DD');
+                    data=data.data;
+                    var fechaFormateada = moment.utc(data[0].FechaInicio).format('YYYY-MM-DD');
+                    var fechaFormateada2 = moment.utc(data[0].FechaFin).format('YYYY-MM-DD');
                     //console.log("wena");
                     //Agrego los valores al formulario
-                    $("#IdInput").val(data.Id);
-                    $('#PersonaIdInput').val(data.PersonaId).trigger("change").prop("disabled", true);;
-                    $('#PropiedadIdInput').val(data.PropiedadId).trigger("change").prop("disabled", true);;
-                    $('#RolIdInput').val(data.RolId).trigger("change").prop("disabled", true);;
-                    $("#FechaInicioInput").val(fechaFormateada).prop("disabled", true);;
-                    $("#FechaFinInput").val(fechaFormateada2).prop("disabled", true);;
+                    $("#IdInput").val(data[0].Id);
+                    $("#NombreInput").val(data[1].Nombre)
+                    $("#ApellidoInput").val(data[1].Apellido)
+                    $("#RutInput").val(data[1].RUT)
+
+                    $("#SexoIdInput").val(data[1].Sexo).trigger("change");
+                    $("#NacionalidadInput").val(data[1].NacionalidadId).trigger("change");
+                    $("#TelefonoInput").val(data[1].Telefono)
+
+                    $("#PropiedadIdInput").val(data[0].PropiedadId).trigger("change");                   
+                    $("#RolIdInput").val(data[0].RolId).trigger("change");
+
+                    $("#FechaInicioInput").val(fechaFormateada);
+                    $("#FechaFinInput").val(fechaFormateada2);
+
+                    $("#EnabledInput").val(data[1].Enabled).trigger("change");
                                     
                     blockUI.release();
 

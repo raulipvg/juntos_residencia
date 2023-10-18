@@ -159,21 +159,19 @@ $(document).ready(function() {
                 //console.log('validated!');
                 //status
                 if (status == 'Valid') {
-                    // Show loading indication
-                        
+                    // Show loading indication                       
                         let form1= $("#Formulario1");
                         var fd = form1.serialize();
                         const pairs = fd.split('&');
 
                         const keyValueObject = {};
-
+                       
                         for (let i = 0; i < pairs.length; i++) {
                             const pair = pairs[i].split('=');
                             const key = decodeURIComponent(pair[0]);
                             const value = decodeURIComponent(pair[1]);
                             keyValueObject[key] = value;
                         }
-
 
                         submitButton.setAttribute('data-kt-indicator', 'on');
                         // Disable button to avoid multiple click
@@ -346,9 +344,7 @@ $(document).ready(function() {
                             submitEditButton.removeAttribute('data-kt-indicator');
 
                             // Enable button
-                            submitEditButton.disabled = false;
-
-                            
+                            submitEditButton.disabled = false;                 
 
                             let form1= $("#Formulario1");
                             var fd = form1.serialize();
@@ -377,8 +373,7 @@ $(document).ready(function() {
                                         //console.log("exito");
                                          location.reload();
                                     }else{
-                                        console.log(data.message)
-
+                                        //console.log(data.message)
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
                                         $("#AlertaError").append(html);
 
