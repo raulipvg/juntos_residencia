@@ -20,7 +20,7 @@ class UserController extends Controller
 {
     //
     public function Index(){
-        $usuarios = Usuario::all();
+        $usuarios = Usuario::with('acceso_comunidades')->get();
         $roles = Rol::select('Id', 'Nombre')->get();
         $estado = EstadoUsuario::select('Id', 'Nombre')->get();
         $comunidades = Comunidad::select('Id', 'Nombre')->get();

@@ -70,6 +70,7 @@
                             <th scope="col">Correo</th>
                             <th scope="col">Rol</th>
                             <th scope="col">Estado</th>
+                            <th scope="col">Comunidad</th>
                             <th class="text-center" scope="col">Accion</th>
                         </tr>
                     </thead>
@@ -91,7 +92,9 @@
                                     <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">{{ $usuario->estado_usuario->Nombre}}</span>
                                 </td>
                                 @endif
-                                
+                                @foreach ($usuario->acceso_comunidades as $comunidades)
+                                <td>{{ $comunidades->comunidad->Nombre }}</td>
+                                @endforeach
                                 <td  class="text-center p-0">
                                 <div class="btn-group btn-group-sm" role="group">
                                             <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $usuario->Id }}">Ver</a>
