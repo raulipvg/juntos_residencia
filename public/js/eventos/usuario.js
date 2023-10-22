@@ -75,11 +75,24 @@ $(document).ready(function() {
                                 message: 'Email inválido'
                             }
                         }
+                    },     
+                    'ComunidadId': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
+                            }
+                        }
                     },       
                     'RolId': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
                             }
                         }
                     },
@@ -87,6 +100,9 @@ $(document).ready(function() {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
                             }
                         }
                     }
@@ -131,13 +147,14 @@ $(document).ready(function() {
         e.preventDefault();
         $("#modal-titulo").empty().html("Registrar Usuario");
         $("input").val('').prop("disabled",false);
-        $('#RolIdInput').val("").trigger("change").prop("disabled",false);
-        $('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
+        $('.form-select').val("").trigger("change").prop("disabled",false);
+        //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit").show();
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled",true);
         $("#AlertaError").hide();
+        $("#AccesoComunidadId").remove();
 
         validator.resetForm();
         actualizarValidSelect2();
@@ -240,8 +257,7 @@ $(document).ready(function() {
         //Inicializacion
         $("#modal-titulo").empty().html("Editar Usuario");
         $("input").val('').prop("disabled",false);
-        $('#RolIdInput').val("").trigger("change").prop("disabled",false);
-        $('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
+        $('.form-select').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit").hide();
         $("#EditSubmit").show();
@@ -267,9 +283,28 @@ $(document).ready(function() {
                 //console.log(data);
                 
                 if(data.success){
+                    acceso= data.acceso
                     data=data.data;
                     //console.log("wena");
-                    //Agrego los valores al formulario
+                    //Agrego los valores al formulario\
+                    // Crear un elemento input de tipo number
+                    var input = document.createElement("input");
+                    input.type = "number";
+
+                    // Establecer los atributos según tus necesidades
+                    input.id = "AccesoComunidadId";
+                    input.name = "AccesoComunidadId";
+                    input.value = acceso[0].Id;  // Valor inicial
+                    
+                    // Ocultar el elemento
+                    input.style.display = "none";
+
+                    // Obtener el formulario por su id
+                    var formulario = document.getElementById("Formulario1");
+
+                    // Agregar el elemento al formulario
+                    formulario.appendChild(input);
+
                     $("#IdInput").val(data.Id);
                     $("#UsernameInput").val(data.Username);
                     $("#PasswordInput").val("********");
@@ -280,6 +315,9 @@ $(document).ready(function() {
                   
                     $('#RolIdInput').val(data.RolId).trigger("change");
                     $('#EstadoIdInput').val(data.EstadoId).trigger("change");
+                    $('#ComunidadIdInput').val(acceso[0].ComunidadId).trigger("change");
+
+
 
                     blockUI.release();
                 }else{
@@ -404,8 +442,7 @@ $(document).ready(function() {
         //console.log("wena");
         $("#modal-titulo").empty().html("Ver Usuario");
         $("input").val('');
-        $('#RolIdInput').val("").trigger("change");
-        $('#EstadoIdInput').val("").trigger("change");
+        $('.form-select').val("").trigger("change");
         $("#AddSubmit").hide();
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled",false);
@@ -428,7 +465,7 @@ $(document).ready(function() {
             success: function (data) {
                 console.log(data);
                 if(data){
-
+                    acceso= data.acceso
                     data= data.data
                     //console.log("wena");
                     //Agrego los valores al formulario
@@ -441,7 +478,9 @@ $(document).ready(function() {
                   
                     $('#RolIdInput').val(data.RolId).trigger("change").prop("disabled", true);;
                     $('#EstadoIdInput').val(data.EstadoId).trigger("change").prop("disabled", true);;
-                    
+                    $('#ComunidadIdInput').val(acceso[0].ComunidadId).trigger("change").prop("disabled", true);;
+
+
                     blockUI.release();
 
                 }else{
@@ -464,7 +503,6 @@ $(document).ready(function() {
                      });
 
                 }
-
 
             },
             error: function () {

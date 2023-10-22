@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
+    // Obtenemos la fecha actual en el formato "YYYY-MM-DD".
+    const fechaActual = new Date().toISOString().slice(0, 10);
+    document.getElementById("FechaRegistroInput").setAttribute("max", fechaActual);
+
     
     const form = document.getElementById('Formulario1');
     $("#AlertaError").hide();
@@ -17,6 +21,10 @@ $(document).ready(function() {
                                 min: 3,
                                 max: 20,
                                 message: 'Entre 3 y 20 caracteres'
+                            },
+                            regexp: {
+                                regexp: /^[a-zñáéíóú\s]+$/i,
+                                message: 'Solo letras de la A-Z '
                             }
                         }
                     },
@@ -26,10 +34,34 @@ $(document).ready(function() {
                                 message: 'Requerido'
                             },
                             stringLength: {
-                                min: 8,
-                                max: 12,
-                                message: 'Entre 8 y 12 caracteres'
+                                min: 9,
+                                max: 10,
+                                message: 'Entre 9 y 10 caracteres'
+                            },
+                            callback: {
+                                message: 'Rut Invalido',
+                                callback: function(input) {
+
+                                    const rutCompleto = $('#RUTInput').val();
+
+
+                                    if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
+
+                                    var tmp = rutCompleto.split('-');
+                                    var digv = tmp[1];
+                                    var rut = tmp[0];
+                                    if (digv == 'K') digv = 'k';
+                                    return (dv(rut) == digv);
+
+                                    function dv(T) {
+                                        var M = 0, S = 1;
+                                        for (; T; T = Math.floor(T / 10))
+                                            S = (S + T % 10 * (9 - M++ % 6)) % 11;
+                                        return S ? S - 1 : 'k';
+                                    }
+                                }
                             }
+                            
                         }
                     },
                     'Correo': {
@@ -46,6 +78,9 @@ $(document).ready(function() {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
                             }
                         }
                     },       
@@ -77,6 +112,9 @@ $(document).ready(function() {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
                             }
                         }
                     },
@@ -91,6 +129,9 @@ $(document).ready(function() {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
                             }
                         }
                     },
@@ -98,6 +139,9 @@ $(document).ready(function() {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
                             }
                         }
                     },

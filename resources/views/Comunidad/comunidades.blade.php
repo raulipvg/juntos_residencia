@@ -100,7 +100,7 @@
                                         </div>
                                 </td>
                             </tr>
-                            @endforeach
+                        @endforeach
                     </tbody>
             </table>
         </div>
@@ -188,7 +188,7 @@
 <div class="row">
     <div class="col-md-6 mb-2">
         <div class="form-floating fv-row">
-            <input type="date" class="form-control" placeholder="Ingrese la fecha registro" id="FechaRegistroInput" name="FechaRegistro" />
+            <input type="date" class="form-control" placeholder="Ingrese la fecha registro" value="{{ now()->format('Y-m-d') }}" id="FechaRegistroInput" name="FechaRegistro" max="" />
             <label for="FechaRegistroInput" class="form-label">Fecha Registro</label>
         </div>
     </div>

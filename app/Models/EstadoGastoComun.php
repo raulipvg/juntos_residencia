@@ -10,32 +10,27 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class TipoComite
+ * Class EstadoGastoComun
  * 
  * @property int $Id
  * @property string $Nombre
  * 
- * @property Collection|Copropietario[] $copropietarios
+ * @property Collection|GastoComun[] $gasto_comuns
  *
  * @package App\Models
  */
-class TipoComite extends Model
+class EstadoGastoComun extends Model
 {
-	protected $table = 'TipoComite';
+	protected $table = 'EstadoGastoComun';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
-
-	protected $casts = [
-		'Id' => 'int'
-	];
 
 	protected $fillable = [
 		'Nombre'
 	];
 
-	public function copropietarios()
+	public function gasto_comuns()
 	{
-		return $this->hasMany(Copropietario::class, 'TipoId');
+		return $this->hasMany(GastoComun::class, 'EstadoGastoId');
 	}
 }

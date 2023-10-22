@@ -23,12 +23,7 @@ class EstadoUsuario extends Model
 {
 	protected $table = 'EstadoUsuario';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
-
-	protected $casts = [
-		'Id' => 'int'
-	];
 
 	protected $fillable = [
 		'Nombre'

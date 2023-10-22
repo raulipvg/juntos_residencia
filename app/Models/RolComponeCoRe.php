@@ -10,32 +10,27 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class EstadoGasto
+ * Class RolComponeCoRe
  * 
  * @property int $Id
  * @property string $Nombre
  * 
- * @property Collection|GastoComun[] $gasto_comuns
+ * @property Collection|Compone[] $compones
  *
  * @package App\Models
  */
-class EstadoGasto extends Model
+class RolComponeCoRe extends Model
 {
-	protected $table = 'EstadoGasto';
+	protected $table = 'RolComponeCoRe';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
-
-	protected $casts = [
-		'Id' => 'int'
-	];
 
 	protected $fillable = [
 		'Nombre'
 	];
 
-	public function gasto_comuns()
+	public function compones()
 	{
-		return $this->hasMany(GastoComun::class, 'EstadoGastoId');
+		return $this->hasMany(Compone::class, 'RolComponeCoReId');
 	}
 }

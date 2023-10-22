@@ -23,12 +23,7 @@ class TipoDocumento extends Model
 {
 	protected $table = 'TipoDocumento';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
-
-	protected $casts = [
-		'Id' => 'int'
-	];
 
 	protected $fillable = [
 		'Nombre'

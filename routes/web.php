@@ -19,6 +19,10 @@ use App\Http\Controllers\TipoCobro;
 |
 */
 
+Route::group(['prefix' => '/'], function () {
+    Route::get('/', [HomeController::class, 'Index'])->name('Home');
+});
+
 
 Route::group(['prefix' => '/usuario'], function () {
     Route::get('/', [UserController::class, 'Index'])->name('Usuario');
@@ -60,6 +64,3 @@ Route::group(['prefix' => '/tipocobro'], function () {
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});

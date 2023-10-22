@@ -31,11 +31,9 @@ class GastosDetalle extends Model
 {
 	protected $table = 'GastosDetalle';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'Id' => 'int',
 		'GastoMesId' => 'int',
 		'TipoDocumentoId' => 'int',
 		'Precio' => 'int',

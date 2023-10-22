@@ -10,36 +10,41 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class TipoCobro
+ * Class EspacioComun
  * 
  * @property int $Id
- * @property string $Nombre
- * @property int|null $Precio
- * @property int $Enabled
  * @property int $ComunidadId
+ * @property string $Nombre
+ * @property int $Precio
+ * @property string $Descripcion
+ * @property int $Garantia
+ * @property int $Enabled
  * 
  * @property Comunidad $comunidad
- * @property Collection|CobroIndividual[] $cobro_individuals
+ * @property Collection|ReservaEspacio[] $reserva_espacios
  *
  * @package App\Models
  */
-class TipoCobro extends Model
+class EspacioComun extends Model
 {
-	protected $table = 'TipoCobro';
+	protected $table = 'EspacioComun';
 	protected $primaryKey = 'Id';
 	public $timestamps = false;
 
 	protected $casts = [
+		'ComunidadId' => 'int',
 		'Precio' => 'int',
-		'Enabled' => 'int',
-		'ComunidadId' => 'int'
+		'Garantia' => 'int',
+		'Enabled' => 'int'
 	];
 
 	protected $fillable = [
+		'ComunidadId',
 		'Nombre',
 		'Precio',
-		'Enabled',
-		'ComunidadId'
+		'Descripcion',
+		'Garantia',
+		'Enabled'
 	];
 
 	public function comunidad()
@@ -47,8 +52,8 @@ class TipoCobro extends Model
 		return $this->belongsTo(Comunidad::class, 'ComunidadId');
 	}
 
-	public function cobro_individuals()
+	public function reserva_espacios()
 	{
-		return $this->hasMany(CobroIndividual::class, 'TipoCobroId');
+		return $this->hasMany(ReservaEspacio::class, 'EspacioComunId');
 	}
 }

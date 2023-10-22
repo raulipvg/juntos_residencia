@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccesoComunidad;
+use App\Models\Comunidad;
 use App\Models\Usuario;
 use App\Models\EstadoUsuario;
 use App\Models\Rol;
 use Exception;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 
 
@@ -18,11 +23,13 @@ class UserController extends Controller
         $usuarios = Usuario::all();
         $roles = Rol::select('Id', 'Nombre')->get();
         $estado = EstadoUsuario::select('Id', 'Nombre')->get();
+        $comunidades = Comunidad::select('Id', 'Nombre')->get();
 
-        return View('home.usuarios')->with([
+        return View('usuario.usuario')->with([
             'Usuarios' => $usuarios,
             'Roles' => $roles,
-            'Estados' => $estado
+            'Estados' => $estado,
+            'Comunidades' => $comunidades
         ]);
     }
 
@@ -37,26 +44,52 @@ class UserController extends Controller
            $request['Nombre'] = strtolower($request['Nombre']);
            $request['Apellido'] = strtolower($request['Apellido']);
            $request['Correo']= strtolower($request['Correo']);
+           $request['FechaAcceso'] = Carbon::now();
+           $request['Enabled']= 1;
            
         
         try{
             $usuario = new Usuario();
             $usuario->validate($request);
-            $usuario->fill($request);
-
             
-            $usuario->save(); 
+
+            $acessoComunidad = new AccesoComunidad();
+            $acessoComunidad->validate([
+                'ComunidadId' => $request['ComunidadId'],
+                'UsuarioId' => 1,
+                'FechaAcceso' =>$request['FechaAcceso'],
+                'Enabled' => $request['Enabled']
+            ]);
+            DB::beginTransaction();
+            $usuario= Usuario::create([
+                   'Nombre'=> $request['Nombre'],
+                   'Apellido' => $request['Apellido'],
+                   'Username' => $request['Username'],
+                   'Correo' => $request['Correo'],
+                   'Password' => $request['Password'],
+                   'EstadoId' => $request['EstadoId'],
+                   'RolId' => $request['RolId']
+            ]);
+
+            $acessoComunidad = AccesoComunidad::create([
+                'ComunidadId' => $request['ComunidadId'],
+                'UsuarioId' => $usuario->Id,
+                'FechaAcceso' =>$request['FechaAcceso'],
+                'Enabled' => $request['Enabled']
+
+            ]);
+
+            //$usuario->save();
+            DB::commit(); 
             return response()->json([
                 'success' => true,
                 'message' => 'Modelo recibido y procesado']);
         }catch(Exception $e){
-                
+            DB::rollback();
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()]);
         }
-          
-
     }
 
     public function VerId(Request $request){
@@ -66,9 +99,11 @@ class UserController extends Controller
         try{
 
             $usuario= Usuario::find($request);
+            //$acessoComunidad = AccesoComunidad::
             return response()->json([
                 'success' => true,
-                'data' => $usuario ]);
+                'data' => $usuario,
+                'acceso' => $usuario->acceso_comunidades ]);
         }catch(Exception $e){
 
             return response()->json([
@@ -80,24 +115,51 @@ class UserController extends Controller
 
     public function Editar(Request $request){
         $request = $request->input('data');
-
         // Accede a los atributos del modelo
         $request['Username'] = strtolower($request['Username']);
         $request['Password'] = $request['Password'];
         $request['Nombre'] = strtolower($request['Nombre']);
         $request['Apellido'] = strtolower($request['Apellido']);
         $request['Correo']= strtolower($request['Correo']);
+        $request['Enabled'] = 1;
 
         try{
+            $usuarioEdit = Usuario::find($request['Id']);
+
             $usuario = new Usuario();
             $usuario->validate($request);
+            
 
-            $userEdit = Usuario::find($request['Id']);
-            //$userEdit->Username
-            $userEdit->fill($request);
+            $acessoComunidad = new AccesoComunidad();
+            $acessoComunidad->validate([
+                'Id' => $request['AccesoComunidadId'],
+                'ComunidadId' => $request['ComunidadId'],
+                'UsuarioId' => 1,
+                'FechaAcceso' =>Carbon::now(),
+                'Enabled' => $request['Enabled']
+            ]);
 
-            $userEdit->save();
+            DB::beginTransaction();
+            $usuarioEdit->update([
+                   'Nombre'=> $request['Nombre'],
+                   'Apellido' => $request['Apellido'],
+                   'Username' => $request['Username'],
+                   'Correo' => $request['Correo'],
+                   'Password' => $request['Password'],
+                   'EstadoId' => $request['EstadoId'],
+                   'RolId' => $request['RolId']
+            ]);
 
+            $accesoEdit = AccesoComunidad::find($request['AccesoComunidadId']);
+
+            $accesoEdit->update([
+                'ComunidadId' => $request['ComunidadId'],
+                'Enabled' => $request['Enabled']
+             ]);
+
+            //$usuario->save();
+            DB::commit();
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Modelo recibido y procesado']);

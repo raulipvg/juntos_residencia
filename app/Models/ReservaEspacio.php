@@ -18,12 +18,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $Cantidad
  * @property int $Total
  * @property int $TipoCobroId
+ * @property int $GastoComunId
  * @property int $PropiedadId
  * @property int $EstadoReservaId
+ * @property int $EspacioComunId
  * 
- * @property TipoCobro $tipo_cobro
+ * @property GastoComun $gasto_comun
  * @property Propiedad $propiedad
  * @property EstadoReserva $estado_reserva
+ * @property EspacioComun $espacio_comun
  *
  * @package App\Models
  */
@@ -31,18 +34,18 @@ class ReservaEspacio extends Model
 {
 	protected $table = 'ReservaEspacio';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'Id' => 'int',
 		'FechaSolicitud' => 'datetime',
 		'FechaUso' => 'datetime',
 		'Cantidad' => 'int',
 		'Total' => 'int',
 		'TipoCobroId' => 'int',
+		'GastoComunId' => 'int',
 		'PropiedadId' => 'int',
-		'EstadoReservaId' => 'int'
+		'EstadoReservaId' => 'int',
+		'EspacioComunId' => 'int'
 	];
 
 	protected $fillable = [
@@ -51,13 +54,15 @@ class ReservaEspacio extends Model
 		'Cantidad',
 		'Total',
 		'TipoCobroId',
+		'GastoComunId',
 		'PropiedadId',
-		'EstadoReservaId'
+		'EstadoReservaId',
+		'EspacioComunId'
 	];
 
-	public function tipo_cobro()
+	public function gasto_comun()
 	{
-		return $this->belongsTo(TipoCobro::class, 'TipoCobroId');
+		return $this->belongsTo(GastoComun::class, 'GastoComunId');
 	}
 
 	public function propiedad()
@@ -68,5 +73,10 @@ class ReservaEspacio extends Model
 	public function estado_reserva()
 	{
 		return $this->belongsTo(EstadoReserva::class, 'EstadoReservaId');
+	}
+
+	public function espacio_comun()
+	{
+		return $this->belongsTo(EspacioComun::class, 'EspacioComunId');
 	}
 }

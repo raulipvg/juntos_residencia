@@ -30,8 +30,8 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property EstadoGastoMe $estado_gasto_me
  * @property Comunidad $comunidad
- * @property Collection|GastoComun[] $gasto_comuns
  * @property Collection|GastosDetalle[] $gastos_detalles
+ * @property Collection|GastoComun[] $gasto_comuns
  *
  * @package App\Models
  */
@@ -39,11 +39,9 @@ class GastoMe extends Model
 {
 	protected $table = 'GastoMes';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'Id' => 'int',
 		'Fecha' => 'datetime',
 		'TotalRemuneracion' => 'int',
 		'TotasOtros' => 'int',
@@ -85,13 +83,13 @@ class GastoMe extends Model
 		return $this->belongsTo(Comunidad::class, 'ComunidadId');
 	}
 
-	public function gasto_comuns()
-	{
-		return $this->hasMany(GastoComun::class, 'GastoMesId');
-	}
-
 	public function gastos_detalles()
 	{
 		return $this->hasMany(GastosDetalle::class, 'GastoMesId');
+	}
+
+	public function gasto_comuns()
+	{
+		return $this->hasMany(GastoComun::class, 'GastoMesId');
 	}
 }

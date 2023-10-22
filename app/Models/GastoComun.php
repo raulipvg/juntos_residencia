@@ -14,21 +14,22 @@ use Illuminate\Database\Eloquent\Model;
  * Class GastoComun
  * 
  * @property int $Id
+ * @property int $PropiedadId
  * @property int $CobroGC
  * @property int $FondoReserva
  * @property int $TotalGC
  * @property int $TotalCobroMes
  * @property Carbon $Fecha
  * @property int $SaldoMesAnterior
- * @property int $EstadoGastoId
- * @property int $PropiedadId
  * @property int $GastoMesId
+ * @property int $EstadoGastoId
  * 
- * @property EstadoGasto $estado_gasto
  * @property Propiedad $propiedad
  * @property GastoMe $gasto_me
- * @property Collection|HistorialPago[] $historial_pagos
+ * @property EstadoGastoComun $estado_gasto_comun
  * @property Collection|CobroIndividual[] $cobro_individuals
+ * @property Collection|ReservaEspacio[] $reserva_espacios
+ * @property Collection|HistorialPago[] $historial_pagos
  *
  * @package App\Models
  */
@@ -36,38 +37,31 @@ class GastoComun extends Model
 {
 	protected $table = 'GastoComun';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'Id' => 'int',
+		'PropiedadId' => 'int',
 		'CobroGC' => 'int',
 		'FondoReserva' => 'int',
 		'TotalGC' => 'int',
 		'TotalCobroMes' => 'int',
 		'Fecha' => 'datetime',
 		'SaldoMesAnterior' => 'int',
-		'EstadoGastoId' => 'int',
-		'PropiedadId' => 'int',
-		'GastoMesId' => 'int'
+		'GastoMesId' => 'int',
+		'EstadoGastoId' => 'int'
 	];
 
 	protected $fillable = [
+		'PropiedadId',
 		'CobroGC',
 		'FondoReserva',
 		'TotalGC',
 		'TotalCobroMes',
 		'Fecha',
 		'SaldoMesAnterior',
-		'EstadoGastoId',
-		'PropiedadId',
-		'GastoMesId'
+		'GastoMesId',
+		'EstadoGastoId'
 	];
-
-	public function estado_gasto()
-	{
-		return $this->belongsTo(EstadoGasto::class, 'EstadoGastoId');
-	}
 
 	public function propiedad()
 	{
@@ -79,13 +73,23 @@ class GastoComun extends Model
 		return $this->belongsTo(GastoMe::class, 'GastoMesId');
 	}
 
-	public function historial_pagos()
+	public function estado_gasto_comun()
 	{
-		return $this->hasMany(HistorialPago::class, 'GastoComunId');
+		return $this->belongsTo(EstadoGastoComun::class, 'EstadoGastoId');
 	}
 
 	public function cobro_individuals()
 	{
 		return $this->hasMany(CobroIndividual::class, 'GastoComunId');
+	}
+
+	public function reserva_espacios()
+	{
+		return $this->hasMany(ReservaEspacio::class, 'GastoComunId');
+	}
+
+	public function historial_pagos()
+	{
+		return $this->hasMany(HistorialPago::class, 'GastoComunId');
 	}
 }

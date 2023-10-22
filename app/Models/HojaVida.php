@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $Titulo
  * @property string $Descripcion
  * @property Carbon $Fecha
+ * @property int $Enabled
  * 
  * @property Persona $persona
  *
@@ -26,20 +27,20 @@ class HojaVida extends Model
 {
 	protected $table = 'HojaVida';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'Id' => 'int',
 		'PersonaId' => 'int',
-		'Fecha' => 'datetime'
+		'Fecha' => 'datetime',
+		'Enabled' => 'int'
 	];
 
 	protected $fillable = [
 		'PersonaId',
 		'Titulo',
 		'Descripcion',
-		'Fecha'
+		'Fecha',
+		'Enabled'
 	];
 
 	public function persona()

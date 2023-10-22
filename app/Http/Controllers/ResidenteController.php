@@ -153,8 +153,6 @@ class ResidenteController extends Controller
             // Usamos transacción para asegurar la integridad de los datos
             DB::beginTransaction();
 
-            
-
             $residenteEdit->update([
                 'PropiedadId' => $request['PropiedadId'],
                 'RolId' => $request['RolId'],
@@ -176,11 +174,12 @@ class ResidenteController extends Controller
             ]);
             //$residenteEdit->save();
             DB::commit();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Modelo recibido y procesado']);
         }catch(Exception $e){
-                
+            DB::rollback();    
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()]);

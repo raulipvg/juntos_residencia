@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
 
 /**
  * Class Usuario
- *
+ * 
  * @property int $Id
  * @property string $Nombre
  * @property string $Apellido
@@ -23,7 +23,7 @@ use Illuminate\Validation\Rule;
  * @property string $Password
  * @property int $EstadoId
  * @property int $RolId
- *
+ * 
  * @property EstadoUsuario $estado_usuario
  * @property Rol $rol
  * @property Collection|AccesoComunidad[] $acceso_comunidads
@@ -38,7 +38,6 @@ class Usuario extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'Id' => 'int',
 		'EstadoId' => 'int',
 		'RolId' => 'int'
 	];
@@ -63,11 +62,10 @@ class Usuario extends Model
 		return $this->belongsTo(Rol::class, 'RolId');
 	}
 
-	public function acceso_comunidads()
+	public function acceso_comunidades()
 	{
 		return $this->hasMany(AccesoComunidad::class, 'UsuarioId');
 	}
-
 	public function validate(array $data)
     {
 		if(isset($data['Id'])){

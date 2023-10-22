@@ -28,11 +28,9 @@ class CobroIndividual extends Model
 {
 	protected $table = 'CobroIndividual';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'Id' => 'int',
 		'Cantidad' => 'int',
 		'MontoTotal' => 'int',
 		'TipoCobroId' => 'int',

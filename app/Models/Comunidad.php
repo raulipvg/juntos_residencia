@@ -29,9 +29,11 @@ use Illuminate\Validation\Rule;
  * @property int $TipoComunidadId
  * 
  * @property TipoComunidad $tipo_comunidad
- * @property Collection|Propiedad[] $propiedads
- * @property Collection|AccesoComunidad[] $acceso_comunidads
+ * @property Collection|EspacioComun[] $espacio_comuns
  * @property Collection|GastoMe[] $gasto_mes
+ * @property Collection|TipoCobro[] $tipo_cobros
+ * @property Collection|AccesoComunidad[] $acceso_comunidads
+ * @property Collection|Propiedad[] $propiedads
  *
  * @package App\Models
  */
@@ -39,11 +41,9 @@ class Comunidad extends Model
 {
 	protected $table = 'Comunidad';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'Id' => 'int',
 		'NumeroCuenta' => 'int',
 		'CantPropiedades' => 'int',
 		'FechaRegistro' => 'datetime',
@@ -69,14 +69,9 @@ class Comunidad extends Model
 		return $this->belongsTo(TipoComunidad::class, 'TipoComunidadId');
 	}
 
-	public function propiedads()
+	public function espacio_comuns()
 	{
-		return $this->hasMany(Propiedad::class, 'ComunidadId');
-	}
-
-	public function acceso_comunidads()
-	{
-		return $this->hasMany(AccesoComunidad::class, 'ComunidadId');
+		return $this->hasMany(EspacioComun::class, 'ComunidadId');
 	}
 
 	public function gasto_mes()
@@ -84,31 +79,45 @@ class Comunidad extends Model
 		return $this->hasMany(GastoMe::class, 'ComunidadId');
 	}
 
+	public function tipo_cobros()
+	{
+		return $this->hasMany(TipoCobro::class, 'ComunidadId');
+	}
+
+	public function acceso_comunidads()
+	{
+		return $this->hasMany(AccesoComunidad::class, 'ComunidadId');
+	}
+
+	public function propiedads()
+	{
+		return $this->hasMany(Propiedad::class, 'ComunidadId');
+	}
 	public function validate(array $data)
     {
-		if(isset($data['Id'])){
-			$id = $data['Id'];
-		}else{
-			$id = null;
-		}
-		
+        if(isset($data['Id'])){
+            $id = $data['Id'];
+        }else{
+            $id = null;
+        }
+
 
         $rules = [
-			'Nombre' => 'required|string|max:50',
-			'RUT' => [
-				'required',
-				'string',
-				'max:50',
-				Rule::unique('Comunidad','RUT')->ignore($id, 'Id'),
-			],
-			'Correo' => 'required|email|max:50',
-			'NumeroCuenta' => 'required|numeric',
-			'TipoCuenta' => 'required|string',
-			'Banco' => 'required|string',
-			'CantPropiedades' => 'required|numeric',
-			'FechaRegistro' => 'required|date',
-			'Enabled' => 'required|min:1|max:2',
-			'TipoComunidadId' => 'required',
+            'Nombre' => 'required|string|max:50',
+            'RUT' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('Comunidad','RUT')->ignore($id, 'Id'),
+            ],
+            'Correo' => 'required|email|max:50',
+            'NumeroCuenta' => 'required|numeric',
+            'TipoCuenta' => 'required|string',
+            'Banco' => 'required|string',
+            'CantPropiedades' => 'required|numeric',
+            'FechaRegistro' => 'required|date',
+            'Enabled' => 'required|min:1|max:2',
+            'TipoComunidadId' => 'required',
         ];
 
         $validator = Validator::make($data, $rules);

@@ -171,6 +171,19 @@
     </div>
 </div>
 <div class="row">
+    <div class="col-md-12 mb-2">
+        <div class="form-floating fv-row">
+            <select id="ComunidadIdInput" name="ComunidadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                <option></option>
+                @foreach($Comunidades as $comunidad)
+                    <option value="{{ $comunidad->Id }}">{{ $comunidad->Nombre }}</option>
+                @endforeach
+            </select>
+            <label for="ComunidadIdInput" class="form-label">Comunidad</label>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-6 mb-2">
         <div class="form-floating fv-row">
             <select id="RolIdInput" name="RolId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">

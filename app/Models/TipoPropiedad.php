@@ -23,12 +23,7 @@ class TipoPropiedad extends Model
 {
 	protected $table = 'TipoPropiedad';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
-
-	protected $casts = [
-		'Id' => 'int'
-	];
 
 	protected $fillable = [
 		'Nombre'

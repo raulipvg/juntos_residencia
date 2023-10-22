@@ -24,12 +24,7 @@ class Rol extends Model
 {
 	protected $table = 'Rol';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
-
-	protected $casts = [
-		'Id' => 'int'
-	];
 
 	protected $fillable = [
 		'Nombre',

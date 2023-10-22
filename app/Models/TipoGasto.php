@@ -23,12 +23,7 @@ class TipoGasto extends Model
 {
 	protected $table = 'TipoGasto';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
 	public $timestamps = false;
-
-	protected $casts = [
-		'Id' => 'int'
-	];
 
 	protected $fillable = [
 		'Nombre'
