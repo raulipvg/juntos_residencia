@@ -1,6 +1,6 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 
-let miTabla = $('#tabla-comunidad').DataTable({
+let miTablaEspacio = $('#tabla-espacios').DataTable({
             "language": {
                 "processing": "Procesando...",
                 "lengthMenu": "Mostrar _MENU_ registros",
@@ -223,14 +223,14 @@ let miTabla = $('#tabla-comunidad').DataTable({
                     extend: 'copy',
                     className: '',
                     exportOptions: {
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, 3,4]
                     }
                 },
                 {
                     extend: 'excel',
                     className: '',
                     exportOptions: {
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, ,3,4]
                     }
                 },
                 {
@@ -241,17 +241,17 @@ let miTabla = $('#tabla-comunidad').DataTable({
                         doc.defaultStyle.fontSize = 10; //2, 3, 4,etc
                         doc.styles.title.fontSize = 14;
                         doc.styles.tableHeader.fontSize = 12; //2, 3, 4, etc
-                        doc.content[1].table.widths = ['25%','25%','25%','25%'];
+                        doc.content[1].table.widths = ['20%','20%','20%','20%','20%'];
                     },
                     exportOptions: {
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, 3,4]
                     }
                 },
                 {
                     extend: 'print',
                     className: '',
                     exportOptions: {
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, 3,4]
                     }
                 }
             ],

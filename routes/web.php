@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CopropietarioController;
+use App\Http\Controllers\EspacioComunController;
 use App\Http\Controllers\ResidenteController;
 use App\Http\Controllers\TipoCobro;
+use App\Models\EspacioComun;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,14 @@ Route::group(['prefix' => '/comunidad'], function () {
     Route::post('/ver', [ComunidadController::class, 'VerId'])->name('VerComunidad');
     Route::post('/editar', [ComunidadController::class, 'Editar'])->name('EditarComunidad');
 });
+
+Route::group(['prefix' => '/espaciocomun'], function () {
+    Route::post('/listar', [EspacioComunController::class, 'Index'])->name('EspacioComun');
+    Route::post('/registrar', [EspacioComunController::class, 'Guardar'])->name('GuardarEspacioComun');
+    Route::post('/ver', [EspacioComunController::class, 'VerId'])->name('VerEspacioComun');
+    Route::post('/editar', [EspacioComunController::class, 'Editar'])->name('EditarEspacioComun');
+});
+
 
 
 Route::group(['prefix' => '/copropietario'], function () {

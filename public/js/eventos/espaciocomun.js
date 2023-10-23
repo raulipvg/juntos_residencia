@@ -1,12 +1,6 @@
 $(document).ready(function() {
-
-    // Obtenemos la fecha actual en el formato "YYYY-MM-DD".
-    const fechaActual = new Date().toISOString().slice(0, 10);
-    document.getElementById("FechaRegistroInput").setAttribute("max", fechaActual);
-
-    
-    const form = document.getElementById('Formulario1');
-    $("#AlertaError").hide();
+    const form = document.getElementById('Formulario-EspacioComun');
+    $("#AlertaError2").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
             form,
@@ -28,100 +22,50 @@ $(document).ready(function() {
                             }
                         }
                     },
-                    'RUT': {
+                    'Descripcion': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             },
                             stringLength: {
-                                min: 9,
-                                max: 10,
-                                message: 'Entre 9 y 10 caracteres'
-                            },
-                            callback: {
-                                message: 'Rut Invalido',
-                                callback: function(input) {
-
-                                    const rutCompleto = $('#RUTInput').val();
-
-
-                                    if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
-
-                                    var tmp = rutCompleto.split('-');
-                                    var digv = tmp[1];
-                                    var rut = tmp[0];
-                                    if (digv == 'K') digv = 'k';
-                                    return (dv(rut) == digv);
-
-                                    function dv(T) {
-                                        var M = 0, S = 1;
-                                        for (; T; T = Math.floor(T / 10))
-                                            S = (S + T % 10 * (9 - M++ % 6)) % 11;
-                                        return S ? S - 1 : 'k';
-                                    }
-                                }
+                                min: 0,
+                                max: 50,
+                                message: 'Entre 9 y 50 caracteres'
                             }
                             
                         }
                     },
-                    'Correo': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            emailAddress: {
-                                message: 'Email inválido'
-                            }
-                        }
-                    },
-                    'NumeroCuenta': {
+                    'Precio': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             },
                             digits: {
                                 message: 'Digitos'
-                            }
-                        }
-                    },       
-                    'TipoCuenta': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
                             },
-                            stringLength: {
-                                min: 3,
-                                max: 25,
-                                message: 'Entre 3 y 25 caracteres'
+                            between:{
+                                inclusive: true,
+                                min:0,
+                                max: 1000000,
+                                message: 'Entre 0 y 1.000.000'
+                            
                             }
                         }
                     },
-                    'Banco': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 3,
-                                max: 25,
-                                message: 'Entre 3 y 25 caracteres'
-                            }
-                        }
-                    },
-                    'CantPropiedades': {
+                    'Garantia': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             },
                             digits: {
                                 message: 'Digitos'
-                            }
-                        }
-                    },
-                    'FechaRegistro': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
+                            },
+                            between:{
+                                inclusive: true,
+                                min:0,
+                                max: 1000000,
+                                message: 'Entre 0 y 1.000.000'
+                            
                             }
                         }
                     },
@@ -134,17 +78,7 @@ $(document).ready(function() {
                                 message: 'Digitos'
                             }
                         }
-                    },
-                    'TipoComunidadId': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            digits: {
-                                message: 'Digitos'
-                            }
-                        }
-                    },
+                    }
                 },
 
                 plugins: {
@@ -163,8 +97,6 @@ $(document).ready(function() {
         $('.form-select').each( function () {
             var valid = $(this).hasClass("is-valid");
             var invalid =$(this).hasClass("is-invalid");
-
-            //console.log("valid: "+valid+" invalid: "+invalid)
             if(valid){
                 $(this).next().children().children().removeClass("is-invalid").addClass("is-valid");
             }
@@ -179,32 +111,135 @@ $(document).ready(function() {
         });
     }
 
-     // Evento al presionar el Boton de Registrar
-    $("#AddBtn").on("click", function (e ) {
-        //Inicializacion
-        //console.log("AddBtn")
+    const target2 = document.querySelector("#div-bloquear-espacio");
+    const blockUI2 = new KTBlockUI(target2)
+    let comunidadId;
+    let comunidadNombre;
+    //Evento al presionar el Boton de Espacios
+    $("#tabla-comunidad tbody").on('click','.ver-espacios', function (e) {
         e.preventDefault();
-        $("#modal-titulo").empty().html("Registrar Comunidad");
-        $("input").val('').prop("disabled",false);
-        $('#TipoComunidadIdInput').val("").trigger("change").prop("disabled",false);
-        $('#EnabledInput').val("").trigger("change").prop("disabled",false);
+        blockUI2.block();
+        let id = Number($(this).attr("info"));
+        miTablaEspacio.clear().draw();
+        $.ajax({
+            type: 'POST',
+            url: EspacioComun,
+            data: {
+                _token: csrfToken,
+                data: id},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                
+                if(data.success){
+                    comunidadNombre= data.comunidad.Nombre;
+                    $("#modal-titulo-acceso").empty().html(data.comunidad.Nombre+" - Espacios Comunes ");
+                    //console.log(data.comunidad.Id);
+                    $("#ComunidadIdInput").prop('disabled', false);
+                    comunidadId = data.comunidad.Id;
 
-        $("#AddSubmit").show();
-        $("#EditSubmit").hide();
-        $("#IdInput").prop("disabled",true);
-        $("#AlertaError").hide();
+                    if(data.data){
+                        data=data.data;
+                        //console.log(data); 
+
+                        for(let row in data){
+                            if(data[row].Enabled == 1){
+                            var enabled =  '<span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span>';
+                            }else{
+                            var enabled = '<span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span>';  
+                            }
+
+                            var accion = '<div class="btn-group btn-group-sm" role="group">'+
+                                            '<a class="ver-espacio btn abrir-modal btn-success" data-bs-stacked-modal="#editar-espacio" info="'+data[row].Id+'">Ver</a>'+
+                                            '<a class="editar-espacio abrir-modal btn btn-warning" data-bs-stacked-modal="#editar-espacio" info="'+data[row].Id+'">Editar</a>'+
+                                         '</div>';
+                                //console.log(rec.estacion.nombreEstacion+` `+datos.momento)
+                                var rowNode =  miTablaEspacio.row.add({
+                                                    "0": data[row].Id,
+                                                    "1": data[row].Nombre,
+                                                    "2": data[row].Precio,
+                                                    "3": data[row].Garantia,
+                                                    "4": enabled,
+                                                    "5": accion    
+                                                });
+                                var fila = miTablaEspacio.row(rowNode).node();
+                                $(fila).find('td').eq(5).addClass('text-center p-0');
+                        }
+                        miTablaEspacio.draw();
+                        
+                    }
+                    
+                    
+
+                    blockUI2.release();
+                }else{
+                    //console.log("Sin data");
+                    blockUI2.release();
+
+                    
+                }
+            },
+            error: function () {
+                //alert('Error en editar el usuario');
+                blockUI2.release();
+                Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+
+                     $(".btn-cerrar22").on("click", function () {
+                            //console.log("Error");
+                            $('#editar-espacio').modal('toggle');
+                     });
+            }
+        });
+    });
+
+    // WEA PARA COLOCAR EL FONDO OSCURO AL MODAL DE ATRAS
+    var modal = new bootstrap.Modal(document.getElementById("editar-espacio"));
+    $(document).on("click", ".abrir-modal", function () {
+        modal.show();
+        $("#espaciocomun").css("z-index", 1000);
+    });
+    $(document).on("click", ".cerrar-modal", function () {
+        modal.hide();
+        $("#espaciocomun").css("z-index", 1055); 
+    });
+
+
+     // Evento al presionar el Boton de Registrar
+     $("#AddBtn-Acceso").on("click", function (e ) {
+        //Inicializacion
+        //console.log("AddBtn-Acceso")
+        e.preventDefault();
+
+        $("#modal-titulo-acceso-registrar").empty().html(comunidadNombre+" - Registrar Espacios Comunes");
+        
+        $("input").val('').prop("disabled",false);
+        $('.form-select').val("").trigger("change").prop("disabled",false);
+
+        $("#AddSubmit-espacio").show();
+        $("#EditSubmit-espacio").hide();
+        $("#IdInput-espacio").prop("disabled",true);
+        $("#AlertaError2").hide();
 
         validator.resetForm();
         actualizarValidSelect2();
     });
-    // Manejador al presionar el submit de Registrar
-    const submitButton = document.getElementById('AddSubmit');
+
+    const submitButton = document.getElementById('AddSubmit-espacio');
     submitButton.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
 
-        $("#AlertaError").hide();
-        $("#AlertaError").empty();
+        $("#AlertaError2").hide();
+        $("#AlertaError2").empty();
 
         // Validate form before submit
         if (validator) {
@@ -216,7 +251,7 @@ $(document).ready(function() {
                 if (status == 'Valid') {
                     // Show loading indication
                         
-                        let form1= $("#Formulario1");
+                        let form1= $("#Formulario-EspacioComun");
                         var fd = form1.serialize();
                         const pairs = fd.split('&');
 
@@ -229,6 +264,9 @@ $(document).ready(function() {
                             keyValueObject[key] = value;
                         }
 
+                        keyValueObject.ComunidadId = comunidadId;
+
+
 
                         submitButton.setAttribute('data-kt-indicator', 'on');
                         // Disable button to avoid multiple click
@@ -240,7 +278,7 @@ $(document).ready(function() {
 
                         $.ajax({
                             type: 'POST',
-                            url: GuardarComunidad,
+                            url: GuardarEspacioComun,
                             data: { 
                                     _token: csrfToken,    
                                     data: keyValueObject 
@@ -258,10 +296,10 @@ $(document).ready(function() {
                                 }else{
                                     //console.log(data.error);
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError").append(html);
+                                       $("#AlertaError2").append(html);
 
                                     
-                                    $("#AlertaError").show();
+                                    $("#AlertaError2").show();
                                     
                                    //console.log("error");
                                 }
@@ -288,22 +326,21 @@ $(document).ready(function() {
         }
     });
 
-    const target = document.querySelector("#div-bloquear");
+    const target = document.querySelector("#div-bloquear-espacio-registrar");
     const blockUI = new KTBlockUI(target);
 
     //Evento al presionar el Boton Editar
-    $("#tabla-comunidad tbody").on("click",'.editar', function (e) {
+    $("#tabla-espacios tbody").on("click",'.editar-espacio', function (e) {
         e.preventDefault();
         //Inicializacion
-        $("#modal-titulo").empty().html("Editar Comunidad");
+        $("#modal-titulo-acceso-registrar").empty().html(comunidadNombre+" - Editar Espacios Comunes");
         $("input").val('').prop("disabled",false);
-        $('#TipoComunidadIdInput').val("").trigger("change").prop("disabled",false);
-        $('#EnabledInput').val("").trigger("change").prop("disabled",false);
+        $('.form-select').val("").trigger("change").prop("disabled",false);
 
-        $("#AddSubmit").hide();
-        $("#EditSubmit").show();
-        $("#IdInput").prop("disabled",false);
-        $("#AlertaError").hide();
+        $("#AddSubmit-espacio").hide();
+        $("#EditSubmit-espacio").show();
+        $("#IdInput-espacio").prop("disabled",false);
+        $("#AlertaError2").hide();
 
         validator.resetForm();
         actualizarValidSelect2();
@@ -314,7 +351,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: VerComunidad,
+            url: VerEspacioComun,
             data: {
                 _token: csrfToken,
                 data: id},
@@ -325,24 +362,19 @@ $(document).ready(function() {
                 
                 if(data.success){
                     data=data.data;
-                    var fechaFormateada = moment.utc(data.FechaRegistro).format('YYYY-MM-DD');
-                    //console.log("wena");
+                    console.log(data);
                     //Agrego los valores al formulario
-                    $("#IdInput").val(data.Id);
-                    $("#NombreInput").val(data.Nombre);
-                    $("#RUTInput").val(data.RUT);
+                    $("#IdInput-espacio").val(data.Id);
+                    $("#NombreInput2").val(data.Nombre);
+                    $("#DescripcionInput").val(data.Descripcion);
 
-                    $("#CorreoInput").val(data.Correo);
-                    $("#NumeroCuentaInput").val(data.NumeroCuenta);
+                    $("#PrecioInput").val(data.Precio);
+                    $("#GarantiaInput").val(data.Garantia);
                     $("#TipoCuentaInput").val(data.TipoCuenta);
-                    
-                    $("#BancoInput").val(data.Banco);
-                    $("#CantPropiedadesInput").val(data.CantPropiedades);
-                    $("#FechaRegistroInput").val(fechaFormateada);
                   
-                    $("#EnabledInput").val(data.Enabled).trigger("change");
-                    $('#TipoComunidadIdInput').val(data.TipoComunidadId).trigger("change");
-
+                    $("#EnabledInput2").val(data.Enabled).trigger("change");
+                    comunidadId =  data.ComunidadId;
+                    console.log(comunidadId)
                     blockUI.release();
                 }else{
                     //console.log("error");
@@ -354,12 +386,14 @@ $(document).ready(function() {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             customClass: {
-                                confirmButton: "btn btn-danger btn-cerrar"
+                                container: "swal-custom",
+                                confirmButton: "btn btn-danger btn-cerrar swal-custom"
                             }
                         });
                     $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
-                            $('#registrar').modal('toggle');
+                            $('#editar-espacio').modal('toggle');
+                            $("#espaciocomun").css("z-index", 1055);
                     });
                 }
             },
@@ -372,26 +406,27 @@ $(document).ready(function() {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             customClass: {
+                                container: "swal-custom",
                                 confirmButton: "btn btn-danger btn-cerrar"
                             }
                         });
 
                      $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
-                            $('#registrar').modal('toggle');
+                            $('#editar-espacio').modal('toggle');
+                            $("#espaciocomun").css("z-index", 1055);
                      });
             }
         });
     });
 
-
     // Manejador al presionar el submit de Editar
-    const submitEditButton = document.getElementById('EditSubmit');
+    const submitEditButton = document.getElementById('EditSubmit-espacio');
     submitEditButton.addEventListener('click', function (e) {
             // Prevent default button action
             e.preventDefault();
-            $("#AlertaError").hide();
-             $("#AlertaError").empty();
+            $("#AlertaError2").hide();
+             $("#AlertaError2").empty();
 
             // Validate form before submit
             if (validator) {
@@ -412,7 +447,7 @@ $(document).ready(function() {
 
                             
 
-                            let form1= $("#Formulario1");
+                            let form1= $("#Formulario-EspacioComun");
                             var fd = form1.serialize();
                             const pairs = fd.split('&');
 
@@ -424,10 +459,12 @@ $(document).ready(function() {
                                 const value = decodeURIComponent(pair[1]);
                                 keyValueObject[key] = value;
                             }
+                            console.log(comunidadId)
+                            keyValueObject.ComunidadId = comunidadId;
 
                              $.ajax({
                                 type: 'POST',
-                                url: EditarComunidad,
+                                url: EditarEspacioComun,
                                 data: {
                                     _token: csrfToken,
                                     data: keyValueObject},
@@ -442,9 +479,9 @@ $(document).ready(function() {
                                         console.log(data.message)
 
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
-                                        $("#AlertaError").append(html);
+                                        $("#AlertaError2").append(html);
 
-                                        $("#AlertaError").show();
+                                        $("#AlertaError2").show();
                                        //console.log("error");
                                     }
                                 },
@@ -456,6 +493,7 @@ $(document).ready(function() {
                                         buttonsStyling: false,
                                         confirmButtonText: "OK",
                                         customClass: {
+                                            container: "swal-custom",
                                             confirmButton: "btn btn-danger btn-cerrar"
                                         }
                                     });
@@ -467,16 +505,15 @@ $(document).ready(function() {
             }
     });
 
-    $("#tabla-comunidad tbody").on("click",'.ver', function () {
+    $("#tabla-espacios tbody").on("click",'.ver-espacio', function () {
         //console.log("wena");
-        $("#modal-titulo").empty().html("Ver Comunidad");
+        $("#modal-titulo-acceso-registrar").empty().html(comunidadNombre+" - Ver Espacios Comunes");
         $("input").val('');
-        $('#TipoComunidadIdInput').val("").trigger("change");
-        $('#EnabledInput').val("").trigger("change");
-        $("#AddSubmit").hide();
-        $("#EditSubmit").hide();
-        $("#IdInput").prop("disabled",false);
-        $("#AlertaError").hide();
+        $('.form-select').val("").trigger("change");
+        $("#AddSubmit-espacio").hide();
+        $("#EditSubmit-espacio").hide();
+        $("#IdInput-espacio").prop("disabled",false);
+        $("#AlertaError2").hide();
 
         validator.resetForm();
         actualizarValidSelect2();
@@ -486,7 +523,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: VerComunidad,
+            url: VerEspacioComun,
             data: {
                 _token: csrfToken,
                 data: id},
@@ -497,21 +534,17 @@ $(document).ready(function() {
                 if(data){
 
                     data= data.data
-                    var fechaFormateada = moment.utc(data.FechaRegistro).format('YYYY-MM-DD');
                     //console.log("wena");
                     //Agrego los valores al formulario
-                    $("#IdInput").val(data.Id);
-                    $("#NombreInput").val(data.Nombre).prop("disabled", true);
-                    $("#RUTInput").val(data.RUT).prop("disabled", true);
-                    $("#CorreoInput").val(data.Correo).prop("disabled", true);
-                    $("#NumeroCuentaInput").val(data.NumeroCuenta).prop("disabled", true);
+                    $("#IdInput-espacio").val(data.Id).prop("disabled", true);
+                    $("#NombreInput2").val(data.Nombre).prop("disabled", true);
+                    $("#DescripcionInput").val(data.Descripcion).prop("disabled", true);
+
+                    $("#PrecioInput").val(data.Precio).prop("disabled", true);
+                    $("#GarantiaInput").val(data.Garantia).prop("disabled", true);
                     $("#TipoCuentaInput").val(data.TipoCuenta).prop("disabled", true);
-                    $("#BancoInput").val(data.Banco).prop("disabled", true);
-                    $("#CantPropiedadesInput").val(data.CantPropiedades).prop("disabled", true);
-                    $("#FechaRegistroInput").val(fechaFormateada).prop("disabled", true);
-                    
-                    $('#EnabledInput').val(data.Enabled).trigger("change").prop("disabled", true);
-                    $('#TipoComunidadIdInput').val(data.TipoComunidadId).trigger("change").prop("disabled", true);
+                  
+                    $("#EnabledInput2").val(data.Enabled).trigger("change").prop("disabled", true);
                     
                     blockUI.release();
 
@@ -525,13 +558,14 @@ $(document).ready(function() {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             customClass: {
+                                container: "swal-custom",
                                 confirmButton: "btn btn-danger btn-cerrar"
                             }
                         });
 
                      $(".btn-cerrar").on("click", function () {
-                            console.log("Error");
-                            $('#registrar').modal('toggle');
+                        $('#editar-espacio').modal('toggle');
+                        $("#espaciocomun").css("z-index", 1055);
                      });
 
                 }
@@ -548,18 +582,20 @@ $(document).ready(function() {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             customClass: {
+                                container: "swal-custom",
                                 confirmButton: "btn btn-danger btn-cerrar"
                             }
                         });
 
-                     $(".btn-cerrar").on("click", function () {
-                            console.log("Error");
-                            $('#registrar').modal('toggle');
-                     });
+                    $(".btn-cerrar").on("click", function () {
+                        $('#editar-espacio').modal('toggle');
+                        $("#espaciocomun").css("z-index", 1055);
+                    });
             }
         });
 
 
     });
+
 
 });
