@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ComunidadController;
+use App\Http\Controllers\PropiedadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -71,6 +72,11 @@ Route::group(['prefix' => '/tipocobro'], function () {
     Route::post('/editar', [ResidenteController::class, 'Editar'])->name('EditarTipoCobro');
 });
 
-
+Route::group(['prefix' => '/propiedad'], function () {
+    Route::get('/', [PropiedadController::class, 'Index'])->name('Propiedad');
+    Route::post('/registrar', [PropiedadController::class, 'Guardar'])->name('GuardarPropiedad');
+    Route::post('/ver', [PropiedadController::class, 'VerId'])->name('VerPropiedad');
+    Route::post('/editar', [PropiedadController::class, 'Editar'])->name('EditarPropiedad');
+});
 
 
