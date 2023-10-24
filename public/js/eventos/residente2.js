@@ -339,20 +339,20 @@ $(document).ready(function() {
                 //console.log(data);
                 
                 if(data.success){
-                    data=data.data;
+                    data=data.message;
                     var fechaFormateada = moment.utc(data.FechaInicio).format('YYYY-MM-DD');
                     var fechaFormateada2 = moment.utc(data.FechaFin).format('YYYY-MM-DD');
                     //console.log("wena");
                     //Agrego los valores al formulario
-                    $("#IdInput").val(dataId);
-                    $("#NombreInput").val(data.Nombre)
-                    $("#ApellidoInput").val(data.Apellido)
-                    $("#RutInput").val(data.RUT)
+                    $("#IdInput").val(data.Id);
+                    $("#NombreInput").val(data.persona.Nombre)
+                    $("#ApellidoInput").val(data.persona.Apellido)
+                    $("#RutInput").val(data.persona.RUT)
 
-                    $("#SexoIdInput").val(data.Sexo).trigger("change");
-                    $("#NacionalidadInput").val(dataNacionalidadId).trigger("change");
-                    $("#TelefonoInput").val(data.Telefono)
-                    $("#EmailInput").val(data.Correo)
+                    $("#SexoIdInput").val(data.persona.SexoId).trigger("change");
+                    $("#NacionalidadInput").val(data.persona.NacionalidadId).trigger("change");
+                    $("#TelefonoInput").val(data.persona.Telefono)
+                    $("#EmailInput").val(data.persona.Correo)
 
                     $("#ComunidadIdInput").val(data.ComunidadId).trigger("change");
                     $("#PropiedadIdInput").val(data.PropiedadId).trigger("change");
@@ -488,7 +488,7 @@ $(document).ready(function() {
 
     $("#tabla-residente tbody").on("click",'.ver', function () {
         //console.log("wena");
-        $("#modal-titulo").empty().html("Ver Comunidad");
+        $("#modal-titulo").empty().html("Ver Residente");
         $("input").val('');
         $('#PersonaIdInput').val("").trigger("change");
         $('#PropiedadIdInput').val("").trigger("change");
