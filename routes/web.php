@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComponeController;
 use App\Http\Controllers\ComunidadController;
 use App\Http\Controllers\PropiedadController;
 use Illuminate\Support\Facades\Route;
@@ -50,33 +51,18 @@ Route::group(['prefix' => '/espaciocomun'], function () {
 });
 
 
-
-Route::group(['prefix' => '/copropietario'], function () {
-    Route::get('/', [CopropietarioController::class, 'Index'])->name('Copropietario');
-    Route::post('/registrar', [CopropietarioController::class, 'Guardar'])->name('GuardarCopropietario');
-    Route::post('/ver', [CopropietarioController::class, 'VerId'])->name('VerCopropietario');
-    Route::post('/editar', [CopropietarioController::class, 'Editar'])->name('EditarCopropietario');
-});
-
-Route::group(['prefix' => '/residente'], function () {
-    Route::get('/', [ResidenteController::class, 'Index'])->name('Residente');
-    Route::post('/registrar', [ResidenteController::class, 'Guardar'])->name('GuardarResidente');
-    Route::post('/ver', [ResidenteController::class, 'VerId'])->name('VerResidente');
-    Route::post('/editar', [ResidenteController::class, 'Editar'])->name('EditarResidente');
-});
-
-Route::group(['prefix' => '/tipocobro'], function () {
-    Route::get('/', [TipoCobro::class, 'Index'])->name('TipoCobro');
-    Route::post('/registrar', [TipoCobro::class, 'Guardar'])->name('GuardarTipoCobro');
-    Route::post('/ver', [TipoCobro::class, 'VerId'])->name('VerTipoCobro');
-    Route::post('/editar', [ResidenteController::class, 'Editar'])->name('EditarTipoCobro');
-});
-
 Route::group(['prefix' => '/propiedad'], function () {
     Route::get('/', [PropiedadController::class, 'Index'])->name('Propiedad');
     Route::post('/registrar', [PropiedadController::class, 'Guardar'])->name('GuardarPropiedad');
     Route::post('/ver', [PropiedadController::class, 'VerId'])->name('VerPropiedad');
     Route::post('/editar', [PropiedadController::class, 'Editar'])->name('EditarPropiedad');
+});
+
+Route::group(['prefix' => '/residente'], function () {
+    Route::get('/', [ComponeController::class, 'Index'])->name('Residente');
+    Route::post('/registrar', [ComponeController::class, 'Guardar'])->name('GuardarResidente');
+    Route::post('/ver', [ComponeController::class, 'VerId'])->name('VerResidente');
+    Route::post('/editar', [ComponeController::class, 'Editar'])->name('EditarResidente');
 });
 
 

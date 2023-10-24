@@ -67,6 +67,7 @@
                             <th scope="col">#</th>
                             <th scope="col">RUT</th>
                             <th scope="col">Nombre Completo</th>
+                            <th scope="col">Comunidad</th>
                             <th scope="col">Propiedad</th>
                             <th scope="col">Rol</th>
                             <th scope="col">Fecha Inicio</th>
@@ -76,19 +77,20 @@
                     </thead>
                     <tbody>
                         
-                        @foreach ($Residentes as $residente)  
+                        @foreach ($Componen as $compone)  
                             <tr class="center-2">
-                                <th>{{ $residente->Id }}</th>
-                                <th>{{ $residente->persona->RUT }}</th>
-                                <td>{{ $residente->persona->Nombre }} {{ $residente->persona->Apellido }}</td>
-                                <td>{{ $residente->propiedad->Numero }}</td>
-                                <td>{{ $residente->rol_residente->Nombre }}</td>
-                                <td>{{\Carbon\Carbon::parse($residente->FechaInicio)->format('d-m-Y')}}</td>
-                                <td>{{\Carbon\Carbon::parse($residente->FechaFin)->format('d-m-Y')}}</td>
+                                <td>{{ $compone->Id }}</td>
+                                <td>{{ $compone->persona->RUT }}</td>
+                                <td>{{ $compone->persona->Nombre }} {{ $compone->persona->Apellido }}</td>
+                                <td>{{ $compone->propiedad->comunidad->Nombre }}</td>
+                                <td>{{ $compone->propiedad->Numero }}</td>
+                                <td>{{ $compone->rol_compone_co_re->Nombre }}</td>
+                                <td>{{\Carbon\Carbon::parse($compone->FechaInicio)->format('d-m-Y')}}</td>
+                                <td>{{\Carbon\Carbon::parse($compone->FechaFin)->format('d-m-Y')}}</td>
                                 <td  class="text-center p-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                            <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $residente->Id }}">Ver</a>
-                                            <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $residente->Id }}">Editar</a>
+                                            <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $compone->Id }}">Ver</a>
+                                            <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $compone->Id }}">Editar</a>
                                         </div>
                                 </td>
                             </tr>
@@ -179,45 +181,66 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <div class="form-floating fv-row">
+                                <input type="email" class="form-control" placeholder="Ingrese el correo" id="CorreoInput" name="Correo" />
+                                <label for="EmailInput" class="form-label">Correo</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating fv-row">
+                                <select id="ComunidadIdInput" name="ComunidadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-dropdown-parent="#registrar" >
+                                    <option></option>
+                                    @foreach($Comunidades as $comunidad)
+                                        <option value="{{ $comunidad->Id }}">{{ $comunidad->Nombre }}</option>
+                                    @endforeach          
+                                </select>
+                                <label for="ComunidadIdInput" class="form-label">Comunidad</label>
+                            </div>
+                        </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
                                 <select id="PropiedadIdInput" name="PropiedadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-dropdown-parent="#registrar" >
                                     <option></option>
                                     @foreach($Propiedades as $propiedad)
                                         <option value="{{ $propiedad->Id }}">{{ $propiedad->Numero }}</option>
-                                    @endforeach          
+                                    @endforeach
                                 </select>
                                 <label for="PropiedadIdInput" class="form-label">Propiedad</label>
                             </div>
                         </div>
+                        
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
                                 <select id="RolIdInput" name="RolId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
-                                    @foreach($Roles as $rol)
+                                    @foreach($RolesComponenCoRe as $rol)
                                         <option value="{{ $rol->Id }}">{{ $rol->Nombre }}</option>
                                     @endforeach
                                 </select>
                                 <label for="RolIdInput" class="form-label">Rol</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
                                 <input type="date" class="form-control" placeholder="Ingrese la fecha inicio" id="FechaInicioInput" name="FechaInicio" />
                                 <label for="FechaInicioInput" class="form-label">Fecha Inicio</label>
                             </div>
                         </div>
+                        
+
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
                                 <input type="date" class="form-control" placeholder="Ingrese la fecha fin" id="FechaFinInput" name="FechaFin" />
                                 <label for="FechaFinInput" class="form-label">Fecha Fin</label>
                             </div>
                         </div>
-
-                    </div>
-                    <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
                                 <select id="EnabledInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
@@ -266,14 +289,16 @@
         const VerResidente = "{{ route('VerResidente') }}";
         const EditarResidente = "{{ route('EditarResidente') }}";
         
+        //const VerPropiedades = "{{ route('Propiedad') }}";
+        
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     </script>
     <!-- Datatables y Configuracion de la Tabla -->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/residente.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/residente2.js?id=2') }}"></script>
     <!--- Eventos de la pagina -->
-    <script src="{{ asset('js/eventos/residente.js?id=2') }}"></script>
+    <script src="{{ asset('js/eventos/residente2.js?id=3') }}"></script>
 	<!--end::Javascript-->
     
 @endpush
