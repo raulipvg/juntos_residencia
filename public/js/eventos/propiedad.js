@@ -395,7 +395,7 @@ $(document).ready(function() {
         //console.log("wena");
         $("#modal-titulo").empty().html("Ver Propiedad");
         $("input").val('');
-        $('#TipoPropiedadIdInput').val("").trigger("change");
+        $('.form-select').val("").trigger("change");
         $("#AddSubmit").hide();
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled",false);
@@ -424,17 +424,13 @@ $(document).ready(function() {
                     //console.log("wena");
                     //Agrego los valores al formulario
                     $("#IdInput").val(data.Id);
-                    $("#NombreInput").val(data.Nombre).prop("disabled", true);
-                    $("#RUTInput").val(data.RUT).prop("disabled", true);
-                    $("#CorreoInput").val(data.Correo).prop("disabled", true);
-                    $("#NumeroCuentaInput").val(data.NumeroCuenta).prop("disabled", true);
-                    $("#TipoCuentaInput").val(data.TipoCuenta).prop("disabled", true);
-                    $("#BancoInput").val(data.Banco).prop("disabled", true);
-                    $("#CantPropiedadesInput").val(data.CantPropiedades).prop("disabled", true);
-                    $("#FechaRegistroInput").val(fechaFormateada).prop("disabled", true);
-                    
-                    $('#EnabledInput').val(data.Enabled).trigger("change").prop("disabled", true);
-                    $('#TipoPropiedadIdInput').val(data.TipoPropiedadId).trigger("change").prop("disabled", true);
+                    $("#NumeroInput").val(data.Numero).prop("disabled",true);
+                    $("#ComunidadInput").val(data.ComunidadId).trigger("change").prop("disabled",true);
+
+                    $("#DescripcionInput").val(data.Descripcion).prop("disabled",true);
+                    $("#ProrrateoInput").val(data.Prorrateo).prop("disabled",true);
+                    $("#TipoPropiedadIdInput").val(data.TipoPropiedad).trigger("change").prop("disabled",true);
+                    $("#EstadoInput").val(data.Enabled).trigger("change").prop("disabled",true);
                     
                     blockUI.release();
 

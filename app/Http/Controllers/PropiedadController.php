@@ -25,7 +25,7 @@ class PropiedadController extends Controller
         
         $request = $request->input('data');
 
-        $request['ComunidadId'] = $request['ComunidadId'];
+        $request['ComunidadId'] = $request['Comunidad'];
         $request['TipoPropiedad'] = $request['TipoPropiedadId'];
         $request['Numero'] = strtolower($request['Numero']);
         $request['Prorrateo'] = $request['Prorrateo'];
@@ -39,7 +39,7 @@ class PropiedadController extends Controller
 
             $propiedad->save();
             return response()->json([
-                'succes' => true,
+                'success' => true,
                 'message' => 'Modelo recibido y procesado']);
         } catch (Exception $e) {
 
@@ -57,7 +57,7 @@ class PropiedadController extends Controller
             
             $propiedad = Propiedad::find($request);
             return response()->json([
-                'succes' => true,
+                'success' => true,
                 'data' => $propiedad]);
         } catch (Exception $e) {
 
@@ -71,7 +71,7 @@ class PropiedadController extends Controller
         
         $request = $request->input('data');
 
-        $request['ComunidadId'] = $request['ComunidadId'];
+        $request['ComunidadId'] = $request['Comunidad'];
         $request['TipoPropiedad'] = $request['TipoPropiedadId'];
         $request['Numero'] = strtolower($request['Numero']);
         $request['Prorrateo'] = $request['Prorrateo'];
@@ -88,7 +88,7 @@ class PropiedadController extends Controller
             $propiedadEdit->save();
 
             return response()->json([
-                'succes' => true,
+                'success' => true,
                 'message' => 'Modelo recibido y procesado']);
         } catch (Exception $e) {
 
