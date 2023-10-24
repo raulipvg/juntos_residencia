@@ -79,7 +79,7 @@
                         
                         @foreach ($Componen as $compone)  
                             <tr class="center-2">
-                                <td>{{ $compone->Id }}</td>
+                                <td>{{ $compone->persona->Id }}</td>
                                 <td>{{ $compone->persona->RUT }}</td>
                                 <td>{{ $compone->persona->Nombre }} {{ $compone->persona->Apellido }}</td>
                                 <td>{{ $compone->propiedad->comunidad->Nombre }}</td>

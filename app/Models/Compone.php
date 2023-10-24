@@ -80,8 +80,8 @@ class Compone extends Model
             'PersonaId' => 'required|max:255',
             'PropiedadId' => 'required|max:255',
 			'RolComponeCoReId' => 'required|numeric|min:1|max:3',
-            'FechaInicio' => 'required',
-			'FechaFin' => 'required'
+            'FechaInicio' => 'required|date',
+			'FechaFin' => 'required|date'
         ];
 
         $validator = Validator::make($data, $rules);

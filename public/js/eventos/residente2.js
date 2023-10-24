@@ -48,12 +48,32 @@ $(document).ready(function() {
                             stringLength: {
                                 min: 9,
                                 max: 10,
-                                message: 'Entre 3 y 20 caracteres'
+                                message: 'Entre 9 y 10 caracteres'
                             },
-                            regexp: {
-                                regexp: /^[0-9kK-\s]+$/i,
-                                message: 'Solo caracteres de la 0-9 y K '
+                            callback: {
+                                message: 'Rut Invalido',
+                                callback: function(input) {
+
+                                    const rutCompleto = $('#RutInput').val();
+
+
+                                    if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
+
+                                    var tmp = rutCompleto.split('-');
+                                    var digv = tmp[1];
+                                    var rut = tmp[0];
+                                    if (digv == 'K') digv = 'k';
+                                    return (dv(rut) == digv);
+
+                                    function dv(T) {
+                                        var M = 0, S = 1;
+                                        for (; T; T = Math.floor(T / 10))
+                                            S = (S + T % 10 * (9 - M++ % 6)) % 11;
+                                        return S ? S - 1 : 'k';
+                                    }
+                                }
                             }
+                            
                         }
                     },
                     'SexoId': {
@@ -192,27 +212,27 @@ $(document).ready(function() {
         actualizarValidSelect2();
     });
     //cambia las propiedades según la comunidad a la que pertenece la persona, necesita otro método?
-    /*$('#ComunidadIdInput').on('change', () => {
-        var idComunidad = $('#ComunidadIdInput').val();
+    // $('#ComunidadIdInput').on('change', () => {
+    //     var idComunidad = $('#ComunidadIdInput').val();
 
-        $.ajax({
-            url: VerPropiedades,
-            type: 'GET',
-            success: function(data) {
-                $.each(data, function(comunidad) {
-                    if(comunidad.Id == idComunidad){
-                        $('#PropiedadIdInput').append($('<option>', {
-                            value: comunidad.Id,
-                            text: comunidad.Nombre
-                        }))
-                    }
-                })
-            },
-            error: (error) => {
-                console.log(error);
-            }
-        })
-    })*/
+    //     $.ajax({
+    //         url: VerPropiedades,
+    //         type: 'GET',
+    //         success: function(data) {
+    //             $.each(data, function(comunidad) {
+    //                 if(comunidad.Id == idComunidad){
+    //                     $('#PropiedadIdInput').append($('<option>', {
+    //                         value: comunidad.Id,
+    //                         text: comunidad.Nombre
+    //                     }))
+    //                 }
+    //             })
+    //         },
+    //         error: (error) => {
+    //             console.log(error);
+    //         }
+    //     })
+    // })
     // Manejador al presionar el submit de Registrar
     const submitButton = document.getElementById('AddSubmit');
     submitButton.addEventListener('click', function (e) {
@@ -267,7 +287,7 @@ $(document).ready(function() {
                                 
                             },
                             success: function (data) {
-                                //console.log(data.errors);
+                                console.log(data);
                                 if(data.success){
                                     //console.log("exito");
                                      location.reload();
@@ -336,10 +356,10 @@ $(document).ready(function() {
             //content: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                //console.log(data);
+                console.log(data);
                 
                 if(data.success){
-                    data=data.message;
+                    data=data.data;
                     var fechaFormateada = moment.utc(data.FechaInicio).format('YYYY-MM-DD');
                     var fechaFormateada2 = moment.utc(data.FechaFin).format('YYYY-MM-DD');
                     //console.log("wena");
@@ -349,19 +369,19 @@ $(document).ready(function() {
                     $("#ApellidoInput").val(data.persona.Apellido)
                     $("#RutInput").val(data.persona.RUT)
 
-                    $("#SexoIdInput").val(data.persona.SexoId).trigger("change");
+                    $("#SexoIdInput").val(data.persona.Sexo).trigger("change");
                     $("#NacionalidadInput").val(data.persona.NacionalidadId).trigger("change");
                     $("#TelefonoInput").val(data.persona.Telefono)
-                    $("#EmailInput").val(data.persona.Correo)
+                    $("#CorreoInput").val(data.persona.Email)
 
-                    $("#ComunidadIdInput").val(data.ComunidadId).trigger("change");
+                    $("#ComunidadIdInput").val(data.propiedad.ComunidadId).trigger("change");
                     $("#PropiedadIdInput").val(data.PropiedadId).trigger("change");
-                    $("#RolIdInput").val(data.RolId).trigger("change");
+                    $("#RolIdInput").val(data.RolComponeCoReId).trigger("change");
 
                     $("#FechaInicioInput").val(fechaFormateada);
                     $("#FechaFinInput").val(fechaFormateada2);
 
-                    $("#EnabledInput").val(data.Enabled).trigger("change");
+                    $("#EnabledInput").val(data.persona.Enabled).trigger("change");
 
 
                     blockUI.release();
@@ -490,9 +510,8 @@ $(document).ready(function() {
         //console.log("wena");
         $("#modal-titulo").empty().html("Ver Residente");
         $("input").val('');
-        $('#PersonaIdInput').val("").trigger("change");
-        $('#PropiedadIdInput').val("").trigger("change");
-        $('#RolIdInput').val("").trigger("change");
+        $('.form-seslect').val("").trigger("change");
+
         $("#AddSubmit").hide();
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled",false);
@@ -515,31 +534,30 @@ $(document).ready(function() {
             success: function (data) {
                 console.log(data);
                 if(data){
-
                     data=data.data;
-                    var fechaFormateada = moment.utc(data[0].FechaInicio).format('YYYY-MM-DD');
-                    var fechaFormateada2 = moment.utc(data[0].FechaFin).format('YYYY-MM-DD');
+                    var fechaFormateada = moment.utc(data.FechaInicio).format('YYYY-MM-DD');
+                    var fechaFormateada2 = moment.utc(data.FechaFin).format('YYYY-MM-DD');
                     //console.log("wena");
                     //Agrego los valores al formulario
                    
-                    $("#IdInput").val(dataId);
-                    $("#NombreInput").val(data.Nombre).prop('disabled',true);
-                    $("#ApellidoInput").val(data.Apellido).prop('disabled',true);
-                    $("#RutInput").val(data.RUT).prop('disabled',true);
+                    $("#IdInput").val(data.Id);
+                    $("#NombreInput").val(data.persona.Nombre).prop('disabled',true);
+                    $("#ApellidoInput").val(data.persona.Apellido).prop('disabled',true);
+                    $("#RutInput").val(data.persona.RUT).prop('disabled',true);
 
-                    $("#SexoIdInput").val(data.Sexo).trigger("change").prop('disabled',true);
-                    $("#NacionalidadInput").val(dataNacionalidadId).trigger("change").prop('disabled',true);
-                    $("#TelefonoInput").val(data.Telefono).prop('disabled',true);
-                    $("#EmailInput").val(data.Correo).prop('disabled',true);
+                    $("#SexoIdInput").val(data.persona.Sexo).trigger("change").prop('disabled',true);
+                    $("#NacionalidadInput").val(data.persona.NacionalidadId).trigger("change").prop('disabled',true);
+                    $("#TelefonoInput").val(data.persona.Telefono).prop('disabled',true);
+                    $("#CorreoInput").val(data.persona.Email).prop('disabled',true);
 
-                    $("#ComunidadIdInput").val(data.ComunidadId).trigger("change").prop('disabled',true);
+                    $("#ComunidadIdInput").val(data.propiedad.ComunidadId).trigger("change").prop('disabled',true);
                     $("#PropiedadIdInput").val(data.PropiedadId).trigger("change").prop('disabled',true);
-                    $("#RolIdInput").val(data.RolId).trigger("change").prop('disabled',true);
+                    $("#RolIdInput").val(data.RolComponeCoReId).trigger("change").prop('disabled',true);
 
                     $("#FechaInicioInput").val(fechaFormateada).prop('disabled',true);
                     $("#FechaFinInput").val(fechaFormateada2).prop('disabled',true);
 
-                    $("#EnabledInput").val(data.Enabled).trigger("change").prop('disabled',true);
+                    $("#EnabledInput").val(data.persona.Enabled).trigger("change").prop('disabled',true);
 
                     blockUI.release();
 
