@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ComponeController;
 use App\Http\Controllers\AccesoComunidadController;
 use App\Http\Controllers\ComunidadController;
+use App\Http\Controllers\PropiedadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;

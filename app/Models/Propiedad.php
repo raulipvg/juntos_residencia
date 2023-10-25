@@ -6,8 +6,10 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class Propiedad
@@ -74,4 +76,26 @@ class Propiedad extends Model
 	{
 		return $this->hasMany(ReservaEspacio::class, 'PropiedadId');
 	}
+
+	public function validate(array $data){
+        if(isset($data['Id'])){
+            $id = $data['Id'];
+        }else{
+            $id = null;
+        }
+
+        $rules=[
+            'ComunidadId'=> 'required|numeric',
+            'TipoPropiedad'=> 'required|numeric',
+            'Numero'=> 'required|string',
+            'Prorrateo'=> 'required|numeric',
+            'Descripcion'=> 'required|max:50|string',
+            'Enabled'=> 'required|numeric',
+        ];
+
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }
