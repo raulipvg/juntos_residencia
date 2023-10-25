@@ -133,15 +133,16 @@ $(document).ready(function() {
                 //console.log(data);
                 
                 if(data.success){
+                    
                     comunidadNombre= data.comunidad.Nombre;
                     $("#modal-titulo-acceso").empty().html(data.comunidad.Nombre+" - Espacios Comunes ");
-                    //console.log(data.comunidad.Id);
+                    console.log(data.comunidad.Id);
                     $("#ComunidadIdInput").prop('disabled', false);
                     comunidadId = data.comunidad.Id;
 
                     if(data.data){
                         data=data.data;
-                        //console.log(data); 
+                        console.log(data); 
 
                         for(let row in data){
                             if(data[row].Enabled == 1){
@@ -534,7 +535,7 @@ $(document).ready(function() {
                 if(data){
 
                     data= data.data
-                    //console.log("wena");
+                    console.log("wena");
                     //Agrego los valores al formulario
                     $("#IdInput-espacio").val(data.Id).prop("disabled", true);
                     $("#NombreInput2").val(data.Nombre).prop("disabled", true);

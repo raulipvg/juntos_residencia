@@ -16,7 +16,7 @@ class ComponeController extends Controller
 {
     public function Index(){
         $componen = Compone::all();
-        $personas = Persona::select('Id', 'RUT', 'Nombre', 'Apellido', 'Sexo', 'Telefono', 'Email')->get();
+        $personas = Persona::all();
         $rolesComponeCoRe = RolComponeCoRe::select('Id','Nombre')->get();
         $nacionalidades = Nacionalidad::select('Id','Nombre')->get();
         $propiedades = Propiedad::select('Id','Numero')->get();

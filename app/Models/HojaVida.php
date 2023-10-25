@@ -8,6 +8,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class HojaVida
@@ -47,4 +49,26 @@ class HojaVida extends Model
 	{
 		return $this->belongsTo(Persona::class, 'PersonaId');
 	}
+
+	public function validate(array $data)
+    {
+        if(isset($data['Id'])){
+            $id = $data['Id'];
+        }else{
+            $id = null;
+        }
+
+
+        $rules = [
+            'Titulo' => 'required|string|max:100',
+            'Descripcion' => 'required|string|max:500',
+            'Fecha' => 'required|date',
+            'Enabled'=> 'required|numeric'
+        ];
+
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }

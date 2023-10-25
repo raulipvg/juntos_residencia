@@ -3,6 +3,7 @@
 use App\Http\Controllers\ComponeController;
 use App\Http\Controllers\AccesoComunidadController;
 use App\Http\Controllers\ComunidadController;
+use App\Http\Controllers\HojaVidaController;
 use App\Http\Controllers\PropiedadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -74,10 +75,10 @@ Route::group(['prefix' => '/copropietario'], function () {
 });
 
 Route::group(['prefix' => '/residente'], function () {
-    Route::get('/', [ResidenteController::class, 'Index'])->name('Residente');
-    Route::post('/registrar', [ResidenteController::class, 'Guardar'])->name('GuardarResidente');
-    Route::post('/ver', [ResidenteController::class, 'VerId'])->name('VerResidente');
-    Route::post('/editar', [ResidenteController::class, 'Editar'])->name('EditarResidente');
+    Route::get('/', [ComponeController::class, 'Index'])->name('Residente');
+    Route::post('/registrar', [ComponeController::class, 'Guardar'])->name('GuardarResidente');
+    Route::post('/ver', [ComponeController::class, 'VerId'])->name('VerResidente');
+    Route::post('/editar', [ComponeController::class, 'Editar'])->name('EditarResidente');
 });
 
 Route::group(['prefix' => '/tipocobro'], function () {
@@ -85,6 +86,13 @@ Route::group(['prefix' => '/tipocobro'], function () {
     Route::post('/registrar', [TipoCobro::class, 'Guardar'])->name('GuardarTipoCobro');
     Route::post('/ver', [TipoCobro::class, 'VerId'])->name('VerTipoCobro');
     Route::post('/editar', [ResidenteController::class, 'Editar'])->name('EditarTipoCobro');
+});
+
+Route::group(['prefix' => '/hojavida'], function () {
+    Route::post('/listar', [HojaVidaController::class, 'Index'])->name('HojaVida');
+    Route::post('/registrar', [HojaVidaController::class, 'Guardar'])->name('GuardarHojaVida');
+    Route::post('/ver', [HojaVidaController::class, 'VerId'])->name('VerHojaVida');
+    Route::post('/editar', [HojaVidaController::class, 'Editar'])->name('EditarHojaVida');
 });
 
 

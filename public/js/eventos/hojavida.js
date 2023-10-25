@@ -1,162 +1,50 @@
 $(document).ready(function() {
-
-    
-    const form = document.getElementById('Formulario1');
-    $("#AlertaError").hide();
+    const form = document.getElementById('Formulario-HojaVida');
+    $("#AlertaError2").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
             form,
             {
                 fields: {
-                    'Nombre': {
+                    'Titulo': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             },
                             stringLength: {
                                 min: 3,
-                                max: 20,
-                                message: 'Entre 3 y 20 caracteres'
-                            },
-                            regexp: {
-                                regexp: /^[a-zñáéíóú\s]+$/i,
-                                message: 'Solo letras de la A-Z '
+                                max: 100,
+                                message: 'Entre 3 y 100 caracteres'
                             }
                         }
                     },
-                    'Apellido': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 3,
-                                max: 20,
-                                message: 'Entre 3 y 20 caracteres'
-                            },
-                            regexp: {
-                                regexp: /^[a-zñáéíóú\s]+$/i,
-                                message: 'Solo letras de la A-Z '
-                            }
-                        }
-                    },
-                    'Rut': {
+                    'Descripcion': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             },
                             stringLength: {
                                 min: 9,
-                                max: 10,
-                                message: 'Entre 9 y 10 caracteres'
-                            },
-                            callback: {
-                                message: 'Rut Invalido',
-                                callback: function(input) {
-
-                                    const rutCompleto = $('#RutInput').val();
-
-
-                                    if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
-
-                                    var tmp = rutCompleto.split('-');
-                                    var digv = tmp[1];
-                                    var rut = tmp[0];
-                                    if (digv == 'K') digv = 'k';
-                                    return (dv(rut) == digv);
-
-                                    function dv(T) {
-                                        var M = 0, S = 1;
-                                        for (; T; T = Math.floor(T / 10))
-                                            S = (S + T % 10 * (9 - M++ % 6)) % 11;
-                                        return S ? S - 1 : 'k';
-                                    }
-                                }
+                                max: 500,
+                                message: 'Entre 9 y 500 caracteres'
                             }
                             
                         }
                     },
-                    'SexoId': {
+                    'Fecha': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             }
                         }
-                    },
-                    'NacionalidadId': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        }
-                    },
-                    'Telefono': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        },
-                        numeric: {
-                          message: 'Ingrese solo números'
-                        }
-                    },
-                    'Correo': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            emailAddress: {
-                                message: 'Email inválido'
-                            }
-                        }
-                    },
-                    'ComunidadId': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        }
-                    },
-                    'PropiedadId': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        }
-                    },
-                    'RolId': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        }
-                    },
-                    'FechaInicio': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        },
-                        date: {
-                            format: 'DD/MM/YYYY',
-                            message: 'Ingrese una fecha válida en el formato dd/mm/aaaa'
-                          }
-                    },
-                    'FechaFin': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        },
-                        date: {
-                            format: 'DD/MM/YYYY',
-                            message: 'Ingrese una fecha válida en el formato dd/mm/aaaa'
-                          }
                     },
                     'Enabled': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
                             }
                         }
                     }
@@ -178,8 +66,6 @@ $(document).ready(function() {
         $('.form-select').each( function () {
             var valid = $(this).hasClass("is-valid");
             var invalid =$(this).hasClass("is-invalid");
-
-            //console.log("valid: "+valid+" invalid: "+invalid)
             if(valid){
                 $(this).next().children().children().removeClass("is-invalid").addClass("is-valid");
             }
@@ -194,66 +80,158 @@ $(document).ready(function() {
         });
     }
 
-     // Evento al presionar el Boton de Registrar
-    $("#AddBtn").on("click", function (e ) {
-        //Inicializacion
-        //console.log("AddBtn")
+    const target2 = document.querySelector("#div-bloquear-espacio");
+    const blockUI2 = new KTBlockUI(target2)
+    let comunidadId;
+    let comunidadNombre;
+    //Evento al presionar el Boton de Espacios
+    $("#tabla-residente tbody").on('click','.ver-hojavida', function (e) {
         e.preventDefault();
-        $("#modal-titulo").empty().html("Registrar Residente");
+        console.log('click')
+        blockUI2.block();
+        let id = Number($(this).attr("info"));
+        miTablaEspacio.clear().draw();
+        $.ajax({
+            type: 'POST',
+            url: HojaVida,
+            data: {
+                _token: csrfToken,
+                data: id},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                
+                if(data.success){
+                    
+                    comunidadNombre= data.persona.Nombre;
+                    $("#modal-titulo-acceso").empty().html(data.persona.Nombre +" "+ data.persona.Apellido +" - Hoja de Vida ");
+                    console.log(data.persona.Id);
+                    $("#ComunidadIdInput").prop('disabled', false);
+                    comunidadId = data.persona.Id;
+
+                    if(data.data){
+                        data=data.data;
+                        console.log(data); 
+
+                        for(let row in data){
+                            if(data[row].Enabled == 1){
+                            var enabled =  '<span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span>';
+                            }else{
+                            var enabled = '<span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span>';  
+                            }
+
+                            var accion = '<div class="btn-group btn-group-sm" role="group">'+
+                                            '<a class="ver-espacio btn abrir-modal btn-success" data-bs-stacked-modal="#editar-espacio" info="'+data[row].Id+'">Ver</a>'+
+                                            '<a class="editar-espacio abrir-modal btn btn-warning" data-bs-stacked-modal="#editar-espacio" info="'+data[row].Id+'">Editar</a>'+
+                                         '</div>';
+                                //console.log(rec.estacion.nombreEstacion+` `+datos.momento)
+                                var fecha = new Date(data[row].Fecha);
+
+                                // Obtener el día, mes y año
+                                var dia = fecha.getDate();
+                                var mes = fecha.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
+                                var anio = fecha.getFullYear();
+
+                                // Formatear la fecha como "DD-MM-YYYY"
+                                var fechaFormateada = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
+
+                                var rowNode =  miTablaEspacio.row.add({
+                                                    "0": data[row].Id,
+                                                    "1": data[row].Titulo,
+                                                    "2": fechaFormateada,
+                                                    "3": enabled,
+                                                    "4": accion    
+                                                });
+                                var fila = miTablaEspacio.row(rowNode).node();
+                                $(fila).find('td').eq(4).addClass('text-center p-0');
+                        }
+                        miTablaEspacio.draw();
+                        
+                    }
+                    
+                    
+
+                    blockUI2.release();
+                }else{
+                    //console.log("Sin data");
+                    blockUI2.release();
+
+                    
+                }
+            },
+            error: function () {
+                //alert('Error en editar el usuario');
+                blockUI2.release();
+                Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+
+                     $(".btn-cerrar22").on("click", function () {
+                            //console.log("Error");
+                            $('#editar-espacio').modal('toggle');
+                     });
+            }
+        });
+    });
+
+    // WEA PARA COLOCAR EL FONDO OSCURO AL MODAL DE ATRAS
+    var modal = new bootstrap.Modal(document.getElementById("editar-espacio"));
+    $(document).on("click", ".abrir-modal", function () {
+        modal.show();
+        $("#espaciocomun").css("z-index", 1000);
+    });
+    $(document).on("click", ".cerrar-modal", function () {
+        modal.hide();
+        $("#espaciocomun").css("z-index", 1055); 
+    });
+
+
+     // Evento al presionar el Boton de Registrar
+     $("#AddBtn-Acceso").on("click", function (e ) {
+        //Inicializacion
+        //console.log("AddBtn-Acceso")
+        e.preventDefault();
+
+        $("#modal-titulo-acceso-registrar").empty().html(comunidadNombre+" - Registrar Hoja de Vida");
+        
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
 
-        $("#AddSubmit").show();
-        $("#EditSubmit").hide();
-        $("#IdInput").prop("disabled",true);
-        $("#AlertaError").hide();
+        $("#AddSubmit-espacio").show();
+        $("#EditSubmit-espacio").hide();
+        $("#IdInput-espacio").prop("disabled",true);
+        $("#AlertaError2").hide();
 
         validator.resetForm();
         actualizarValidSelect2();
     });
 
-    //cambia las propiedades según la comunidad a la que pertenece la persona, necesita otro método?
-    // $('#ComunidadIdInput').on('change', () => {
-    //     var idComunidad = $('#ComunidadIdInput').val();
-
-    //     $.ajax({
-    //         url: VerPropiedades,
-    //         type: 'GET',
-    //         success: function(data) {
-    //             $.each(data, function(comunidad) {
-    //                 if(comunidad.Id == idComunidad){
-    //                     $('#PropiedadIdInput').append($('<option>', {
-    //                         value: comunidad.Id,
-    //                         text: comunidad.Nombre
-    //                     }))
-    //                 }
-    //             })
-    //         },
-    //         error: (error) => {
-    //             console.log(error);
-    //         }
-    //     })
-    // })
-    // Manejador al presionar el submit de Registrar
-    const submitButton = document.getElementById('AddSubmit');
+    const submitButton = document.getElementById('AddSubmit-espacio');
     submitButton.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
 
-        $("#AlertaError").hide();
-        $("#AlertaError").empty();
+        $("#AlertaError2").hide();
+        $("#AlertaError2").empty();
 
         // Validate form before submit
         if (validator) {
             validator.validate().then(function (status) {
-                actualizarValidSelect2();
+                 actualizarValidSelect2();
 
                 //console.log('validated!');
                 //status
                 if (status == 'Valid') {
                     // Show loading indication
                         
-                        let form1= $("#Formulario1");
+                        let form1= $("#Formulario-HojaVida");
                         var fd = form1.serialize();
                         const pairs = fd.split('&');
 
@@ -266,6 +244,9 @@ $(document).ready(function() {
                             keyValueObject[key] = value;
                         }
 
+                        keyValueObject.PersonaId = comunidadId;
+
+
 
                         submitButton.setAttribute('data-kt-indicator', 'on');
                         // Disable button to avoid multiple click
@@ -277,7 +258,7 @@ $(document).ready(function() {
 
                         $.ajax({
                             type: 'POST',
-                            url: GuardarResidente,
+                            url: GuardarHojaVida,
                             data: { 
                                     _token: csrfToken,    
                                     data: keyValueObject 
@@ -288,17 +269,17 @@ $(document).ready(function() {
                                 
                             },
                             success: function (data) {
-                                console.log(data);
+                                //console.log(data.errors);
                                 if(data.success){
                                     //console.log("exito");
                                      location.reload();
                                 }else{
                                     //console.log(data.error);
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError").append(html);
+                                       $("#AlertaError2").append(html);
 
                                     
-                                    $("#AlertaError").show();
+                                    $("#AlertaError2").show();
                                     
                                    //console.log("error");
                                 }
@@ -325,21 +306,21 @@ $(document).ready(function() {
         }
     });
 
-    const target = document.querySelector("#div-bloquear");
+    const target = document.querySelector("#div-bloquear-espacio-registrar");
     const blockUI = new KTBlockUI(target);
 
     //Evento al presionar el Boton Editar
-    $("#tabla-residente tbody").on("click",'.editar', function (e) {
+    $("#tabla-espacios tbody").on("click",'.editar-espacio', function (e) {
         e.preventDefault();
         //Inicializacion
-        $("#modal-titulo").empty().html("Editar Residente");
+        $("#modal-titulo-acceso-registrar").empty().html(comunidadNombre+" - Editar Hoja de Vida");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
 
-        $("#AddSubmit").hide();
-        $("#EditSubmit").show();
-        $("#IdInput").prop("disabled",false);
-        $("#AlertaError").hide();
+        $("#AddSubmit-espacio").hide();
+        $("#EditSubmit-espacio").show();
+        $("#IdInput-espacio").prop("disabled",false);
+        $("#AlertaError2").hide();
 
         validator.resetForm();
         actualizarValidSelect2();
@@ -350,41 +331,31 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: VerResidente,
+            url: VerHojaVida,
             data: {
                 _token: csrfToken,
                 data: id},
             //content: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 
                 if(data.success){
                     data=data.data;
-                    var fechaFormateada = moment.utc(data.FechaInicio).format('YYYY-MM-DD');
-                    var fechaFormateada2 = moment.utc(data.FechaFin).format('YYYY-MM-DD');
-                    //console.log("wena");
+                    console.log(data);
+
+                    var fechaFormateada = moment.utc(data.Fecha).format('YYYY-MM-DD');
+
                     //Agrego los valores al formulario
-                    $("#IdInput").val(data.Id);
-                    $("#NombreInput").val(data.persona.Nombre)
-                    $("#ApellidoInput").val(data.persona.Apellido)
-                    $("#RutInput").val(data.persona.RUT)
+                    $("#IdInput-espacio").val(data.Id);
+                    $("#NombreInput2").val(data.Titulo);
+                    $("#DescripcionInput").val(data.Descripcion);
 
-                    $("#SexoIdInput").val(data.persona.Sexo).trigger("change");
-                    $("#NacionalidadInput").val(data.persona.NacionalidadId).trigger("change");
-                    $("#TelefonoInput").val(data.persona.Telefono)
-                    $("#CorreoInput").val(data.persona.Email)
-
-                    $("#ComunidadIdInput").val(data.propiedad.ComunidadId).trigger("change");
-                    $("#PropiedadIdInput").val(data.PropiedadId).trigger("change");
-                    $("#RolIdInput").val(data.RolComponeCoReId).trigger("change");
-
-                    $("#FechaInicioInput").val(fechaFormateada);
-                    $("#FechaFinInput").val(fechaFormateada2);
-
-                    $("#EnabledInput").val(data.persona.Enabled).trigger("change");
-
-
+                    $("#GarantiaInput").val(fechaFormateada);
+                  
+                    $("#EnabledInput2").val(data.Enabled).trigger("change");
+                    comunidadId =  data.PersonaId;
+                    console.log(comunidadId)
                     blockUI.release();
                 }else{
                     //console.log("error");
@@ -396,12 +367,14 @@ $(document).ready(function() {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             customClass: {
-                                confirmButton: "btn btn-danger btn-cerrar"
+                                container: "swal-custom",
+                                confirmButton: "btn btn-danger btn-cerrar swal-custom"
                             }
                         });
                     $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
-                            $('#registrar').modal('toggle');
+                            $('#editar-espacio').modal('toggle');
+                            $("#espaciocomun").css("z-index", 1055);
                     });
                 }
             },
@@ -414,24 +387,27 @@ $(document).ready(function() {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             customClass: {
+                                container: "swal-custom",
                                 confirmButton: "btn btn-danger btn-cerrar"
                             }
                         });
 
                      $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
-                            $('#registrar').modal('toggle');
+                            $('#editar-espacio').modal('toggle');
+                            $("#espaciocomun").css("z-index", 1055);
                      });
             }
         });
     });
+
     // Manejador al presionar el submit de Editar
-    const submitEditButton = document.getElementById('EditSubmit');
+    const submitEditButton = document.getElementById('EditSubmit-espacio');
     submitEditButton.addEventListener('click', function (e) {
             // Prevent default button action
             e.preventDefault();
-            $("#AlertaError").hide();
-             $("#AlertaError").empty();
+            $("#AlertaError2").hide();
+             $("#AlertaError2").empty();
 
             // Validate form before submit
             if (validator) {
@@ -452,7 +428,7 @@ $(document).ready(function() {
 
                             
 
-                            let form1= $("#Formulario1");
+                            let form1= $("#Formulario-HojaVida");
                             var fd = form1.serialize();
                             const pairs = fd.split('&');
 
@@ -464,10 +440,12 @@ $(document).ready(function() {
                                 const value = decodeURIComponent(pair[1]);
                                 keyValueObject[key] = value;
                             }
+                            console.log(comunidadId)
+                            keyValueObject.PersonaId = comunidadId;
 
                              $.ajax({
                                 type: 'POST',
-                                url: EditarResidente,
+                                url: EditarHojaVida,
                                 data: {
                                     _token: csrfToken,
                                     data: keyValueObject},
@@ -482,9 +460,9 @@ $(document).ready(function() {
                                         console.log(data.message)
 
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
-                                        $("#AlertaError").append(html);
+                                        $("#AlertaError2").append(html);
 
-                                        $("#AlertaError").show();
+                                        $("#AlertaError2").show();
                                        //console.log("error");
                                     }
                                 },
@@ -496,6 +474,7 @@ $(document).ready(function() {
                                         buttonsStyling: false,
                                         confirmButtonText: "OK",
                                         customClass: {
+                                            container: "swal-custom",
                                             confirmButton: "btn btn-danger btn-cerrar"
                                         }
                                     });
@@ -507,16 +486,15 @@ $(document).ready(function() {
             }
     });
 
-    $("#tabla-residente tbody").on("click",'.ver', function () {
+    $("#tabla-espacios tbody").on("click",'.ver-espacio', function () {
         //console.log("wena");
-        $("#modal-titulo").empty().html("Ver Residente");
+        $("#modal-titulo-acceso-registrar").empty().html(comunidadNombre+" - Ver Hoja de Vida");
         $("input").val('');
-        $('.form-seslect').val("").trigger("change");
-
-        $("#AddSubmit").hide();
-        $("#EditSubmit").hide();
-        $("#IdInput").prop("disabled",false);
-        $("#AlertaError").hide();
+        $('.form-select').val("").trigger("change");
+        $("#AddSubmit-espacio").hide();
+        $("#EditSubmit-espacio").hide();
+        $("#IdInput-espacio").prop("disabled",false);
+        $("#AlertaError2").hide();
 
         validator.resetForm();
         actualizarValidSelect2();
@@ -526,7 +504,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: VerResidente,
+            url: VerHojaVida,
             data: {
                 _token: csrfToken,
                 data: id},
@@ -535,31 +513,21 @@ $(document).ready(function() {
             success: function (data) {
                 console.log(data);
                 if(data){
-                    data=data.data;
-                    var fechaFormateada = moment.utc(data.FechaInicio).format('YYYY-MM-DD');
-                    var fechaFormateada2 = moment.utc(data.FechaFin).format('YYYY-MM-DD');
+
+                    data= data.data
                     //console.log("wena");
                     //Agrego los valores al formulario
-                   
-                    $("#IdInput").val(data.Id);
-                    $("#NombreInput").val(data.persona.Nombre).prop('disabled',true);
-                    $("#ApellidoInput").val(data.persona.Apellido).prop('disabled',true);
-                    $("#RutInput").val(data.persona.RUT).prop('disabled',true);
 
-                    $("#SexoIdInput").val(data.persona.Sexo).trigger("change").prop('disabled',true);
-                    $("#NacionalidadInput").val(data.persona.NacionalidadId).trigger("change").prop('disabled',true);
-                    $("#TelefonoInput").val(data.persona.Telefono).prop('disabled',true);
-                    $("#CorreoInput").val(data.persona.Email).prop('disabled',true);
+                    var fechaFormateada = moment.utc(data.Fecha).format('YYYY-MM-DD');
 
-                    $("#ComunidadIdInput").val(data.propiedad.ComunidadId).trigger("change").prop('disabled',true);
-                    $("#PropiedadIdInput").val(data.PropiedadId).trigger("change").prop('disabled',true);
-                    $("#RolIdInput").val(data.RolComponeCoReId).trigger("change").prop('disabled',true);
+                    $("#IdInput-espacio").val(data.Id).prop("disabled", true);
+                    $("#NombreInput2").val(data.Titulo).prop("disabled", true);
+                    $("#DescripcionInput").val(data.Descripcion).prop("disabled", true);
 
-                    $("#FechaInicioInput").val(fechaFormateada).prop('disabled',true);
-                    $("#FechaFinInput").val(fechaFormateada2).prop('disabled',true);
-
-                    $("#EnabledInput").val(data.persona.Enabled).trigger("change").prop('disabled',true);
-
+                    $("#GarantiaInput").val(fechaFormateada).trigger("change").prop("disabled", true);
+                  
+                    $("#EnabledInput2").val(data.Enabled).trigger("change").prop("disabled", true);
+                    
                     blockUI.release();
 
                 }else{
@@ -572,13 +540,14 @@ $(document).ready(function() {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             customClass: {
+                                container: "swal-custom",
                                 confirmButton: "btn btn-danger btn-cerrar"
                             }
                         });
 
                      $(".btn-cerrar").on("click", function () {
-                            console.log("Error");
-                            $('#registrar').modal('toggle');
+                        $('#editar-espacio').modal('toggle');
+                        $("#espaciocomun").css("z-index", 1055);
                      });
 
                 }
@@ -595,18 +564,16 @@ $(document).ready(function() {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             customClass: {
+                                container: "swal-custom",
                                 confirmButton: "btn btn-danger btn-cerrar"
                             }
                         });
 
-                     $(".btn-cerrar").on("click", function () {
-                            console.log("Error");
-                            $('#registrar').modal('toggle');
-                     });
+                    $(".btn-cerrar").on("click", function () {
+                        $('#editar-espacio').modal('toggle');
+                        $("#espaciocomun").css("z-index", 1055);
+                    });
             }
         });
-
-
     });
-
 });
