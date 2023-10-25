@@ -353,7 +353,7 @@ miTabla.on('click', 'td.dt-control', function (e) {
     let tr = e.target.closest('tr');
     let row = miTabla.row(tr);
 
-    let cell = row.cell(tr, 8);
+    let cell = row.cell(tr, 7);
     let boton= $(cell.node()).find('button');
 
     let userId= $(this).prev().find('a.editar').attr("info")
