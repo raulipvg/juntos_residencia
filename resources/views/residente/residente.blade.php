@@ -72,32 +72,39 @@ $today = date('Y-m-d');
                             <th scope="col">#</th>
                             <th scope="col">RUT</th>
                             <th scope="col">Nombre Completo</th>
-                            <th scope="col">Comunidad</th>
-                            <th scope="col">Propiedad</th>
-                            <th scope="col">Rol</th>
-                            <th scope="col">Fecha Inicio</th>
-                            <th scope="col">Fecha Fin</th>
-                            <th class="text-center" scope="col">Accion</th>
+                            <th scope="col">Estado</th>
+                            <th class="text-center" scope="col">Acción</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
                         
-                        @foreach ($Componen as $compone)  
+                        @foreach ($Personas as $persona)  
                             <tr class="center-2">
-                                <td>{{ $compone->persona->Id }}</td>
-                                <td>{{ $compone->persona->RUT }}</td>
-                                <td>{{ $compone->persona->Nombre }} {{ $compone->persona->Apellido }}</td>
-                                <td>{{ $compone->propiedad->comunidad->Nombre }}</td>
-                                <td>{{ $compone->propiedad->Numero }}</td>
-                                <td>{{ $compone->rol_compone_co_re->Nombre }}</td>
-                                <td>{{\Carbon\Carbon::parse($compone->FechaInicio)->format('d-m-Y')}}</td>
-                                <td>{{\Carbon\Carbon::parse($compone->FechaFin)->format('d-m-Y')}}</td>
+                                <td>{{ $persona->Id }}</td>
+                                <td>{{ $persona->RUT }}</td>
+                                <td>{{ $persona->Nombre }} {{ $persona->Apellido }}</td>
+                                @if ($persona->Enabled == 1 )
+                                    <td data-search="Enabled">
+                                        <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled </span>
+                                    </td>
+                                @else
+                                    <td data-search="Disabled">
+                                        <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled </span>
+                                    </td>
+                                @endif
                                 <td  class="text-center p-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                            <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $compone->Id }}">Ver</a>
-                                            <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $compone->Id }}">Editar</a>
-                                            <a class="ver-hojavida btn btn-success" data-bs-toggle="modal" data-bs-target="#espaciocomun" info="{{ $compone->persona->Id }}">Hoja de Vida</a>
+                                            <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $persona->Id }}">Ver</a>
+                                            <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $persona->Id }}">Editar</a>
+                                            <a class="ver-hojavida btn btn-success" data-bs-toggle="modal" data-bs-target="#espaciocomun" info="{{ $persona->Id }}">Hoja de Vida</a>
                                         </div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" data-kt-docs-datatable-subtable="expand_row" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Propiedades">
+                                        <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
+                                        <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
+                                    </button>
                                 </td>
                             </tr>
                             @endforeach
@@ -152,13 +159,13 @@ $today = date('Y-m-d');
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el rut" id="RutInput" name="Rut" />
+                                <input type="text" class="form-control" placeholder="Ingrese el rut" id="RutInput" name="RUT" />
                                 <label for="RutInput" class="form-label">RUT</label>
                             </div>
                         </div> 
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="SexoIdInput" name="SexoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                <select id="SexoIdInput" name="Sexo" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
                                     <option value="1">FEMENINO</option>
                                     <option value="2">MASCULINO</option>
@@ -189,64 +196,12 @@ $today = date('Y-m-d');
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="email" class="form-control" placeholder="Ingrese el correo" id="CorreoInput" name="Correo" />
+                                <input type="email" class="form-control" placeholder="Ingrese el correo" id="CorreoInput" name="Email" />
                                 <label for="EmailInput" class="form-label">Correo</label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <select id="ComunidadIdInput" name="ComunidadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-dropdown-parent="#registrar" >
-                                    <option></option>
-                                    @foreach($Comunidades as $comunidad)
-                                        <option value="{{ $comunidad->Id }}">{{ $comunidad->Nombre }}</option>
-                                    @endforeach          
-                                </select>
-                                <label for="ComunidadIdInput" class="form-label">Comunidad</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <select id="PropiedadIdInput" name="PropiedadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-dropdown-parent="#registrar" >
-                                    <option></option>
-                                    @foreach($Propiedades as $propiedad)
-                                        <option value="{{ $propiedad->Id }}">{{ $propiedad->Numero }}</option>
-                                    @endforeach
-                                </select>
-                                <label for="PropiedadIdInput" class="form-label">Propiedad</label>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <select id="RolIdInput" name="RolId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
-                                    <option></option>
-                                    @foreach($RolesComponenCoRe as $rol)
-                                        <option value="{{ $rol->Id }}">{{ $rol->Nombre }}</option>
-                                    @endforeach
-                                </select>
-                                <label for="RolIdInput" class="form-label">Rol</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <input type="date" class="form-control" placeholder="Ingrese la fecha inicio" id="FechaInicioInput" name="FechaInicio" min="{{ $today }}" />
-                                <label for="FechaInicioInput" class="form-label">Fecha Inicio</label>
-                            </div>
-                        </div>
-                        
-
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <input type="date" class="form-control" placeholder="Ingrese la fecha fin" id="FechaFinInput" name="FechaFin" min="{{ $today }}"/>
-                                <label for="FechaFinInput" class="form-label">Fecha Fin</label>
-                            </div>
-                        </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
                                 <select id="EnabledInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
@@ -428,18 +383,127 @@ $today = date('Y-m-d');
 </div>
 <!--end::modal-->
 
+
+<!--begin::modal-->
+<div class="modal fade" tabindex="-1" id="registrar-compone" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog mt-20">
+        <div class="modal-content" id="div-bloquear">
+            <div class="modal-header bg-light p-2 ps-5">
+                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Propiedad de Usuario</h2>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-3x">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="1" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+            <form id="Formulario-Compone" action="" method="post">
+                <div class="modal-body">
+                    <div id="AlertaError2" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <div class="form-floating fv-row">
+                                <select id="ComunidadIdInput" name="ComunidadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                    <option></option>
+                                    @foreach($Comunidades as $comunidad)
+                                    <option value="{{ $comunidad->Id }}">{{ $comunidad->Nombre }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="ComunidadIdInput" class="form-label">Comunidad</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="form-floating fv-row">
+                                <select id="PropiedadIdInput" name="PropiedadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                    <option></option>
+                                    @foreach($Propiedades as $propiedad)
+                                    <option value="{{ $propiedad->Id }}">{{ $propiedad->Nombre }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="PropiedadInput" class="form-label">Propiedad</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating fv-row">
+                                <select id="RolIdInput" name="RolId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                    <option></option>
+                                    @foreach($RolesComponenCoRe as $rol)
+                                    <option value="{{ $rol->Id }}">{{ $rol->Nombre }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="RolIdInput" class="form-label">Rol</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating fv-row">
+                                <input type="date" class="form-control" placeholder="Ingrese la fecha de inicio" value="{{ now()->format('Y-m-d') }}" id="FechaInicioInput" name="FechaInicio" max="" />
+                                <label for="FechaInicioInput" class="form-label">Fecha Inicio</label>
+                        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating fv-row">
+                                <input type="date" class="form-control" placeholder="Ingrese la fecha final" value="{{ now()->format('Y-m-d') }}" id="FechaInicioInput" name="FechaFin" max="" />
+                                <label for="FechaFinInput" class="form-label">Fecha Fin</label>
+                            
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating fv-row">
+                                <select id="EnabledInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                    <option></option>
+                                    <option value="1">Enabled</option>
+                                    <option value="2">Disabled</option>
+                                </select>
+                                <label for="EnabledInput" class="form-label">Estado</label>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="modal-footer bg-light p-2">
+                    <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>
+                    <button id="AddSubmit-acceso" type="submit" class="btn btn-success">
+                        <div class="indicator-label">Registrar</div>
+                        <div class="indicator-progress">Espere...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </div>
+                    </button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+<!--end::modal-->
+
+
 @endsection
 
 @push('Script')
     <script>
-        const GuardarResidente = "{{ route('GuardarResidente') }}";
-        const VerResidente = "{{ route('VerResidente') }}";
-        const EditarResidente = "{{ route('EditarResidente') }}";
+        const GuardarPersona = "{{ route('GuardarPersona') }}";
+        const VerPersona = "{{ route('VerPersona') }}";
+        const EditarPersona = "{{ route('EditarPersona') }}";
 
         const HojaVida = "{{ route('HojaVida') }}";
         const GuardarHojaVida= "{{ route('GuardarHojaVida') }}";
         const VerHojaVida= "{{ route('VerHojaVida') }}";
         const EditarHojaVida= "{{ route('EditarHojaVida') }}";
+
+        const VerCompone = "{{ route('VerCompone') }}"
         
         //const VerPropiedades = "{{ route('Propiedad') }}";
         
@@ -448,10 +512,10 @@ $today = date('Y-m-d');
     </script>
     <!-- Datatables y Configuracion de la Tabla -->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/residente2.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/compone.js') }}"></script>
     <script src="{{ asset('js/datatables/contenido/hojavida.js?id=2') }}"></script>
     <!--- Eventos de la pagina -->
-    <script src="{{ asset('js/eventos/residente2.js?id=3') }}"></script>
+    <script src="{{ asset('js/eventos/persona.js?id=3') }}"></script>
     <script src="{{ asset('js/eventos/hojavida.js?id=2') }}"></script>
 	<!--end::Javascript-->
     

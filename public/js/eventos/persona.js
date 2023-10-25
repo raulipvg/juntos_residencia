@@ -40,7 +40,7 @@ $(document).ready(function() {
                             }
                         }
                     },
-                    'Rut': {
+                    'RUT': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -55,14 +55,14 @@ $(document).ready(function() {
                                 message: 'Solo caracteres de la 0-9 y K '
                             }
                         }
-                    },            
-                    'SexoId': {
+                    },
+                    'Sexo': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             }
                         }
-                    },          
+                    },
                     'NacionalidadId': {
                         validators: {
                             notEmpty: {
@@ -79,43 +79,24 @@ $(document).ready(function() {
                         numeric: {
                           message: 'Ingrese solo números'
                         }
-                    },                      
-                    'PropiedadId': {
+                    },
+                    'Email': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            },
+                            emailAddress: {
+                                message: 'Email inválido'
+                            }
+                        }
+                    },
+                    'Enabled': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
                             }
                         }
-                    },
-                    'RolId': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        }
-                    },
-                    'FechaInicio': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        },
-                        date: {
-                            format: 'DD/MM/YYYY',
-                            message: 'Ingrese una fecha válida en el formato dd/mm/aaaa'
-                          }
-                    },
-                    'FechaFin': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            }
-                        },
-                        date: {
-                            format: 'DD/MM/YYYY',
-                            message: 'Ingrese una fecha válida en el formato dd/mm/aaaa'
-                          }
-                    },   
+                    }
                 },
 
                 plugins: {
@@ -128,6 +109,54 @@ $(document).ready(function() {
                 }
             }
     );
+    const form2 = document.getElementById('Formulario-Compone');
+
+    const validator2 = FormValidation.formValidation(
+        form2,
+        {
+            fields: {   
+                'ComunidadId': {
+                    validators: {
+                        notEmpty: {
+                            message: 'Requerido'
+                        },
+                        digits: {
+                            message: 'Digitos'
+                        }
+                    }
+                },
+                'PropiedadId': {
+                    validators: {
+                        notEmpty: {
+                            message: 'Requerido'
+                        },
+                        digits: {
+                            message: 'Digitos'
+                        }
+                    }
+                },
+                'RolId': {
+                    validators: {
+                        notEmpty: {
+                            message: 'Requerido'
+                        },
+                        digits: {
+                            message: 'Digitos'
+                        }
+                    }
+                }
+            },
+
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                bootstrap: new FormValidation.plugins.Bootstrap5({
+                    rowSelector: '.fv-row',
+                    eleInvalidClass: 'is-invalid',
+                    eleValidClass: 'is-valid'
+                })
+            }
+        }
+);
 
     function actualizarValidSelect2(){
 
@@ -210,7 +239,7 @@ $(document).ready(function() {
 
                         $.ajax({
                             type: 'POST',
-                            url: GuardarResidente,
+                            url: GuardarPersona,
                             data: { 
                                     _token: csrfToken,    
                                     data: keyValueObject 
@@ -283,7 +312,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: VerResidente,
+            url: VerPersona,
             data: {
                 _token: csrfToken,
                 data: id},
@@ -294,26 +323,19 @@ $(document).ready(function() {
                 
                 if(data.success){
                     data=data.data;
-                    var fechaFormateada = moment.utc(data[0].FechaInicio).format('YYYY-MM-DD');
-                    var fechaFormateada2 = moment.utc(data[0].FechaFin).format('YYYY-MM-DD');
                     //console.log("wena");
                     //Agrego los valores al formulario
-                    $("#IdInput").val(data[0].Id);
-                    $("#NombreInput").val(data[1].Nombre)
-                    $("#ApellidoInput").val(data[1].Apellido)
-                    $("#RutInput").val(data[1].RUT)
+                    $("#IdInput").val(data.Id);
+                    $("#NombreInput").val(data.Nombre)
+                    $("#ApellidoInput").val(data.Apellido)
+                    $("#RutInput").val(data.RUT)
 
-                    $("#SexoIdInput").val(data[1].Sexo).trigger("change");
-                    $("#NacionalidadInput").val(data[1].NacionalidadId).trigger("change");
-                    $("#TelefonoInput").val(data[1].Telefono)
-
-                    $("#PropiedadIdInput").val(data[0].PropiedadId).trigger("change");                   
-                    $("#RolIdInput").val(data[0].RolId).trigger("change");
-
-                    $("#FechaInicioInput").val(fechaFormateada);
-                    $("#FechaFinInput").val(fechaFormateada2);
-
-                    $("#EnabledInput").val(data[1].Enabled).trigger("change");
+                    $("#SexoIdInput").val(data.Sexo).trigger("change");
+                    $("#NacionalidadInput").val(data.NacionalidadId).trigger("change");
+                    $("#TelefonoInput").val(data.Telefono)
+                    $("#CorreoInput").val(data.Email)
+                    
+                    $("#EnabledInput").val(data.Enabled).trigger("change");
 
 
                     blockUI.release();
@@ -398,7 +420,7 @@ $(document).ready(function() {
 
                              $.ajax({
                                 type: 'POST',
-                                url: EditarResidente,
+                                url: EditarPersona,
                                 data: {
                                     _token: csrfToken,
                                     data: keyValueObject},
@@ -442,9 +464,8 @@ $(document).ready(function() {
         //console.log("wena");
         $("#modal-titulo").empty().html("Ver Comunidad");
         $("input").val('');
-        $('#PersonaIdInput').val("").trigger("change");
-        $('#PropiedadIdInput').val("").trigger("change");
-        $('#RolIdInput').val("").trigger("change");
+        $('.form-select').val("").trigger("change");
+
         $("#AddSubmit").hide();
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled",false);
@@ -458,7 +479,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: VerResidente,
+            url: VerPersona,
             data: {
                 _token: csrfToken,
                 data: id},
@@ -469,26 +490,20 @@ $(document).ready(function() {
                 if(data){
 
                     data=data.data;
-                    var fechaFormateada = moment.utc(data[0].FechaInicio).format('YYYY-MM-DD');
-                    var fechaFormateada2 = moment.utc(data[0].FechaFin).format('YYYY-MM-DD');
                     //console.log("wena");
                     //Agrego los valores al formulario
-                    $("#IdInput").val(data[0].Id);
-                    $("#NombreInput").val(data[1].Nombre)
-                    $("#ApellidoInput").val(data[1].Apellido)
-                    $("#RutInput").val(data[1].RUT)
+                    $("#IdInput").val(data.Id);
+                    $("#NombreInput").val(data.Nombre)
+                    $("#ApellidoInput").val(data.Apellido)
+                    $("#RutInput").val(data.RUT)
 
-                    $("#SexoIdInput").val(data[1].Sexo).trigger("change");
-                    $("#NacionalidadInput").val(data[1].NacionalidadId).trigger("change");
-                    $("#TelefonoInput").val(data[1].Telefono)
+                    $("#SexoIdInput").val(data.Sexo).trigger("change");
+                    $("#NacionalidadInput").val(data.NacionalidadId).trigger("change");
+                    $("#TelefonoInput").val(data.Telefono)
+                    $("#CorreoInput").val(data.Email).prop('disabled',true);
+                    
 
-                    $("#PropiedadIdInput").val(data[0].PropiedadId).trigger("change");                   
-                    $("#RolIdInput").val(data[0].RolId).trigger("change");
-
-                    $("#FechaInicioInput").val(fechaFormateada);
-                    $("#FechaFinInput").val(fechaFormateada2);
-
-                    $("#EnabledInput").val(data[1].Enabled).trigger("change");
+                    $("#EnabledInput").val(data.Enabled).trigger("change");
                                     
                     blockUI.release();
 
@@ -538,5 +553,107 @@ $(document).ready(function() {
 
 
     });
+
+    $("#tabla-compone").on("click",'.registrar-compone', function(e) {
+        //console.log('click')
+        $('.form-select').val("").trigger("change").prop("disabled",false);
+        $("#AlertaError2").hide();
+        validator.resetForm();
+        actualizarValidSelect2();
+        //console.log($(this).attr("data-info"))
+        $("#PersonaIdInput").val($(this).attr("data-info"));
+
+    });
+
+    const submitButton2 = document.getElementById('AddSubmit-acceso');
+    submitButton2.addEventListener('click', function (e) {
+        // Prevent default button action
+        e.preventDefault();
+        console.log('guardar')
+        $("#AlertaError2").hide();
+        $("#AlertaError2").empty();
+
+        // Validate form before submit
+        if (validator2) {
+            validator2.validate().then(function (status) {
+                 actualizarValidSelect2();
+
+                //console.log('validated!');
+                //status
+                if (status == 'Valid') {
+                    // Show loading indication                       
+                        let form1= $("#Formulario-Compone");
+                        var fd = form1.serialize();
+                        const pairs = fd.split('&');
+
+                        const keyValueObject = {};
+                       
+                        for (let i = 0; i < pairs.length; i++) {
+                            const pair = pairs[i].split('=');
+                            const key = decodeURIComponent(pair[0]);
+                            const value = decodeURIComponent(pair[1]);
+                            keyValueObject[key] = value;
+                        }
+
+                        submitButton.setAttribute('data-kt-indicator', 'on');
+                        // Disable button to avoid multiple click
+                        submitButton.disabled = true;     
+                        // Remove loading indication
+                        //submitButton.removeAttribute('data-kt-indicator');
+                        // Enable button
+                        //submitButton.disabled = true;
+
+                        $.ajax({
+                            type: 'POST',
+                            url: GuardarAcceso,
+                            data: { 
+                                    _token: csrfToken,    
+                                    data: keyValueObject 
+                                },
+                            dataType: "json",
+                            //content: "application/json; charset=utf-8",
+                            beforeSend: function() {
+                                
+                            },
+                            success: function (data) {
+                                //console.log(data.errors);
+                                if(data.success){
+                                    //console.log("exito");
+                                     location.reload();
+                                }else{
+                                    //console.log(data.error);
+                                        html = '<ul><li style="">'+data.message+'</li></ul>';
+                                       $("#AlertaError").append(html);
+
+                                    
+                                    $("#AlertaError").show();
+                                    
+                                   //console.log("error");
+                                }
+                            },
+                            error: function (e) {
+                                //console.log(e)
+                                //alert('Error');
+                                Swal.fire({
+                                    text: "Error",
+                                    icon: "error",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "OK",
+                                    customClass: {
+                                        confirmButton: "btn btn-danger btn-cerrar"
+                                    }
+                                });
+                            }
+                        });
+                    // form.submit(); // Submit form
+                    submitButton.removeAttribute('data-kt-indicator');
+                    submitButton.disabled = false;
+                }
+            });
+        }
+    });
+    
+
+    
 
 });

@@ -16,7 +16,7 @@ class ComponeController extends Controller
 {
     public function Index(){
         $componen = Compone::all();
-        $personas = Persona::all();
+        $personas = Persona::select('Id', 'RUT', 'Nombre', 'Apellido', 'Sexo', 'Telefono', 'Email', 'Enabled')->get();
         $rolesComponeCoRe = RolComponeCoRe::select('Id','Nombre')->get();
         $nacionalidades = Nacionalidad::select('Id','Nombre')->get();
         $propiedades = Propiedad::select('Id','Numero')->get();
@@ -35,61 +35,24 @@ class ComponeController extends Controller
         //Crea Persona y Compone, requiere usar transacción (ver controlador ResidenteController anterior)
         $request = $request->input('data');
         // Accede a los atributos del modelo    
-        $request['Nombre'] = strtolower($request['Nombre']);
-        $request['Apellido'] = strtolower($request['Apellido']);
 
         try{
-            $persona = new Persona();
-            $persona->validate([
-                'RUT' => $request['Rut'],
-                'Nombre'=> $request['Nombre'],
-                'Apellido'=> $request['Apellido'],
-                'Sexo'=> $request['SexoId'],
-                'Telefono'=> $request['Telefono'],
-                'Email'=> $request['Correo'],
-                'NacionalidadId'=> $request['NacionalidadId'],
-                'Enabled' => $request['Enabled']
-            ]);
-
-            $compone = new Compone();
-            
-            $compone->validate([
-                'PersonaId' => 1,
-                'PropiedadId'=> $request['PropiedadId'],
-                'RolComponeCoReId'=> $request['RolId'],
-                'FechaInicio'=> $request['FechaInicio'],
-                'FechaFin'=> $request['FechaFin'],
-                'Enabled'=> $request['Enabled'],
-            ]);
-
-            DB::beginTransaction();
-            $persona = Persona::create([
-                'RUT' => $request['Rut'],
-                'Nombre'=> $request['Nombre'],
-                'Apellido'=> $request['Apellido'],
-                'Sexo'=> $request['SexoId'],
-                'Telefono'=> $request['Telefono'],
-                'Email'=> $request['Correo'],
-                'Enabled'=> $request['Enabled'],
-                'NacionalidadId'=> $request['NacionalidadId']
-            ]);
 
             $compone = Compone::create([
-                'PersonaId' => $persona->Id,
+                'PersonaId' => $request['PersonaId'],
                 'PropiedadId'=> $request['PropiedadId'],
                 'RolComponeCoReId'=> $request['RolId'],
                 'FechaInicio'=> $request['FechaInicio'],
                 'FechaFin'=> $request['FechaFin'],
                 'Enabled'=> $request['Enabled'],
             ]);
+            $compone->save();
 
-            DB::commit();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Modelo recibido y procesado']);
         }catch(Exception $e){
-            DB::rollback();
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()]);
@@ -100,12 +63,14 @@ class ComponeController extends Controller
         $request = $request->input('data');
 
         try{
-            $compone = Compone::find($request);
+            $compone = Compone::select('Comunidad.Nombre as Comunidad', 'Propiedad.Numero as Propiedad','RolComponeCoRe.Nombre as Rol','FechaInicio','FechaFin','Compone.Enabled')
+            ->where('Compone.PersonaId','=',$request)
+            ->join('Propiedad', 'Propiedad.Id', '=', 'Compone.PropiedadId')
+            ->join('Comunidad', 'Comunidad.Id', '=', 'Propiedad.ComunidadId')
+            ->join('RolComponeCoRe', 'RolComponeCoRe.Id', '=', 'Compone.RolComponeCoReId')->get();
             return response()->json([
                 'success' => true,
-                'data' => $compone,
-                'persona' => $compone->persona, 
-                'propiedad'=> $compone->propiedad]);
+                'data' => $compone]);
 
         }catch(Exception $e){
             return response()->json([
@@ -123,19 +88,6 @@ class ComponeController extends Controller
          try{
             $componeEdit = compone::find($request['Id']);
 
-            $persona = New Persona();
-            $persona->validate([
-                'Id' => $componeEdit->persona->Id,
-                'RUT' => $request['Rut'],
-                'Nombre'=> $request['Nombre'],
-                'Apellido'=> $request['Apellido'],
-                'Sexo'=> $request['SexoId'],
-                'Telefono'=> $request['Telefono'],
-                'Email'=> $request['Correo'],
-                'NacionalidadId'=> $request['NacionalidadId'],
-                'Enabled' => $request['Enabled']
-            ]);
-
             $compone = new Compone();
 
             $compone->validate([
@@ -147,9 +99,6 @@ class ComponeController extends Controller
                 'Enabled'=> $request['Enabled'],             
             ]);
 
-            //$residente->fill($request);
-            // Usamos transacción para asegurar la integridad de los datos
-            DB::beginTransaction();
 
             $componeEdit->update([
                 'PropiedadId'=> $request['PropiedadId'],
@@ -158,27 +107,11 @@ class ComponeController extends Controller
                 'FechaFin'=> $request['FechaFin'],
                 'Enabled'=> $request['Enabled'],   
             ]);
-            //$userEdit->Username
-            //$residenteEdit->fill($request);
-            $personaEdit= $componeEdit->persona;
-            $personaEdit->update([
-                'RUT' => $request['Rut'],
-                'Nombre'=> $request['Nombre'],
-                'Apellido'=> $request['Apellido'],
-                'Sexo'=> $request['SexoId'],
-                'Telefono'=> $request['Telefono'],
-                'Email'=> $request['Correo'],
-                'NacionalidadId'=> $request['NacionalidadId'],
-                'Enabled' => $request['Enabled']
-            ]);
-            //$residenteEdit->save();
-            DB::commit();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Modelo recibido y procesado']);
-        }catch(Exception $e){
-            DB::rollback();    
+        }catch(Exception $e){   
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()]);

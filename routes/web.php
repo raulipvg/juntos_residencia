@@ -4,6 +4,7 @@ use App\Http\Controllers\ComponeController;
 use App\Http\Controllers\AccesoComunidadController;
 use App\Http\Controllers\ComunidadController;
 use App\Http\Controllers\HojaVidaController;
+use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\PropiedadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -66,19 +67,14 @@ Route::group(['prefix' => '/espaciocomun'], function () {
 });
 
 
-
-Route::group(['prefix' => '/copropietario'], function () {
-    Route::get('/', [CopropietarioController::class, 'Index'])->name('Copropietario');
-    Route::post('/registrar', [CopropietarioController::class, 'Guardar'])->name('GuardarCopropietario');
-    Route::post('/ver', [CopropietarioController::class, 'VerId'])->name('VerCopropietario');
-    Route::post('/editar', [CopropietarioController::class, 'Editar'])->name('EditarCopropietario');
-});
-
 Route::group(['prefix' => '/residente'], function () {
     Route::get('/', [ComponeController::class, 'Index'])->name('Residente');
     Route::post('/registrar', [ComponeController::class, 'Guardar'])->name('GuardarResidente');
     Route::post('/ver', [ComponeController::class, 'VerId'])->name('VerResidente');
     Route::post('/editar', [ComponeController::class, 'Editar'])->name('EditarResidente');
+    Route::post('/registrar-persona', [PersonaController::class, 'Guardar'])->name('GuardarPersona');
+    Route::post('/ver-persona', [PersonaController::class, 'VerId'])->name('VerPersona');
+    Route::post('/editar-persona', [PersonaController::class, 'Editar'])->name('EditarPersona');
 });
 
 Route::group(['prefix' => '/hojavida'], function () {
@@ -88,6 +84,11 @@ Route::group(['prefix' => '/hojavida'], function () {
     Route::post('/editar', [HojaVidaController::class, 'Editar'])->name('EditarHojaVida');
 });
 
+Route::group(['prefix' => '/compone'], function () {
+    Route::post('/registrar', [ComponeController::class, 'Guardar'])->name('GuardarCompone');
+    Route::post('/ver', [ComponeController::class, 'VerId'])->name('VerCompone');
+    Route::post('/editar', [ComponeController::class, 'Editar'])->name('EditarCompone');
+});
 
 
 

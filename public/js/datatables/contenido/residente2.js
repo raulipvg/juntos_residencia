@@ -269,6 +269,18 @@ let miTabla = $('#tabla-residente').DataTable({
                 $('.dataTables_filter').addClass('p-0')
             }
             //"scrollX": true
+        }).on('click', 'td.dt-control', function (e) {
+            let tr = e.target.closest('tr');
+            let row = table.row(tr);
+         
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+            }
+            else {
+                // Open this row
+                row.child(format(row.data())).show();
+            }
         });
       
 
