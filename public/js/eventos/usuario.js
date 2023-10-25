@@ -119,6 +119,37 @@ $(document).ready(function() {
             }
     );
 
+    const form2 = document.getElementById('Formulario-Acceso');
+        // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+    const validator2 = FormValidation.formValidation(
+            form2,
+            {
+                fields: {   
+                    'ComunidadId': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
+                            }
+                        }
+                    }
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap5({
+                        rowSelector: '.fv-row',
+                        eleInvalidClass: 'is-invalid',
+                        eleValidClass: 'is-valid'
+                    })
+                }
+            }
+    );
+
+
+
     function actualizarValidSelect2(){
 
         $('.form-select').each( function () {
@@ -155,6 +186,9 @@ $(document).ready(function() {
         $("#IdInput").prop("disabled",true);
         $("#AlertaError").hide();
         $("#AccesoComunidadId").remove();
+
+        $("#ComunidadIdInput").parent().show();
+        $("#ComunidadIdInput").prop("disabled",false)
 
         validator.resetForm();
         actualizarValidSelect2();
@@ -263,6 +297,9 @@ $(document).ready(function() {
         $("#EditSubmit").show();
         $("#IdInput").prop("disabled",false);
         $("#AlertaError").hide();
+
+        $("#ComunidadIdInput").parent().hide();
+        $("#ComunidadIdInput").prop("disabled",true);
 
         validator.resetForm();
         actualizarValidSelect2();
@@ -397,7 +434,7 @@ $(document).ready(function() {
                                 keyValueObject[key] = value;
                             }
 
-                             $.ajax({
+                            $.ajax({
                                 type: 'POST',
                                 url: EditarUsuario,
                                 data: {
@@ -447,6 +484,9 @@ $(document).ready(function() {
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled",false);
         $("#AlertaError").hide();
+
+        $("#ComunidadIdInput").parent().hide();
+        $("#ComunidadIdInput").prop("disabled",true);
 
         validator.resetForm();
         actualizarValidSelect2();
@@ -527,6 +567,152 @@ $(document).ready(function() {
         });
 
 
+    });
+
+    $("#tabla-usuario").on("click", '.editar-acceso', function(e){
+        e.preventDefault();
+        console.log("click")
+        var accesoId =$(this).attr("info");
+        console.log(accesoId)
+
+        $.ajax({
+            type: 'POST',
+            url: EditarAcceso,
+            data: {
+                _token: csrfToken,
+                data: accesoId},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data.errors);
+                if(data.success){
+                    
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                }
+            },
+            error: function () {
+                //alert('Error');
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }
+        });
+
+    });
+
+    $("#tabla-usuario").on("click",'.registrar-acceso', function(e) {
+        //console.log('click')
+        $('.form-select').val("").trigger("change").prop("disabled",false);
+        $("#AlertaError2").hide();
+        validator.resetForm();
+        actualizarValidSelect2();
+        //console.log($(this).attr("data-info"))
+        $("#UsuarioIdInput").val($(this).attr("data-info"));
+
+    });
+
+    const submitButton2 = document.getElementById('AddSubmit-acceso');
+    submitButton2.addEventListener('click', function (e) {
+        // Prevent default button action
+        e.preventDefault();
+        console.log('guardar')
+        $("#AlertaError2").hide();
+        $("#AlertaError2").empty();
+
+        // Validate form before submit
+        if (validator2) {
+            validator2.validate().then(function (status) {
+                 actualizarValidSelect2();
+
+                //console.log('validated!');
+                //status
+                if (status == 'Valid') {
+                    // Show loading indication                       
+                        let form1= $("#Formulario-Acceso");
+                        var fd = form1.serialize();
+                        const pairs = fd.split('&');
+
+                        const keyValueObject = {};
+                       
+                        for (let i = 0; i < pairs.length; i++) {
+                            const pair = pairs[i].split('=');
+                            const key = decodeURIComponent(pair[0]);
+                            const value = decodeURIComponent(pair[1]);
+                            keyValueObject[key] = value;
+                        }
+
+                        submitButton.setAttribute('data-kt-indicator', 'on');
+                        // Disable button to avoid multiple click
+                        submitButton.disabled = true;     
+                        // Remove loading indication
+                        //submitButton.removeAttribute('data-kt-indicator');
+                        // Enable button
+                        //submitButton.disabled = true;
+
+                        $.ajax({
+                            type: 'POST',
+                            url: GuardarAcceso,
+                            data: { 
+                                    _token: csrfToken,    
+                                    data: keyValueObject 
+                                },
+                            dataType: "json",
+                            //content: "application/json; charset=utf-8",
+                            beforeSend: function() {
+                                
+                            },
+                            success: function (data) {
+                                //console.log(data.errors);
+                                if(data.success){
+                                    //console.log("exito");
+                                     location.reload();
+                                }else{
+                                    //console.log(data.error);
+                                        html = '<ul><li style="">'+data.message+'</li></ul>';
+                                       $("#AlertaError").append(html);
+
+                                    
+                                    $("#AlertaError").show();
+                                    
+                                   //console.log("error");
+                                }
+                            },
+                            error: function (e) {
+                                //console.log(e)
+                                //alert('Error');
+                                Swal.fire({
+                                    text: "Error",
+                                    icon: "error",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "OK",
+                                    customClass: {
+                                        confirmButton: "btn btn-danger btn-cerrar"
+                                    }
+                                });
+                            }
+                        });
+                    // form.submit(); // Submit form
+                    submitButton.removeAttribute('data-kt-indicator');
+                    submitButton.disabled = false;
+                }
+            });
+        }
     });
 
 });

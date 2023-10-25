@@ -121,7 +121,7 @@ class UserController extends Controller
         $request['Nombre'] = strtolower($request['Nombre']);
         $request['Apellido'] = strtolower($request['Apellido']);
         $request['Correo']= strtolower($request['Correo']);
-        $request['Enabled'] = 1;
+        $request['Enabled'] = $request["EstadoId"];
 
         try{
             $usuarioEdit = Usuario::find($request['Id']);
@@ -129,16 +129,6 @@ class UserController extends Controller
             $usuario = new Usuario();
             $usuario->validate($request);
             
-
-            $acessoComunidad = new AccesoComunidad();
-            $acessoComunidad->validate([
-                'Id' => $request['AccesoComunidadId'],
-                'ComunidadId' => $request['ComunidadId'],
-                'UsuarioId' => 1,
-                'FechaAcceso' =>Carbon::now(),
-                'Enabled' => $request['Enabled']
-            ]);
-
             DB::beginTransaction();
             $usuarioEdit->update([
                    'Nombre'=> $request['Nombre'],
@@ -150,13 +140,6 @@ class UserController extends Controller
                    'RolId' => $request['RolId']
             ]);
 
-            $accesoEdit = AccesoComunidad::find($request['AccesoComunidadId']);
-
-            $accesoEdit->update([
-                'ComunidadId' => $request['ComunidadId'],
-                'Enabled' => $request['Enabled']
-             ]);
-
             //$usuario->save();
             DB::commit();
             
@@ -164,7 +147,7 @@ class UserController extends Controller
                 'success' => true,
                 'message' => 'Modelo recibido y procesado']);
         }catch(Exception $e){
-                
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()]);

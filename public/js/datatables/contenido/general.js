@@ -1,5 +1,74 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
+function format(data) {
+    // `d` is the original data object for the row
+    var html=
+        '<div class="d-flex justify-content-center">'+
+        '<table id="services_table" class="services-subtable border border-dashed rounded bg-gray-100 pb-2" style="width: 90%;">'+
+            '<thead class="services-info">'+
+               '<tr class="text-dark fw-bold">'+
+                    '<th>Comundidad</th>'+
+                    '<th>Fecha</th>'+
+                    '<th>Acceso</th>'+
+                    '<th class="text-center col-3">Accion'+ 
+                        '<button type="button" data-info="'+data[0].UsuarioId+'" class="registrar-acceso btn btn-sm btn-icon btn-color-primary btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-acceso">'+
+                    '<i class="ki-outline ki-plus-square fs-2"></i>'+
+                '</button></th>'+
+                '</tr>'+
+            '</thead>'+
+            '<tbody class="with-before-element">';
 
+
+
+    for(const elemento of data) {
+       // console.log(elemento.Enabled);
+        // Crear un objeto Date a partir de la cadena original
+        var fecha = new Date(elemento.FechaAcceso);
+
+        // Obtener el día, mes y año
+        var dia = fecha.getDate();
+        var mes = fecha.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
+        var anio = fecha.getFullYear();
+
+        // Formatear la fecha como "DD-MM-YYYY"
+        var fechaFormateada = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
+
+       html = html +
+                '<tr>'+
+                    '<td>'+elemento.Nombre+'</td>'+
+                    '<td>'+fechaFormateada+'</td>';
+
+        if(elemento.Enabled == 1){
+            html = html +
+                    '<td><span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span></td>'+
+                    '<td class="text-center p-0">'+
+                        '<div class="btn-group btn-group-sm" role="group">'+
+                            '<a class="editar-acceso btn btn-light-warning w-100px" info="'+elemento.Id+'">Deshabilitar</a>'+
+                        '</div>'+
+                    '</td>'+
+                '</tr>'
+
+        }else{
+            html = html +
+                    '<td><span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span></td>'+
+                    '<td class="text-center p-0">'+
+                        '<div class="btn-group btn-group-sm" role="group">'+
+                            '<a class="editar-acceso btn btn-light-success w-100px" info="'+elemento.Id+'">Habilitar</a>'+
+                        '</div>'+
+                    '</td>'+
+                '</tr>'
+
+        }
+    }
+
+       html=  html+        
+                    '</tbody>'+
+                '</table>'+
+                '</div>';
+
+    return html;
+    
+}
+ 
 let miTabla = $('#tabla-usuario').DataTable({
             "language": {
                 "processing": "Procesando...",
@@ -212,7 +281,11 @@ let miTabla = $('#tabla-usuario').DataTable({
                 "<'filtro'B>" +
                 "<''f>" +
                 ">" +
-                "<'table-responsive'tr>"
+                "<'table-responsive'tr>"+
+                "<'row'" +
+                "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+                "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+                ">"
             , 
             "buttons": [
                 {
@@ -255,7 +328,14 @@ let miTabla = $('#tabla-usuario').DataTable({
             "columnDefs": [
                 { "targets": 1, "responsivePriority": 1 },
                 { "targets": 0, "responsivePriority": 3,"searchable": false },
-                { "targets": -1, "responsivePriority": 1, "width": "5%", "orderable": false, "searchable": false },       
+                { 
+                    targets: -1,
+                    responsivePriority: 1,
+                    className: 'dt-control',
+                    orderable: false,
+                    searchable: false,
+                    
+                },      
                 { "targets": 2, "responsivePriority": 4 },
                 { "targets": 3, "responsivePriority": 5 }
             ],
@@ -267,5 +347,67 @@ let miTabla = $('#tabla-usuario').DataTable({
             //"scrollX": true
         });
       
+$(document).ready(function() {
+// Add event listener for opening and closing details
+miTabla.on('click', 'td.dt-control', function (e) {
+    let tr = e.target.closest('tr');
+    let row = miTabla.row(tr);
 
+    let cell = row.cell(tr, 8);
+    let boton= $(cell.node()).find('button');
+
+    let userId= $(this).prev().find('a.editar').attr("info")
+
+    if (row.child.isShown()) {
+        // This row is already open - close it
+        boton.removeClass('active')
+        row.child.hide();
+    }
+    else {
+        // Open this row
+        boton.addClass('active')
+       
+
+        $.ajax({
+            type: 'POST',
+            url: VerAcceso,
+            data: {
+                _token: csrfToken,
+                data: userId},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data.errors);
+                if(data.success){
+                    console.log(data.data);
+                    data = data.data;
+                    row.child(format(data)).show();
+                     //location.reload();
+                }else{
+                    //console.log(data.message)
+                    html = '<ul><li style="">'+data.message+'</li></ul>';
+                    $("#AlertaError").append(html);
+
+                    $("#AlertaError").show();
+                   //console.log("error");
+                }
+            },
+            error: function () {
+                //alert('Error');
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }
+        });
+    }
+});
+
+
+});
 

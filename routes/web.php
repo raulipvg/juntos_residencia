@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccesoComunidadController;
 use App\Http\Controllers\ComunidadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\CopropietarioController;
 use App\Http\Controllers\EspacioComunController;
 use App\Http\Controllers\ResidenteController;
 use App\Http\Controllers\TipoCobro;
+use App\Models\AccesoComunidad;
 use App\Models\EspacioComun;
 
 /*
@@ -33,6 +35,12 @@ Route::group(['prefix' => '/usuario'], function () {
     Route::post('/editar', [UserController::class, 'Editar'])->name('EditarUsuario');
 });
 
+Route::group(['prefix' => '/acceso'], function () {
+    //Route::get('/', [UserController::class, 'Index'])->name('Usuario');
+    Route::post('/registrar', [AccesoComunidadController::class, 'Guardar'])->name('RegistrarAcceso');
+    Route::post('/ver', [AccesoComunidadController::class, 'VerId'])->name('VerAcceso');
+    Route::post('/editar', [AccesoComunidadController::class, 'Editar'])->name('EditarAcceso');
+});
 
 Route::group(['prefix' => '/comunidad'], function () {
     Route::get('/', [ComunidadController::class, 'Index'])->name('Comunidad');
