@@ -81,13 +81,6 @@ Route::group(['prefix' => '/residente'], function () {
     Route::post('/editar', [ComponeController::class, 'Editar'])->name('EditarResidente');
 });
 
-Route::group(['prefix' => '/tipocobro'], function () {
-    Route::get('/', [TipoCobro::class, 'Index'])->name('TipoCobro');
-    Route::post('/registrar', [TipoCobro::class, 'Guardar'])->name('GuardarTipoCobro');
-    Route::post('/ver', [TipoCobro::class, 'VerId'])->name('VerTipoCobro');
-    Route::post('/editar', [ResidenteController::class, 'Editar'])->name('EditarTipoCobro');
-});
-
 Route::group(['prefix' => '/hojavida'], function () {
     Route::post('/listar', [HojaVidaController::class, 'Index'])->name('HojaVida');
     Route::post('/registrar', [HojaVidaController::class, 'Guardar'])->name('GuardarHojaVida');

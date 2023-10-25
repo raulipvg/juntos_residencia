@@ -344,6 +344,17 @@
                                     </div>
                                     <!--end:Menu item-->
                                     
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{route('Residente') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Residente</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+
                                     <!--begin:Menu item-->
                                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                         <!--begin:Menu link-->
