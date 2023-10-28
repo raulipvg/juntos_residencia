@@ -12,7 +12,7 @@ class ComunidadController extends Controller
     public function Index(){
         $comunidades = Comunidad::all();
         $tipocomunidad = TipoComunidad::select('Id', 'Nombre')->get();
-        return View('Comunidad.comunidades')->with([
+        return View('comunidad.comunidades')->with([
             'Comunidades' => $comunidades,
             'TipoComunidad' => $tipocomunidad,
         ]);
@@ -26,7 +26,7 @@ class ComunidadController extends Controller
         $request['Correo'] = strtolower($request['Correo']);
         $request['NumeroCuenta'] = strtolower($request['NumeroCuenta']);
         $request['TipoCuenta']= $request['TipoCuenta'];
-        $request['Banco']= strtolower($request['Banco']);
+        $request['Banco']= $request['Banco'];
         $request['CantPropiedades']= strtolower($request['CantPropiedades']);
         $request['FechaRegistro']= $request['FechaRegistro']= now();
         $request['Enabled']= $request['Enabled'];
@@ -76,7 +76,7 @@ class ComunidadController extends Controller
         $request['Correo'] = strtolower($request['Correo']);
         $request['NumeroCuenta'] = strtolower($request['NumeroCuenta']);
         $request['TipoCuenta']= $request['TipoCuenta'];
-        $request['Banco']= strtolower($request['Banco']);
+        $request['Banco']= $request['Banco'];
         $request['CantPropiedades']= strtolower($request['CantPropiedades']);
         $request['FechaRegistro']= $request['FechaRegistro'];
         $request['Enabled']= $request['Enabled'];

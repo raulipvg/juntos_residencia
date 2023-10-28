@@ -49,10 +49,10 @@ $(document).ready(function() {
                             notEmpty: {
                                 message: 'Requerido'
                             },
-                            digits: {
-                                min: 1,
+                            between: {
+                                min: 0.01, 
                                 max: 100,
-                                message: 'Digitos'
+                                message: 'El valor debe estar entre 0.01 y 100'
                             }
                         }
                     },

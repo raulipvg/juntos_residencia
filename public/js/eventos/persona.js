@@ -335,7 +335,7 @@ $(document).ready(function() {
                     $("#TelefonoInput").val(data.Telefono)
                     $("#CorreoInput").val(data.Email)
                     
-                    $("#EnabledInput").val(data.Enabled).trigger("change");
+                    $("#EnabledInput3").val(data.Enabled).trigger("change");
 
 
                     blockUI.release();
@@ -503,7 +503,7 @@ $(document).ready(function() {
                     $("#CorreoInput").val(data.Email).prop('disabled',true);
                     
 
-                    $("#EnabledInput").val(data.Enabled).trigger("change");
+                    $("#EnabledInput3").val(data.Enabled).trigger("change");
                                     
                     blockUI.release();
 

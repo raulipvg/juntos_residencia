@@ -116,9 +116,9 @@ $(document).ready(function() {
 
                         for(let row in data){
                             if(data[row].Enabled == 1){
-                            var enabled =  '<span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span>';
+                            var enabled =  '<span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Habilitado</span>';
                             }else{
-                            var enabled = '<span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span>';  
+                            var enabled = '<span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Deshabilitado</span>';  
                             }
 
                             var accion = '<div class="btn-group btn-group-sm" role="group">'+

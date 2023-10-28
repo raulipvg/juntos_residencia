@@ -78,7 +78,7 @@
                         <th scope="col">RUT</th>
                         <th scope="col">Cant</th>
                         <th scope="col">Fecha Registro</th>
-                        <th scope="col">Enabled</th>
+                        <th scope="col">Estado</th>
                         <th scope="col">Tipo Comunidad</th>
                         <th class="text-center" scope="col">Accion</th>
                     </tr>
@@ -94,11 +94,11 @@
                         <td>{{\Carbon\Carbon::parse($comunidad->FechaRegistro)->format('d-m-Y')}}</td>
                         @if ($comunidad->Enabled == 1 )
                         <td data-search="Enabled">
-                            <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span>
+                            <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Habilitado</span>
                         </td>
                         @else
                         <td data-search="Disabled">
-                            <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span>
+                            <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Deshabilitado</span>
                         </td>
                         @endif
                         <td>{{ $comunidad->tipo_comunidad->Nombre }}</td>
@@ -170,35 +170,53 @@
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="number" class="form-control" placeholder="Ingrese el Numero Cuenta" id="NumeroCuentaInput" name="NumeroCuenta" />
-                                <label for="NumeroCuentaInput" class="form-label">Numero Cuenta</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el Tipo cuenta" id="TipoCuentaInput" name="TipoCuenta" />
-                                <label for="TipoCuentaInput" class="form-label">Tipo Cuenta</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el Banco" id="BancoInput" name="Banco" />
-                                <label for="BancoInput" class="form-label">Banco</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
                                 <input type="number" class="form-control" placeholder="Ingrese la cantidad de propiedades" id="CantPropiedadesInput" name="CantPropiedades" />
                                 <label for="CantPropiedadesInput" class="form-label">Cantidad Propiedades</label>
                             </div>
                         </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating fv-row">
+                                <select id="BancoInput" name="Banco" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                    <option></option>
+                                    <option>Banco de Chile</option>
+                                    <option>Banco Santander Chile</option>
+                                    <option>Banco de Crédito e Inversiones BCI</option>
+                                    <option>Banco Estado</option>
+                                    <option>Banco Itaú Chile</option>
+                                    <option>Banco Security</option>
+                                    <option>Banco BICE</option>
+                                    <option>Banco Falabella</option>
+                                    <option>Banco Ripley</option>
+                                    <option>Banco Consorcio</option>
+                                    <option>Scotiabank Chile</option>
+                                </select>
+                                <label for="BankInput" class="form-label">Banco</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="date" class="form-control" placeholder="Ingrese la fecha registro" value="{{ now()->format('Y-m-d') }}" id="FechaRegistroInput" name="FechaRegistro" max="" />
+                                <select id="TipoCuentaInput" name="TipoCuenta" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                    <option></option>
+                                    <option>Cuenta Vista</option>
+                                    <option>Cuenta Corriente</option>
+                                    <option>Cuenta de Ahorro</option>
+                                </select>
+                                <label for="AccountTypeInput" class="form-label">Tipo de Cuenta</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating fv-row">
+                                <input type="number" class="form-control" placeholder="Ingrese el Numero Cuenta" id="NumeroCuentaInput" name="NumeroCuenta" />
+                                <label for="NumeroCuentaInput" class="form-label">Numero Cuenta</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-floating fv-row">
+                                <input type="date" class="form-control" placeholder="Ingrese la fecha registro" value="{{ now()->format('Y-m-d') }}" id="FechaRegistroInput" name="FechaRegistro"/>
                                 <label for="FechaRegistroInput" class="form-label">Fecha Registro</label>
                             </div>
                         </div>
@@ -206,8 +224,8 @@
                             <div class="form-floating fv-row">
                                 <select id="EnabledInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
-                                    <option value="1">Enabled</option>
-                                    <option value="2">Disabled</option>
+                                    <option value="1">Habilitado</option>
+                                    <option value="2">Deshabilitado</option>
                                 </select>
                                 <label for="EnabledInput" class="form-label">Estado</label>
                             </div>
@@ -226,7 +244,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer bg-light p-2">
                     <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>
@@ -242,11 +259,8 @@
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                         </div>
                     </button>
-
                 </div>
             </form>
-
-
         </div>
     </div>
 </div>
@@ -259,7 +273,6 @@
             <div class="modal-header bg-light p-2 ps-5">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 id="modal-titulo-acceso" class="modal-title text-uppercase">Espacios Comunes - Comunidad 1</h2>
-
                     <button id="AddBtn-Acceso" type="button" class="btn btn-sm btn-success ms-5 abrir-modal" data-bs-stacked-modal="#editar-espacio">
                         Registrar
                     </button>
@@ -285,12 +298,11 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Garantia</th>
-                            <th scope="col">Enabled</th>
+                            <th scope="col">Estado</th>
                             <th class="text-center" scope="col">Accion</th>
                         </tr>
                     </thead>
                     <tbody>
-
 
                         
                     </tbody>
@@ -368,8 +380,8 @@
                             <div class="form-floating fv-row">
                                 <select id="EnabledInput2" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true" data-dropdown-parent="#editar-espacio">
                                     <option></option>
-                                    <option value="1">Enabled</option>
-                                    <option value="2">Disabled</option>
+                                    <option value="1">Habilitado</option>
+                                    <option value="2">Deshabilitado</option>
                                 </select>
                                 <label for="TipoComunidadIdInput" class="form-label">Estado</label>
                             </div>
@@ -423,6 +435,7 @@
 <!--- Eventos de la pagina -->
 <script src="{{ asset('js/eventos/comunidad.js?id=2') }}"></script>
 <script src="{{ asset('js/eventos/espaciocomun.js?id=2') }}"></script>
+
 <!--end::Javascript-->
 
 @endpush

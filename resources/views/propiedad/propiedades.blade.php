@@ -93,11 +93,11 @@
                         <td>{{ $propiedad->Prorrateo }}</td>
                         @if ($propiedad->Enabled == 1 )
                         <td data-search="Enabled">
-                            <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span>
+                            <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Habilitado</span>
                         </td>
                         @else
                         <td data-search="Disabled">
-                            <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span>
+                            <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Deshabilitado</span>
                         </td>
                         @endif
                         <td class="text-center p-0">
@@ -194,8 +194,8 @@
                             <div class="form-floating fv-row">
                                 <select id="EstadoInput" name="Estado" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
-                                    <option value="1">Enabled</option>
-                                    <option value="2">Disabled</option>
+                                    <option value="1">Habilitado</option>
+                                    <option value="2">Deshabilitado</option>
                                 </select>
                                 <label for="EstadoInput" class="form-label">Estado</label>
                             </div>

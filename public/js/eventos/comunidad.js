@@ -100,11 +100,6 @@ $(document).ready(function() {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 3,
-                                max: 25,
-                                message: 'Entre 3 y 25 caracteres'
                             }
                         }
                     },
@@ -146,7 +141,6 @@ $(document).ready(function() {
                         }
                     },
                 },
-
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
                     bootstrap: new FormValidation.plugins.Bootstrap5({
@@ -157,13 +151,10 @@ $(document).ready(function() {
                 }
             }
     );
-
     function actualizarValidSelect2(){
-
         $('.form-select').each( function () {
             var valid = $(this).hasClass("is-valid");
             var invalid =$(this).hasClass("is-invalid");
-
             //console.log("valid: "+valid+" invalid: "+invalid)
             if(valid){
                 $(this).next().children().children().removeClass("is-invalid").addClass("is-valid");
@@ -175,25 +166,31 @@ $(document).ready(function() {
                 $(this).next().children().children().removeClass("is-valid");
                  $(this).next().children().children().removeClass("is-invalid");
             }
-
         });
     }
-
+    
      // Evento al presionar el Boton de Registrar
     $("#AddBtn").on("click", function (e ) {
         //Inicializacion
         //console.log("AddBtn")
+        
+        var fechaActual = new Date();
+        // Formatear la fecha al formato YYYY-MM-DD
+        var fechaFormateada2 = fechaActual.toISOString().split("T")[0];
+        
         e.preventDefault();
         $("#modal-titulo").empty().html("Registrar Comunidad");
         $("input").val('').prop("disabled",false);
         $('#TipoComunidadIdInput').val("").trigger("change").prop("disabled",false);
+        $('#TipoCuentaInput').val("").trigger("change").prop("disabled",false);
+        $('#BancoInput').val("").trigger("change").prop("disabled",false);
         $('#EnabledInput').val("").trigger("change").prop("disabled",false);
-
+        $("#FechaRegistroInput").val(fechaFormateada2).prop("disabled",true);
+        
         $("#AddSubmit").show();
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled",true);
         $("#AlertaError").hide();
-
         validator.resetForm();
         actualizarValidSelect2();
     });
@@ -202,7 +199,7 @@ $(document).ready(function() {
     submitButton.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
-
+        
         $("#AlertaError").hide();
         $("#AlertaError").empty();
 
@@ -298,6 +295,8 @@ $(document).ready(function() {
         $("#modal-titulo").empty().html("Editar Comunidad");
         $("input").val('').prop("disabled",false);
         $('#TipoComunidadIdInput').val("").trigger("change").prop("disabled",false);
+        $('#TipoCuentaInput').val("").trigger("change").prop("disabled",false);
+        $('#BancoInput').val("").trigger("change").prop("disabled",false);
         $('#EnabledInput').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit").hide();
@@ -334,11 +333,11 @@ $(document).ready(function() {
 
                     $("#CorreoInput").val(data.Correo);
                     $("#NumeroCuentaInput").val(data.NumeroCuenta);
-                    $("#TipoCuentaInput").val(data.TipoCuenta);
+                    $("#TipoCuentaInput").val(data.TipoCuenta).trigger("change");
                     
-                    $("#BancoInput").val(data.Banco);
+                    $("#BancoInput").val(data.Banco).trigger("change");
                     $("#CantPropiedadesInput").val(data.CantPropiedades);
-                    $("#FechaRegistroInput").val(fechaFormateada);
+                    $("#FechaRegistroInput").val(fechaFormateada).trigger("change").prop("readonly", true);
                   
                     $("#EnabledInput").val(data.Enabled).trigger("change");
                     $('#TipoComunidadIdInput').val(data.TipoComunidadId).trigger("change");
@@ -473,6 +472,8 @@ $(document).ready(function() {
         $("input").val('');
         $('#TipoComunidadIdInput').val("").trigger("change");
         $('#EnabledInput').val("").trigger("change");
+        $('#TipoCuentaInput').val("").trigger("change");
+        $('#BancoInput').val("").trigger("change");
         $("#AddSubmit").hide();
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled",false);
@@ -505,8 +506,8 @@ $(document).ready(function() {
                     $("#RUTInput").val(data.RUT).prop("disabled", true);
                     $("#CorreoInput").val(data.Correo).prop("disabled", true);
                     $("#NumeroCuentaInput").val(data.NumeroCuenta).prop("disabled", true);
-                    $("#TipoCuentaInput").val(data.TipoCuenta).prop("disabled", true);
-                    $("#BancoInput").val(data.Banco).prop("disabled", true);
+                    $("#TipoCuentaInput").val(data.TipoCuenta).trigger("change").prop("disabled", true);
+                    $("#BancoInput").val(data.Banco).trigger("change").prop("disabled", true);
                     $("#CantPropiedadesInput").val(data.CantPropiedades).prop("disabled", true);
                     $("#FechaRegistroInput").val(fechaFormateada).prop("disabled", true);
                     

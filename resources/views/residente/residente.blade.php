@@ -61,7 +61,6 @@ $today = date('Y-m-d');
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-1">
                 <h3 class="card-title text-uppercase">Residentes</h3>
-
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
@@ -86,11 +85,11 @@ $today = date('Y-m-d');
                                 <td>{{ $persona->Nombre }} {{ $persona->Apellido }}</td>
                                 @if ($persona->Enabled == 1 )
                                     <td data-search="Enabled">
-                                        <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled </span>
+                                        <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Habilitado </span>
                                     </td>
                                 @else
                                     <td data-search="Disabled">
-                                        <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled </span>
+                                        <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Deshabilitado </span>
                                     </td>
                                 @endif
                                 <td  class="text-center p-0">
@@ -122,7 +121,6 @@ $today = date('Y-m-d');
         <div class="modal-content" id="div-bloquear">
             <div class="modal-header bg-light p-2 ps-5">
                 <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Residente</h2>
-
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
@@ -140,7 +138,6 @@ $today = date('Y-m-d');
                 <div class="modal-body">
                     <div id="AlertaError" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
                     </div>
-
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
@@ -204,20 +201,16 @@ $today = date('Y-m-d');
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="EnabledInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                <select id="EnabledInput3" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
                                     <option value="1">Habilitado</option>
                                     <option value="2">Deshabilitado</option>                                   
                                 </select>
-                                <label for="EnabledInput" class="form-label">Enabled</label>
+                                <label for="EnabledInput" class="form-label">Estado</label>
                             </div>
                         </div>
                     </div>
-
-                    
-
                 </div>
-
                 <div class="modal-footer bg-light p-2">
                     <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>
                     <button id="AddSubmit" type="submit" class="btn btn-success">
@@ -232,11 +225,8 @@ $today = date('Y-m-d');
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                         </div>
                     </button>
-
                 </div>
             </form>
-
-
         </div>
     </div>
 </div>
@@ -249,7 +239,6 @@ $today = date('Y-m-d');
             <div class="modal-header bg-light p-2 ps-5">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 id="modal-titulo-acceso" class="modal-title text-uppercase">Hoja de Vida - Comunidad 1</h2>
-
                     <button id="AddBtn-Acceso" type="button" class="btn btn-sm btn-success ms-5 abrir-modal" data-bs-stacked-modal="#editar-espacio">
                         Registrar
                     </button>
@@ -274,24 +263,18 @@ $today = date('Y-m-d');
                             <th scope="col">#</th>
                             <th scope="col">Titulo</th>
                             <th scope="col">Fecha</th>
-                            <th scope="col">Enabled</th>
+                            <th scope="col">Estado</th>
                             <th class="text-center" scope="col">Accion</th>
                         </tr>
                     </thead>
                     <tbody>
-
-
                         
                     </tbody>
                 </table>
-
             </div>
             <div class="modal-footer bg-light p-2">
                 <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>
-
             </div>
-
-
         </div>
     </div>
 </div>
@@ -303,7 +286,6 @@ $today = date('Y-m-d');
         <div class="modal-content" id="div-bloquear-espacio-registrar">
             <div class="modal-header bg-light p-2 ps-5">
                 <h2 id="modal-titulo-acceso-registrar" class="modal-title text-uppercase">Registrar Hoja de Vida</h2>
-
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2 cerrar-modal" data-bs-dismiss="modal" aria-label="Close">
                     <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
@@ -327,7 +309,6 @@ $today = date('Y-m-d');
                                 <input type="text" class="form-control" placeholder="Ingrese el titulo" id="NombreInput2" name="Titulo" />
                                 <label for="NombreInput2" class="form-label">Titulo</label>
                                 <input hidden type="number" id="IdInput-espacio" name="Id" />
-
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
@@ -335,7 +316,6 @@ $today = date('Y-m-d');
                                 <input type="text" class="form-control" placeholder="Ingrese la descripción" id="DescripcionInput" name="Descripcion" />
                                 <label for="DescripcionInput" class="form-label">Descripcion</label>
                             </div>
-
                         </div>
                     </div>
                     <div class="row">
@@ -349,15 +329,13 @@ $today = date('Y-m-d');
                             <div class="form-floating fv-row">
                                 <select id="EnabledInput2" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true" data-dropdown-parent="#editar-espacio">
                                     <option></option>
-                                    <option value="1">Enabled</option>
-                                    <option value="2">Disabled</option>
+                                    <option value="1">Habilitado</option>
+                                    <option value="2">Deshabilitado</option>
                                 </select>
                                 <label for="TipoComunidadIdInput" class="form-label">Estado</label>
                             </div>
                         </div>
                     </div>
-                        
-
                 </div>
                 <div class="modal-footer bg-light p-2">
                     <button type="button" class="btn btn-light-dark cerrar-modal" data-bs-dismiss="modal">Cerrar</button>
@@ -373,11 +351,8 @@ $today = date('Y-m-d');
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                         </div>
                     </button>
-
                 </div>
             </form>
-
-
         </div>
     </div>
 </div>
@@ -464,8 +439,8 @@ $today = date('Y-m-d');
                             <div class="form-floating fv-row">
                                 <select id="EnabledInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
-                                    <option value="1">Enabled</option>
-                                    <option value="2">Disabled</option>
+                                    <option value="1">Habilitado</option>
+                                    <option value="2">Deshabilitado</option>
                                 </select>
                                 <label for="EnabledInput" class="form-label">Estado</label>
                             </div>
@@ -482,8 +457,6 @@ $today = date('Y-m-d');
                     </button>
                 </div>
             </form>
-
-
         </div>
     </div>
 </div>
