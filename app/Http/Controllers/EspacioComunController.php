@@ -6,6 +6,7 @@ use App\Models\Comunidad;
 use App\Models\EspacioComun;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 
 class EspacioComunController extends Controller
@@ -103,6 +104,30 @@ class EspacioComunController extends Controller
                 'message' => 'Modelo recibido y procesado']);
         }catch(Exception $e){
                 
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
+    }
+
+    public function CambiarEstadoEspacios(Request $request){
+        $request = $request->input('data');
+        // Accede a los atributos del modelo
+
+        try{
+            $espaciosEdit = EspacioComun::find($request);
+            DB::beginTransaction();
+            $espaciosEdit->update([
+                   'Enabled' => ($espaciosEdit['Enabled'] == 1)? 2: 1 
+            ]);
+            //$usuario->save();
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Modelo recibido y procesado']);
+        }catch(Exception $e){
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()]);

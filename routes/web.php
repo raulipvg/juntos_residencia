@@ -53,6 +53,7 @@ Route::group(['prefix' => '/comunidad'], function () {
     Route::post('/registrar', [ComunidadController::class, 'Guardar'])->name('GuardarComunidad');
     Route::post('/ver', [ComunidadController::class, 'VerId'])->name('VerComunidad');
     Route::post('/editar', [ComunidadController::class, 'Editar'])->name('EditarComunidad');
+    Route::post('/cambiarestadoComunidad', [ComunidadController::class, 'CambiarEstadoComunidad'])->name('CambiarEstadoComunidad');
 });
 Route::group(['prefix' => '/propiedad'], function () {
     Route::get('/', [PropiedadController::class, 'Index'])->name('Propiedad');
@@ -68,6 +69,7 @@ Route::group(['prefix' => '/espaciocomun'], function () {
     Route::post('/registrar', [EspacioComunController::class, 'Guardar'])->name('GuardarEspacioComun');
     Route::post('/ver', [EspacioComunController::class, 'VerId'])->name('VerEspacioComun');
     Route::post('/editar', [EspacioComunController::class, 'Editar'])->name('EditarEspacioComun');
+    Route::post('/cambiarestadoEspacios', [EspacioComunController::class, 'CambiarEstadoEspacios'])->name('CambiarEstadoEspacios');
 });
 
 

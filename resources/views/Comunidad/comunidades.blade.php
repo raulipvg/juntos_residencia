@@ -94,11 +94,11 @@
                         <td>{{\Carbon\Carbon::parse($comunidad->FechaRegistro)->format('d-m-Y')}}</td>
                         @if ($comunidad->Enabled == 1 )
                         <td data-search="Enabled">
-                            <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Habilitado</span>
+                            <button class="btn btn-sm btn-light-success estado-comunidad fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Comunidad">Activo</button>
                         </td>
                         @else
                         <td data-search="Disabled">
-                            <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Deshabilitado</span>
+                            <button class="btn btn-light-warning fs-7 estado-comunidad text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Comunidad">Inactivo</button>
                         </td>
                         @endif
                         <td>{{ $comunidad->tipo_comunidad->Nombre }}</td>
@@ -224,8 +224,8 @@
                             <div class="form-floating fv-row">
                                 <select id="EnabledInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
-                                    <option value="1">Habilitado</option>
-                                    <option value="2">Deshabilitado</option>
+                                    <option value="1">Activo</option>
+                                    <option value="2">Inactivo</option>
                                 </select>
                                 <label for="EnabledInput" class="form-label">Estado</label>
                             </div>
@@ -380,8 +380,8 @@
                             <div class="form-floating fv-row">
                                 <select id="EnabledInput2" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true" data-dropdown-parent="#editar-espacio">
                                     <option></option>
-                                    <option value="1">Habilitado</option>
-                                    <option value="2">Deshabilitado</option>
+                                    <option value="1">Activo</option>
+                                    <option value="2">Inactivo</option>
                                 </select>
                                 <label for="TipoComunidadIdInput" class="form-label">Estado</label>
                             </div>
@@ -420,11 +420,13 @@
     const GuardarComunidad = "{{ route('GuardarComunidad') }}";
     const VerComunidad = "{{ route('VerComunidad') }}";
     const EditarComunidad = "{{ route('EditarComunidad') }}";
+    const CambiarEstadoComunidad = "{{ route('CambiarEstadoComunidad') }}";
 
     const EspacioComun = "{{ route('EspacioComun') }}";
     const GuardarEspacioComun = "{{ route('GuardarEspacioComun') }}";
     const VerEspacioComun = "{{ route('VerEspacioComun') }}";
     const EditarEspacioComun = "{{ route('EditarEspacioComun') }}";
+    const CambiarEstadoEspacios = "{{ route('CambiarEstadoEspacios') }}";
 
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 </script>

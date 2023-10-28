@@ -6,6 +6,7 @@ use App\Models\Comunidad;
 use App\Models\TipoComunidad;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class ComunidadController extends Controller
 {
@@ -96,6 +97,30 @@ class ComunidadController extends Controller
                 'message' => 'Modelo recibido y procesado']);
         }catch(Exception $e){
                 
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
+    }
+
+    public function CambiarEstadoComunidad(Request $request){
+        $request = $request->input('data');
+        // Accede a los atributos del modelo
+
+        try{
+            $comunidadEdit = Comunidad::find($request);
+            DB::beginTransaction();
+            $comunidadEdit->update([
+                   'Enabled' => ($comunidadEdit['Enabled'] == 1)? 2: 1 
+            ]);
+            //$usuario->save();
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Modelo recibido y procesado']);
+        }catch(Exception $e){
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()]);
