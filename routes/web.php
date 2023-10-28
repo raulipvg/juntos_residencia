@@ -37,6 +37,7 @@ Route::group(['prefix' => '/usuario'], function () {
     Route::post('/registrar', [UserController::class, 'Guardar'])->name('GuardarUsuario');
     Route::post('/ver', [UserController::class, 'VerId'])->name('VerUsuario');
     Route::post('/editar', [UserController::class, 'Editar'])->name('EditarUsuario');
+    Route::post('/cambiarestado', [UserController::class, 'CambiarEstado'])->name('CambiarEstado');
 });
 
 Route::group(['prefix' => '/acceso'], function () {
@@ -44,6 +45,7 @@ Route::group(['prefix' => '/acceso'], function () {
     Route::post('/registrar', [AccesoComunidadController::class, 'Guardar'])->name('RegistrarAcceso');
     Route::post('/ver', [AccesoComunidadController::class, 'VerId'])->name('VerAcceso');
     Route::post('/editar', [AccesoComunidadController::class, 'Editar'])->name('EditarAcceso');
+    Route::post('/comunidadsinacceso',[AccesoComunidadController::class, 'getComunidadSinAcceso'])->name('ComunidadSinAcceso');
 });
 
 Route::group(['prefix' => '/comunidad'], function () {

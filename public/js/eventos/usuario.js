@@ -148,7 +148,8 @@ $(document).ready(function() {
             }
     );
 
-
+    const target = document.querySelector("#div-bloquear");
+    const blockUI = new KTBlockUI(target)
 
     function actualizarValidSelect2(){
 
@@ -176,6 +177,7 @@ $(document).ready(function() {
         //Inicializacion
         //console.log("AddBtn")
         e.preventDefault();
+        e.stopPropagation();
         $("#modal-titulo").empty().html("Registrar Usuario");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
@@ -198,10 +200,11 @@ $(document).ready(function() {
     submitButton.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
+        e.stopPropagation();
 
         $("#AlertaError").hide();
         $("#AlertaError").empty();
-
+        
         // Validate form before submit
         if (validator) {
             validator.validate().then(function (status) {
@@ -231,7 +234,7 @@ $(document).ready(function() {
                         //submitButton.removeAttribute('data-kt-indicator');
                         // Enable button
                         //submitButton.disabled = true;
-
+                        blockUI.block();
                         $.ajax({
                             type: 'POST',
                             url: GuardarUsuario,
@@ -246,6 +249,7 @@ $(document).ready(function() {
                             },
                             success: function (data) {
                                 //console.log(data.errors);
+                                blockUI.release();
                                 if(data.success){
                                     //console.log("exito");
                                      location.reload();
@@ -261,6 +265,7 @@ $(document).ready(function() {
                                 }
                             },
                             error: function (e) {
+                                blockUI.release();
                                 //console.log(e)
                                 //alert('Error');
                                 Swal.fire({
@@ -274,6 +279,7 @@ $(document).ready(function() {
                                 });
                             }
                         });
+                        
                     // form.submit(); // Submit form
                     submitButton.removeAttribute('data-kt-indicator');
                     submitButton.disabled = false;
@@ -282,12 +288,12 @@ $(document).ready(function() {
         }
     });
 
-    const target = document.querySelector("#div-bloquear");
-    const blockUI = new KTBlockUI(target);
+   ;
 
     //Evento al presionar el Boton Editar
     $("#tabla-usuario tbody").on("click",'.editar', function (e) {
         e.preventDefault();
+        e.stopPropagation();
         //Inicializacion
         $("#modal-titulo").empty().html("Editar Usuario");
         $("input").val('').prop("disabled",false);
@@ -307,7 +313,6 @@ $(document).ready(function() {
         let id = Number($(this).attr("info"));
 
         blockUI.block();
-
         $.ajax({
             type: 'POST',
             url: VerUsuario,
@@ -318,7 +323,7 @@ $(document).ready(function() {
             dataType: "json",
             success: function (data) {
                 //console.log(data);
-                
+                blockUI.release();
                 if(data.success){
                     acceso= data.acceso
                     data=data.data;
@@ -353,14 +358,7 @@ $(document).ready(function() {
                     $('#RolIdInput').val(data.RolId).trigger("change");
                     $('#EstadoIdInput').val(data.EstadoId).trigger("change");
                     $('#ComunidadIdInput').val(acceso[0].ComunidadId).trigger("change");
-
-
-
-                    blockUI.release();
                 }else{
-                    //console.log("error");
-                    blockUI.release();
-
                     Swal.fire({
                             text: "Error de Carga",
                             icon: "error",
@@ -395,15 +393,17 @@ $(document).ready(function() {
                      });
             }
         });
+        
     });
     // Manejador al presionar el submit de Editar
     const submitEditButton = document.getElementById('EditSubmit');
     submitEditButton.addEventListener('click', function (e) {
             // Prevent default button action
             e.preventDefault();
+            e.stopPropagation();
             $("#AlertaError").hide();
-             $("#AlertaError").empty();
-
+            $("#AlertaError").empty();
+            blockUI.block();
             // Validate form before submit
             if (validator) {
                 validator.validate().then(function (status) {
@@ -433,7 +433,7 @@ $(document).ready(function() {
                                 const value = decodeURIComponent(pair[1]);
                                 keyValueObject[key] = value;
                             }
-
+                            
                             $.ajax({
                                 type: 'POST',
                                 url: EditarUsuario,
@@ -444,6 +444,7 @@ $(document).ready(function() {
                                 dataType: "json",
                                 success: function (data) {
                                     //console.log(data.errors);
+                                    
                                     if(data.success){
                                         //console.log("exito");
                                          location.reload();
@@ -455,9 +456,11 @@ $(document).ready(function() {
                                         $("#AlertaError").show();
                                        //console.log("error");
                                     }
+                                    blockUI.release();
                                 },
                                 error: function () {
                                     //alert('Error');
+                                    blockUI.release();
                                     Swal.fire({
                                         text: "Error",
                                         icon: "error",
@@ -469,13 +472,17 @@ $(document).ready(function() {
                                     });
                                 }
                             });
+                            
                             //form.submit(); // Submit form
                         } //endif
                  });
             }
     });
 
-    $("#tabla-usuario tbody").on("click",'.ver', function () {
+    //Evento al presionar el Boton VER
+    $("#tabla-usuario tbody").on("click",'.ver', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         //console.log("wena");
         $("#modal-titulo").empty().html("Ver Usuario");
         $("input").val('');
@@ -493,7 +500,6 @@ $(document).ready(function() {
 
         let id = Number($(this).attr("info"));
         blockUI.block();
-
         $.ajax({
             type: 'POST',
             url: VerUsuario,
@@ -568,12 +574,62 @@ $(document).ready(function() {
 
 
     });
-
-    $("#tabla-usuario").on("click", '.editar-acceso', function(e){
+    
+    $("#tabla-usuario tbody").on("click", '.estado-usuario', function (e) {
         e.preventDefault();
-        console.log("click")
+        e.stopPropagation();
+        console.log("click");
+
+        var userId =  $(this).closest('td').next().find('a.ver').attr('info');
+        $.ajax({
+            type: 'POST',
+            url: CambiarEstado,
+            data: {
+                _token: csrfToken,
+                data: userId},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                //blockUI2.release();
+                if(data.success){
+                    //console.log(data.data);               
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                }
+            },
+            error: function () {
+                //alert('Error');
+                //blockUI2.release();
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }
+        });
+
+    });
+    //Evento al presionar el Boton de cambiar estado en la subtabla 
+    $("#tabla-usuario tbody ").on("click", '.editar-acceso', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        //console.log("click")
         var accesoId =$(this).attr("info");
-        console.log(accesoId)
+        //console.log(accesoId)
 
         $.ajax({
             type: 'POST',
@@ -615,26 +671,84 @@ $(document).ready(function() {
         });
 
     });
-
-    $("#tabla-usuario").on("click",'.registrar-acceso', function(e) {
-        //console.log('click')
+    const target2 = document.querySelector("#div-bloquear2");
+    const blockUI2 = new KTBlockUI(target2);
+    //Evento al presion el boton de Registrar ACCESO en la subtabla
+    $("#tabla-usuario tbody").on("click",'.registrar-acceso', function(e) {
+        console.log('click')
+        e.preventDefault();
+        e.stopPropagation();
         $('.form-select').val("").trigger("change").prop("disabled",false);
         $("#AlertaError2").hide();
-        validator.resetForm();
+        validator2.resetForm();
         actualizarValidSelect2();
         //console.log($(this).attr("data-info"))
         $("#UsuarioIdInput").val($(this).attr("data-info"));
+        var userId= $(this).attr("data-info")
+        blockUI2.block();
+        $.ajax({
+            type: 'POST',
+            url: ComunidadSinAcceso,
+            data: {
+                _token: csrfToken,
+                data: userId},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                blockUI2.release();
+                if(data.success){
+                    //console.log(data.data);               
+                    data = data.data;
+                    var select = $('#ComunidadIdInput2');
+                    select.empty();
+                    // Agrega las opciones al select
+                    var option = new Option('', '');
+                    select.append(option);      
+                    for (const comunidad in data) {
+                            var option = new Option(data[comunidad].Nombre, data[comunidad].Id);
+                            select.append(option);                        
+                    }
+                }else{
+                    //console.log(data.message)
+                    html = '<ul><li style="">'+data.message+'</li></ul>';
+                    $("#AlertaError2").append(html);
+
+                    $("#AlertaError2").show();
+                   //console.log("error");
+                }
+            },
+            error: function () {
+                //alert('Error');
+                blockUI2.release();
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }
+        });
+
+        
+
+
 
     });
-
+    
+    //Evento al presionar el Boton Submit del modal de Registrar NUEVO ACCESO
     const submitButton2 = document.getElementById('AddSubmit-acceso');
     submitButton2.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
+        e.stopPropagation();
         console.log('guardar')
         $("#AlertaError2").hide();
         $("#AlertaError2").empty();
-
+        
         // Validate form before submit
         if (validator2) {
             validator2.validate().then(function (status) {
@@ -664,7 +778,7 @@ $(document).ready(function() {
                         //submitButton.removeAttribute('data-kt-indicator');
                         // Enable button
                         //submitButton.disabled = true;
-
+                        blockUI2.block();
                         $.ajax({
                             type: 'POST',
                             url: GuardarAcceso,
@@ -679,16 +793,17 @@ $(document).ready(function() {
                             },
                             success: function (data) {
                                 //console.log(data.errors);
+                                blockUI2.release();
                                 if(data.success){
                                     //console.log("exito");
                                      location.reload();
                                 }else{
                                     //console.log(data.error);
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError").append(html);
+                                       $("#AlertaError2").append(html);
 
                                     
-                                    $("#AlertaError").show();
+                                    $("#AlertaError2").show();
                                     
                                    //console.log("error");
                                 }
@@ -696,6 +811,8 @@ $(document).ready(function() {
                             error: function (e) {
                                 //console.log(e)
                                 //alert('Error');
+                                blockUI2.release();
+
                                 Swal.fire({
                                     text: "Error",
                                     icon: "error",
@@ -714,5 +831,7 @@ $(document).ready(function() {
             });
         }
     });
+
+
 
 });

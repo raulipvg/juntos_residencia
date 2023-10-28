@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccesoComunidad;
+use App\Models\Comunidad;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -49,10 +50,21 @@ class AccesoComunidadController extends Controller
                                     ->where('AccesoComunidad.UsuarioId','=',$request)
                                     ->join('Comunidad', 'AccesoComunidad.ComunidadId', '=', 'Comunidad.Id')
                                     ->get();
+
+            $comunidadesConAcceso = AccesoComunidad::select('Comunidad.Id','Comunidad.Nombre')       
+                                        ->where('AccesoComunidad.UsuarioId','=', $request)
+                                        ->join('Comunidad', 'AccesoComunidad.ComunidadId', '=', 'Comunidad.Id')
+                                        ->get();
+            
+            $comunidadesSinAcceso = Comunidad::select('Id', 'Nombre')
+                                        ->whereNotIn('Id', $comunidadesConAcceso->pluck('Id'))
+                                        ->get();
+
             //$acessoComunidad = AccesoComunidad::
             return response()->json([
                 'success' => true,
-                'data' => $usuario ]);
+                'data' => $usuario,
+                'data2' =>  $comunidadesSinAcceso]);
         }catch(Exception $e){
 
             return response()->json([
@@ -61,6 +73,32 @@ class AccesoComunidadController extends Controller
         }
 
     }
+
+    public function getComunidadSinAcceso(Request $request){
+        $request = $request->input('data');
+
+        try{
+            $comunidadesConAcceso = AccesoComunidad::select('Comunidad.Id','Comunidad.Nombre')       
+                                        ->where('AccesoComunidad.UsuarioId','=', $request)
+                                        ->join('Comunidad', 'AccesoComunidad.ComunidadId', '=', 'Comunidad.Id')
+                                        ->get();
+            
+            $comunidadesSinAcceso = Comunidad::select('Id', 'Nombre')
+                                        ->whereNotIn('Id', $comunidadesConAcceso->pluck('Id'))
+                                        ->get();
+
+            //$acessoComunidad = AccesoComunidad::
+            return response()->json([
+                'success' => true,
+                'data' => $comunidadesSinAcceso]);
+        }catch(Exception $e){
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
+    }
+
 
     public function Editar(Request $request){
         $request = $request->input('data');

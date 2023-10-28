@@ -39,6 +39,7 @@
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="{{ asset('js/plugins.bundle.js') }}"></script>
 		<script src="{{ asset('js/scripts.bundle.js') }}"></script>
+		<script src="{{ asset('js/passive_events.js') }}"></script>
 		<!--end::Global Javascript Bundle-->
 
        

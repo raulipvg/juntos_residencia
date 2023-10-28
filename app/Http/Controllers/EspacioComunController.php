@@ -38,7 +38,7 @@ class EspacioComunController extends Controller
         $request = $request->input('data');
         $IdComunidad = $request['ComunidadId'];
 
-        $comunidad = Comunidad::findOrFail($IdComunidad);
+        $comunidad = Comunidad::find($IdComunidad);
 
         $request['Nombre'] =  strtolower($request['Nombre']);
         $request['Descripcion'] = strtolower($request['Descripcion']);

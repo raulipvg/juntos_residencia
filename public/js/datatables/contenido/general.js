@@ -2,20 +2,23 @@
 function format(data) {
     // `d` is the original data object for the row
     var html=
-        '<div class="d-flex justify-content-center">'+
-        '<table id="services_table" class="services-subtable border border-dashed rounded bg-gray-100 pb-2" style="width: 90%;">'+
+    '<div class="d-flex justify-content-center">'+
+        '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">'+
+        '<table id="services_table" class="table table-row-dashed">'+
             '<thead class="services-info">'+
-               '<tr class="text-dark fw-bold">'+
-                    '<th>Comundidad</th>'+
-                    '<th>Fecha</th>'+
-                    '<th>Acceso</th>'+
-                    '<th class="text-center col-3">Accion'+ 
-                        '<button type="button" data-info="'+data[0].UsuarioId+'" class="registrar-acceso btn btn-sm btn-icon btn-color-primary btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-acceso">'+
-                    '<i class="ki-outline ki-plus-square fs-2"></i>'+
-                '</button></th>'+
+               '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
+                    '<th class="p-0 ps-3">Comundidad</th>'+
+                    '<th class="p-0 ps-3">Fecha</th>'+
+                    '<th class="text-center col-3 p-0 ps-2">ESTADO'+
+                        '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Acceso">'+ 
+                        '<button type="button" data-info="'+data[0].UsuarioId+'" class="registrar-acceso btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-acceso">'+
+                            '<i class="ki-outline ki-plus-square fs-2"></i>'+
+                        '</button>'+
+                        '</span>'+
+                    '</th>'+
                 '</tr>'+
             '</thead>'+
-            '<tbody class="with-before-element">';
+            '<tbody class="fw-bold text-gray-600">';
 
 
 
@@ -34,25 +37,23 @@ function format(data) {
 
        html = html +
                 '<tr>'+
-                    '<td>'+elemento.Nombre+'</td>'+
+                    '<td class="text-gray-700 text-capitalize">'+elemento.Nombre+'</td>'+
                     '<td>'+fechaFormateada+'</td>';
 
         if(elemento.Enabled == 1){
             html = html +
-                    '<td><span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span></td>'+
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<a class="editar-acceso btn btn-light-warning w-100px" info="'+elemento.Id+'">Deshabilitar</a>'+
+                            '<a class="editar-acceso btn btn-light-success w-115px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Acceso">HABILITADO</a>'+
                         '</div>'+
                     '</td>'+
                 '</tr>'
 
         }else{
             html = html +
-                    '<td><span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span></td>'+
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<a class="editar-acceso btn btn-light-success w-100px" info="'+elemento.Id+'">Habilitar</a>'+
+                            '<a class="editar-acceso btn btn-light-warning w-115px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Acceso">DESHABILITADO</a>'+
                         '</div>'+
                     '</td>'+
                 '</tr>'
@@ -63,8 +64,10 @@ function format(data) {
        html=  html+        
                     '</tbody>'+
                 '</table>'+
+                '</div>'+
                 '</div>';
 
+                
     return html;
     
 }
@@ -364,10 +367,9 @@ miTabla.on('click', 'td.dt-control', function (e) {
         row.child.hide();
     }
     else {
-        // Open this row
-        boton.addClass('active')
-       
-
+        // Open this row       
+        boton.children().eq(0).hide();
+        boton.attr("data-kt-indicator", "on");
         $.ajax({
             type: 'POST',
             url: VerAcceso,
@@ -378,10 +380,20 @@ miTabla.on('click', 'td.dt-control', function (e) {
             dataType: "json",
             success: function (data) {
                 //console.log(data.errors);
+               
+                boton.removeAttr("data-kt-indicator");
+                boton.children().eq(0).show();
+                boton.addClass('active')
+                
                 if(data.success){
-                    console.log(data.data);
+                    //console.log(data.data);
+                
                     data = data.data;
                     row.child(format(data)).show();
+                    $(".editar-acceso").tooltip();
+                    $(".dar-acceso").tooltip();
+                   // const myTooltipEl = document.getElementsByClassName('editar-acceso')
+                    //const tooltip = bootstrap.Tooltip.enable(myTooltipEl) 
                      //location.reload();
                 }else{
                     //console.log(data.message)

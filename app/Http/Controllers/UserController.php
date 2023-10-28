@@ -153,4 +153,28 @@ class UserController extends Controller
                 'message' => $e->getMessage()]);
         }
     }
+
+    public function CambiarEstado(Request $request){
+        $request = $request->input('data');
+        // Accede a los atributos del modelo
+
+        try{
+            $usuarioEdit = Usuario::find($request);
+            DB::beginTransaction();
+            $usuarioEdit->update([
+                   'EstadoId' => ($usuarioEdit['EstadoId'] == 1)? 2: 1 
+            ]);
+            //$usuario->save();
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Modelo recibido y procesado']);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
+    }
 }

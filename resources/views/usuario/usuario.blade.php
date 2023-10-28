@@ -3,6 +3,11 @@
 
 @push('css')
 <link href='{{ asset('css/datatables/datatables.bundle.css?id=2') }}' rel='stylesheet' type="text/css" />
+<style>
+.w-115px{
+   width: 115px!important; 
+}
+</style>
 @endpush
 
 <!--begin::Toolbar-->
@@ -80,17 +85,17 @@
                     @foreach ($Usuarios as $usuario)
                     <tr class="center-2">
                         <th>{{ $usuario->Id }}</th>
-                        <td>{{ $usuario->Nombre }} {{ $usuario->Apellido }}</td>
+                        <td class="text-capitalize">{{ $usuario->Nombre }} {{ $usuario->Apellido }}</td>
                         <td>{{ $usuario->Username }}</td>
                         <td>{{ $usuario->Correo }}</td>
                         <td>{{ $usuario->rol->Nombre }}</td>
                         @if ($usuario->EstadoId == 1 )
                         <td data-search="Enabled">
-                            <span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">{{ $usuario->estado_usuario->Nombre}}</span>
+                            <button class="btn btn-sm btn-light-success estado-usuario fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Usuario">{{ $usuario->estado_usuario->Nombre}}</button>
                         </td>
                         @else
                         <td data-search="Disabled">
-                            <span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">{{ $usuario->estado_usuario->Nombre}}</span>
+                            <button class="btn btn-light-warning fs-7 estado-usuario text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Usuario">{{ $usuario->estado_usuario->Nombre}}</button>
                         </td>
                         @endif
                         <td class="text-center p-0">
@@ -100,9 +105,12 @@
                             </div>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" data-kt-docs-datatable-subtable="expand_row" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Acceso">
+                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Acceso">
                                 <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
                                 <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
+                                <span class="indicator-label"></span>
+                                <span class="indicator-progress"><span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
                             </button>
                         </td>
                     </tr>
@@ -243,7 +251,7 @@
 <!--begin::modal-->
 <div class="modal fade" tabindex="-1" id="registrar-acceso" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog mt-20">
-        <div class="modal-content" id="div-bloquear">
+        <div class="modal-content" id="div-bloquear2">
             <div class="modal-header bg-light p-2 ps-5">
                 <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Acceso</h2>
 
@@ -304,10 +312,12 @@
     const GuardarUsuario = "{{ route('GuardarUsuario') }}";
     const VerUsuario = "{{ route('VerUsuario') }}";
     const EditarUsuario = "{{ route('EditarUsuario') }}";
+    const CambiarEstado = "{{ route('CambiarEstado') }}";
 
     const VerAcceso = "{{ route('VerAcceso') }}";
     const EditarAcceso = "{{ route('EditarAcceso') }}";
     const GuardarAcceso = "{{ route('RegistrarAcceso') }}";
+    const ComunidadSinAcceso = "{{ route('ComunidadSinAcceso') }}";
 
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 </script>
