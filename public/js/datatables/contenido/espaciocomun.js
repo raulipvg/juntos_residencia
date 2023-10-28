@@ -267,7 +267,8 @@ let miTablaEspacio = $('#tabla-espacios').DataTable({
             "initComplete": function() {
                 $('.filtro').children().addClass('btn-group-sm')
                 $('.dataTables_filter').addClass('p-0')
-            }
+            },
+            "order" : [[1,'asc']]
             //"scrollX": true
         });
       

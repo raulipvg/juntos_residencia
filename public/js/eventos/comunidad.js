@@ -176,7 +176,11 @@ $(document).ready(function() {
         
         var fechaActual = new Date();
         // Formatear la fecha al formato YYYY-MM-DD
-        var fechaFormateada2 = fechaActual.toISOString().split("T")[0];
+        var dia = String(fechaActual.getDate()).padStart(2, '0');
+        var mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+        var año = fechaActual.getFullYear();
+
+        var fechaFormateada2 = año + '-' + mes + '-' + dia;
         
         e.preventDefault();
         $("#modal-titulo").empty().html("Registrar Comunidad");
@@ -381,6 +385,56 @@ $(document).ready(function() {
                      });
             }
         });
+    });
+
+    $("#tabla-comunidad tbody").on("click", '.estado-comunidad', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("click");
+
+        var id =  $(this).closest('td').next().next().find('a.ver').attr('info');
+        console.log(id);
+        $.ajax({
+            type: 'POST',
+            url: CambiarEstadoComunidad,
+            data: {
+                _token: csrfToken,
+                data: id},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                //blockUI2.release();
+                if(data.success){
+                    //console.log(data.data);               
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                }
+            },
+            error: function () {
+                //alert('Error');
+                //blockUI2.release();
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }
+        });
+
     });
 
 

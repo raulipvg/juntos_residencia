@@ -37,13 +37,13 @@ Route::group(['prefix' => '/usuario'], function () {
     Route::post('/registrar', [UserController::class, 'Guardar'])->name('GuardarUsuario');
     Route::post('/ver', [UserController::class, 'VerId'])->name('VerUsuario');
     Route::post('/editar', [UserController::class, 'Editar'])->name('EditarUsuario');
-    Route::post('/cambiarestado', [UserController::class, 'CambiarEstado'])->name('CambiarEstado');
+    Route::post('/cambiarestado', [UserController::class, 'CambiarEstado'])->name('CambiarEstadoUsuario');
 });
 
 Route::group(['prefix' => '/acceso'], function () {
     //Route::get('/', [UserController::class, 'Index'])->name('Usuario');
     Route::post('/registrar', [AccesoComunidadController::class, 'Guardar'])->name('RegistrarAcceso');
-    Route::post('/ver', [AccesoComunidadController::class, 'VerId'])->name('VerAcceso');
+    Route::post('/ver', [AccesoComunidadController::class, 'VerAccesoPorUsuario'])->name('VerAcceso');
     Route::post('/editar', [AccesoComunidadController::class, 'Editar'])->name('EditarAcceso');
     Route::post('/comunidadsinacceso',[AccesoComunidadController::class, 'getComunidadSinAcceso'])->name('ComunidadSinAcceso');
 });
@@ -59,6 +59,8 @@ Route::group(['prefix' => '/propiedad'], function () {
     Route::post('/registrar', [PropiedadController::class, 'Guardar'])->name('GuardarPropiedad');
     Route::post('/ver', [PropiedadController::class, 'VerId'])->name('VerPropiedad');
     Route::post('/editar', [PropiedadController::class, 'Editar'])->name('EditarPropiedad');
+    Route::post('/cambiarestado', [PropiedadController::class, 'CambiarEstado'])->name('CambiarEstadoPropiedad');
+
 });
 
 Route::group(['prefix' => '/espaciocomun'], function () {
@@ -88,8 +90,14 @@ Route::group(['prefix' => '/hojavida'], function () {
 
 Route::group(['prefix' => '/compone'], function () {
     Route::post('/registrar', [ComponeController::class, 'Guardar'])->name('GuardarCompone');
+    Route::post('/registrar2', [ComponeController::class, 'Guardar2'])->name('GuardarCompone2');
     Route::post('/ver', [ComponeController::class, 'VerId'])->name('VerCompone');
     Route::post('/editar', [ComponeController::class, 'Editar'])->name('EditarCompone');
+    Route::post('/verporpropiedad', [ComponeController::class, 'VerPorPropiedadId'])->name('VerPorPropiedad');
+    Route::post('/Verpersonadisponible', [ComponeController::class, 'VerPersonaDisponible'])->name('VerPersonaDisponible');
+    Route::post('/cambioestado', [ComponeController::class, 'CambioEstado'])->name('CambioEstadoCompone');
+
+    
 });
 
 

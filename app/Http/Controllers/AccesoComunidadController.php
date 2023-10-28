@@ -40,7 +40,7 @@ class AccesoComunidadController extends Controller
 
     }
 
-    public function VerId(Request $request){
+    public function VerAccesoPorUsuario(Request $request){
 
         $request = $request->input('data');
 
@@ -51,6 +51,7 @@ class AccesoComunidadController extends Controller
                                     ->join('Comunidad', 'AccesoComunidad.ComunidadId', '=', 'Comunidad.Id')
                                     ->get();
 
+                                   
             $comunidadesConAcceso = AccesoComunidad::select('Comunidad.Id','Comunidad.Nombre')       
                                         ->where('AccesoComunidad.UsuarioId','=', $request)
                                         ->join('Comunidad', 'AccesoComunidad.ComunidadId', '=', 'Comunidad.Id')

@@ -2,7 +2,6 @@
 
 $(document).ready(function() {
 
-    
     const form = document.getElementById('Formulario1');
     $("#AlertaError").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
@@ -173,7 +172,7 @@ $(document).ready(function() {
     }
 
      // Evento al presionar el Boton de Registrar
-    $("#AddBtn").on("click", function (e ) {
+    $("#AddBtn").on("click", function (e) {
         //Inicializacion
         //console.log("AddBtn")
         e.preventDefault();
@@ -195,6 +194,7 @@ $(document).ready(function() {
         validator.resetForm();
         actualizarValidSelect2();
     });
+
     // Manejador al presionar el submit de Registrar
     const submitButton = document.getElementById('AddSubmit');
     submitButton.addEventListener('click', function (e) {
@@ -287,8 +287,6 @@ $(document).ready(function() {
             });
         }
     });
-
-   ;
 
     //Evento al presionar el Boton Editar
     $("#tabla-usuario tbody").on("click",'.editar', function (e) {
@@ -395,6 +393,7 @@ $(document).ready(function() {
         });
         
     });
+
     // Manejador al presionar el submit de Editar
     const submitEditButton = document.getElementById('EditSubmit');
     submitEditButton.addEventListener('click', function (e) {
@@ -522,7 +521,7 @@ $(document).ready(function() {
                     $("#ApellidoInput").val(data.Apellido).prop("disabled", true);;
                     $("#CorreoInput").val(data.Correo).prop("disabled", true);;
                   
-                    $('#RolIdInput').val(data.RolId).trigger("change").prop("disabled", true);;
+                    $('#RolIdInput').val(data.RolId).trigger("change").prop("disabled", true);
                     $('#EstadoIdInput').val(data.EstadoId).trigger("change").prop("disabled", true);;
                     $('#ComunidadIdInput').val(acceso[0].ComunidadId).trigger("change").prop("disabled", true);;
 
@@ -575,10 +574,11 @@ $(document).ready(function() {
 
     });
     
+    // Evento al Boton que cambia el estado del usuario
     $("#tabla-usuario tbody").on("click", '.estado-usuario', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log("click");
+        //console.log("click");
 
         var userId =  $(this).closest('td').next().find('a.ver').attr('info');
         $.ajax({
@@ -623,8 +623,9 @@ $(document).ready(function() {
         });
 
     });
+
     //Evento al presionar el Boton de cambiar estado en la subtabla 
-    $("#tabla-usuario tbody ").on("click", '.editar-acceso', function(e){
+    $("#tabla-usuario tbody").on("click", '.editar-acceso', function(e){
         e.preventDefault();
         e.stopPropagation();
         //console.log("click")
@@ -673,6 +674,7 @@ $(document).ready(function() {
     });
     const target2 = document.querySelector("#div-bloquear2");
     const blockUI2 = new KTBlockUI(target2);
+
     //Evento al presion el boton de Registrar ACCESO en la subtabla
     $("#tabla-usuario tbody").on("click",'.registrar-acceso', function(e) {
         console.log('click')

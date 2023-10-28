@@ -77,7 +77,7 @@
                         <th scope="col">Rol</th>
                         <th scope="col">Estado</th>
                         <th class="text-center" scope="col">Accion</th>
-                        <th>a</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -312,7 +312,7 @@
     const GuardarUsuario = "{{ route('GuardarUsuario') }}";
     const VerUsuario = "{{ route('VerUsuario') }}";
     const EditarUsuario = "{{ route('EditarUsuario') }}";
-    const CambiarEstado = "{{ route('CambiarEstado') }}";
+    const CambiarEstado = "{{ route('CambiarEstadoUsuario') }}";
 
     const VerAcceso = "{{ route('VerAcceso') }}";
     const EditarAcceso = "{{ route('EditarAcceso') }}";
@@ -323,7 +323,7 @@
 </script>
 <!-- Datatables y Configuracion de la Tabla -->
 <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
-<script src="{{ asset('js/datatables/contenido/general.js?id=2') }}"></script>
+<script src="{{ asset('js/datatables/contenido/usuario.js?id=2') }}"></script>
 <!--- Eventos de la pagina -->
 <script src="{{ asset('js/eventos/usuario.js?id=2') }}"></script>
 <script src="{{ asset('js/amcharts/certificado.js?id=1') }}"></script>

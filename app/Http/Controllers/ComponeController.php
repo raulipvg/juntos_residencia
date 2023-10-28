@@ -8,6 +8,7 @@ use App\Models\Nacionalidad;
 use App\Models\Persona;
 use App\Models\Propiedad;
 use App\Models\RolComponeCoRe;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,6 @@ class ComponeController extends Controller
         // Accede a los atributos del modelo    
 
         try{
-
             $compone = Compone::create([
                 'PersonaId' => $request['PersonaId'],
                 'PropiedadId'=> $request['PropiedadId'],
@@ -48,10 +48,67 @@ class ComponeController extends Controller
             ]);
             $compone->save();
 
-
             return response()->json([
                 'success' => true,
                 'message' => 'Modelo recibido y procesado']);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
+    }
+
+    public function Guardar2(Request $request){
+        //Crea Persona y Compone, requiere usar transacción (ver controlador ResidenteController anterior)
+        $request = $request->input('data');
+        // Accede a los atributos del modelo    
+        $request['FechaInicio']= Carbon::now();
+        $request['Enabled']= 1;
+        try{
+           
+            if($request['RolComponeCoReId']== 1){
+                $countPropietario = Compone::where('PropiedadId','=', $request['PropiedadId'])
+                                        ->where('RolComponeCoReId','=', 1)
+                                        ->where('Enabled','=', 1)
+                                        ->count();
+                $countArrendatario=0;
+            
+            }elseif($request['RolComponeCoReId']== 2){
+                $countArrendatario = Compone::where('PropiedadId','=', $request['PropiedadId'])
+                                        ->where('RolComponeCoReId','=', 2)
+                                        ->where('Enabled','=', 1)
+                                        ->count();
+                $countPropietario =0;
+            }else{
+                $countArrendatario = 0;
+                $countPropietario = 0;
+            }     
+
+            if($countPropietario == 0){
+                if($countArrendatario == 0){
+                    $compone = Compone::create([
+                        'PersonaId' => $request['PersonaId'],
+                        'PropiedadId'=> $request['PropiedadId'],
+                        'RolComponeCoReId'=> $request['RolComponeCoReId'],
+                        'FechaInicio'=> $request['FechaInicio'],
+                        'Enabled'=> $request['Enabled'],
+                    ]);
+                    $compone->save();
+        
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Modelo recibido y procesado']);
+                }else{
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ya existe Residente Arrendatario']);
+                }
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ya existe Propietario Activo']);
+            }   
+            
         }catch(Exception $e){
             return response()->json([
                 'success' => false,
@@ -116,5 +173,67 @@ class ComponeController extends Controller
                 'success' => false,
                 'message' => $e->getMessage()]);
         }
+    }
+
+    public function VerPorPropiedadId(Request $request){
+        $request = $request->input('data');
+
+        $compone = Compone::select('Persona.RUT','Persona.Nombre','Persona.Apellido','RolComponeCoRe.Nombre as Rol','Compone.FechaInicio','Compone.FechaFin','Compone.Enabled','Compone.Id')
+                            ->where('Compone.PropiedadId',$request)
+                            ->join('Persona', 'Persona.Id', '=','Compone.PersonaId')
+                            ->join('RolComponeCoRe', 'RolComponeCoRe.Id', '=','Compone.RolComponeCoReId')
+                            ->get();            
+
+        return response()->json([
+            'success' => true,
+            'data' => $compone
+        ]);
+    }
+
+    //Ver personas disponible para asignar un residente, la persona no tiene que ya componer la residencia
+    public function VerPersonaDisponible(Request $request){
+        $request = $request->input('data');
+
+        $PropiedadId =$request;
+
+        $personas = Persona::select('Persona.Id', 'Persona.Nombre', 'Persona.Apellido')
+                            ->whereNotIn('Persona.Id', function ($query) use ($PropiedadId) {
+                                $query->select('Compone.PersonaId')
+                                    ->from('Compone')
+                                    ->where('Compone.PropiedadId', $PropiedadId);
+                            })
+                            ->get();
+        $roles = RolComponeCoRe::select('Id','Nombre')
+                            ->get();
+
+        return response()->json([
+                                'success' => true,
+                                'data' => $personas,
+                                'roles'=> $roles
+                            ]);
+                            
+    }
+    public function CambioEstado(Request $request){
+    $request = $request->input('data');
+
+    try{
+        $componeEdit = Compone::find($request);
+        DB::beginTransaction();
+        $componeEdit->update([
+               'Enabled' => ($componeEdit['Enabled'] == 1)? 2: 1 
+        ]);
+        //$usuario->save();
+        DB::commit();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Modelo recibido y procesado']);
+    }catch(Exception $e){
+        DB::rollBack();
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()]);
+    }
+    
     }
 }

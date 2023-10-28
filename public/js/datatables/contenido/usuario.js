@@ -353,6 +353,8 @@ let miTabla = $('#tabla-usuario').DataTable({
 $(document).ready(function() {
 // Add event listener for opening and closing details
 miTabla.on('click', 'td.dt-control', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     let tr = e.target.closest('tr');
     let row = miTabla.row(tr);
 

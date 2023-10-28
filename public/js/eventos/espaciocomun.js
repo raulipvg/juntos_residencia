@@ -146,9 +146,9 @@ $(document).ready(function() {
 
                         for(let row in data){
                             if(data[row].Enabled == 1){
-                            var enabled =  '<span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Habilitado</span>';
+                            var enabled =  '<button class="btn btn-sm btn-light-success estado-espacios fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Espacio">Activo</button>';
                             }else{
-                            var enabled = '<span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Deshabilitado</span>';  
+                            var enabled = '<button class="btn btn-light-warning fs-7 estado-espacios text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Espacio">Inactivo</button>';  
                             }
 
                             var accion = '<div class="btn-group btn-group-sm" role="group">'+
@@ -200,6 +200,56 @@ $(document).ready(function() {
                      });
             }
         });
+    });
+
+    $("#tabla-espacios tbody").on("click", '.estado-espacios', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("click");
+
+        var Id =  $(this).closest('td').next().find('a.ver-espacio').attr('info');
+        console.log(Id)
+        $.ajax({
+            type: 'POST',
+            url: CambiarEstadoEspacios,
+            data: {
+                _token: csrfToken,
+                data: Id},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                //blockUI2.release();
+                if(data.success){
+                    //console.log(data.data);               
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                }
+            },
+            error: function () {
+                //alert('Error');
+                //blockUI2.release();
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }
+        });
+
     });
 
     // WEA PARA COLOCAR EL FONDO OSCURO AL MODAL DE ATRAS
