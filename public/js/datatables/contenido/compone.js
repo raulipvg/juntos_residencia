@@ -1,4 +1,4 @@
-function format(data) {
+function format(data, persona) {
     // `d` is the original data object for the row
     var html = 
     '<div class="d-flex justify-content-center">'+
@@ -13,7 +13,7 @@ function format(data) {
                 '<th class="p-0 ps-3">Fecha fin</th>'+
                 '<th class="text-center p-0 ps-3">Estado'+
                     '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Residencia">'+ 
-                        '<button type="button" data-info="'+data[0].PersonaId+'" class="registrar-residencia btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-compone">'+
+                        '<button type="button" data-info="'+persona+'" class="registrar-residencia btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-compone">'+
                             '<i class="ki-outline ki-plus-square fs-2"></i>'+
                         '</button>'+
                     '</span>'+
@@ -25,20 +25,24 @@ function format(data) {
             // console.log(elemento.Enabled);
              // Crear un objeto Date a partir de la cadena original
              var fechaInicio = new Date(elemento.FechaInicio);
-             var fechaFin = new Date(elemento.FechaFin);
-     
              // Obtener el día, mes y año
              var dia = fechaInicio.getDate();
              var mes = fechaInicio.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
              var anio = fechaInicio.getFullYear();
-     
              // Formatear la fecha como "DD-MM-YYYY"
              var fechaFormateada1 = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
             
-             dia = fechaFin.getDate();
-             mes = fechaFin.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
-             anio = fechaFin.getFullYear();
-             var fechaFormateada2 = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
+             if(fechaFin){
+                var fechaFin = new Date(elemento.FechaFin);
+                dia = fechaFin.getDate();
+                mes = fechaFin.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
+                anio = fechaFin.getFullYear();
+                var fechaFormateada2 = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
+             }else{
+                var fechaFin= null
+                var fechaFormateada2 = "";
+             }
+             
              html = html +
                     '<tr>'+
                         '<td class="text-gray-700 text-capitalize">'+elemento.Comunidad+'</td>'+
@@ -387,11 +391,14 @@ miTabla.on('click', 'td.dt-control', function (e) {
                 boton.addClass('active')
                 if(data.success){
                     
+                    persona=data.persona;
                     data = data.data;
                     //console.log(data);
-                    row.child(format(data)).show();
-                    $(".editar-residente").tooltip();
-                    $(".dar-acceso").tooltip();
+                    
+                        row.child(format(data,persona)).show();
+                        $(".editar-residente").tooltip();
+                        $(".dar-acceso").tooltip();
+                    
                      //location.reload();
                 }else{
                     //console.log(data.message)

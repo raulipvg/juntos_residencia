@@ -142,7 +142,7 @@ $(document).ready(function() {
 
                     if(data.data){
                         data=data.data;
-                        console.log(data); 
+                        //console.log(data); 
 
                         for(let row in data){
                             if(data[row].Enabled == 1){
@@ -177,7 +177,9 @@ $(document).ready(function() {
                                 var fila = miTablaEspacio.row(rowNode).node();
                                 $(fila).find('td').eq(5).addClass('text-center p-0');
                         }
+                        
                         miTablaEspacio.draw();
+                        $(".estado-espacios").tooltip();
                         
                     }
                     

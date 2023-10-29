@@ -660,7 +660,7 @@ $(document).ready(function () {
                         for (let row in data) {
                             if (data[row].Enabled == 1) {
                                 var enabled =
-                                    '<button class="btn btn-sm btn-light-success estado-residente fs-7 text-uppercase justify-content-center p-1 w-65px" data-info="'+data[row].Id+'" >'+
+                                    '<button class="btn btn-sm btn-light-success estado-residente fs-7 text-uppercase justify-content-center p-1 w-65px" data-info="'+data[row].Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Residencia">'+
                                     '<span class="indicator-label">Activo</span>'+
                                     '<span class="indicator-progress">'+
                                         '<span class="spinner-border spinner-border-sm align-middle"></span>'+
@@ -699,6 +699,7 @@ $(document).ready(function () {
                             $(fila).find("td").eq(5).addClass("text-center p-0");
                         }
                         miTablaEspacio.draw();
+                        $(".estado-residente").tooltip();
                     }
                     blockUI2.release();
                 } else {

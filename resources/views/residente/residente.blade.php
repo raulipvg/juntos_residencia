@@ -395,7 +395,7 @@ $today = date('Y-m-d');
     <div class="modal-dialog mt-20">
         <div class="modal-content" id="div-bloquear-compone">
             <div class="modal-header bg-light p-2 ps-5">
-                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Residencia para </h2>
+                <h2 id="modal-titulo-compone" class="modal-title text-uppercase">Registrar Residencia para </h2>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">

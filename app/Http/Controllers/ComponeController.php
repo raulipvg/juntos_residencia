@@ -162,7 +162,8 @@ class ComponeController extends Controller
             ->join('RolComponeCoRe', 'RolComponeCoRe.Id', '=', 'Compone.RolComponeCoReId')->get();
             return response()->json([
                 'success' => true,
-                'data' => $compone]);
+                'data' => $compone,
+                'persona' => $request]);
 
         }catch(Exception $e){
             return response()->json([
@@ -235,7 +236,9 @@ class ComponeController extends Controller
         $comunidades = Comunidad::select('Comunidad.Id', 'Comunidad.Nombre')
                             ->where('Comunidad.Enabled', 1)
                             ->get();
-
+        $persona = Persona::select('Nombre','Apellido')
+                            ->where('Id',$PersonaId)
+                            ->first();
       
         /* $propiedades = Propiedad::select('Comunidad.Id','Comunidad.Nombre')
                             ->where('Compone.PersonaId',$PersonaId)
@@ -246,7 +249,9 @@ class ComponeController extends Controller
         */
         return response()->json([
             'success' => true,
-            'data' => $comunidades
+            'data' => $comunidades,
+            'persona'=> $persona
+
         ]);
 
     }
@@ -281,7 +286,8 @@ class ComponeController extends Controller
             $componeEdit = Compone::find($request);
             DB::beginTransaction();
             $componeEdit->update([
-                'Enabled' => ($componeEdit['Enabled'] == 1)? 2: 1 
+                'Enabled' => ($componeEdit['Enabled'] == 1)? 2: 1,
+                'FechaFin' => Carbon::now() 
             ]);
             //$usuario->save();
             DB::commit();

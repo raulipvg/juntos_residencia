@@ -83,23 +83,24 @@ $(document).ready(function() {
         actualizarValidSelect2();
         //console.log($(this).attr("data-info"))
         $("#PersonaIdInputCom").val($(this).attr("data-info"));
-        var userId= $(this).attr("data-info");
+        var personaId= $(this).attr("data-info");
         blockUI2.block();
-
+        $("#modal-titulo-compone").empty();
         $.ajax({
             type: 'POST',
             url: VerComunidadDisponible,
             data: {
                 _token: csrfToken,
-                data: userId},
+                data: personaId},
             //content: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
                 //console.log(data);
-               
+                var persona = data.persona;
                 if(data.success){
                     //console.log(data.data);               
                     data = data.data;
+                    $("#modal-titulo-compone").text("REGISTRAR RESIDENCIA PARA "+persona.Nombre+" "+persona.Apellido);
                     var select = $('#ComunidadIdInputCom');
                     select.empty();
                     // Agrega las opciones al select
