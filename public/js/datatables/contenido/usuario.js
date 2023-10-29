@@ -44,7 +44,7 @@ function format(data) {
             html = html +
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Habilitar Acceso">'+
+                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Deshabilitar Acceso">'+
                             '<span class="indicator-label">Activo</span>'+
                             '<span class="indicator-progress">'+
                                 '<span class="spinner-border spinner-border-sm align-middle"></span>'+
@@ -58,7 +58,7 @@ function format(data) {
             html = html +
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<button class="btn btn-sm btn-light-warning editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Deshabilitar Acceso">'+
+                            '<button class="btn btn-sm btn-light-warning editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Habilitar Acceso">'+
                             '<span class="indicator-label">Inactivo</span>'+
                             '<span class="indicator-progress">'+
                                 '<span class="spinner-border spinner-border-sm align-middle"></span>'+
