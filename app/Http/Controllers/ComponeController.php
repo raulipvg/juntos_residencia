@@ -36,21 +36,56 @@ class ComponeController extends Controller
         //Crea Persona y Compone, requiere usar transacción (ver controlador ResidenteController anterior)
         $request = $request->input('data');
         // Accede a los atributos del modelo    
-
+        $request['FechaInicio']= Carbon::now();
+        $request['FechaFin']= null;
+        $request['Enabled']= 1;
         try{
-            $compone = Compone::create([
-                'PersonaId' => $request['PersonaId'],
-                'PropiedadId'=> $request['PropiedadId'],
-                'RolComponeCoReId'=> $request['RolId'],
-                'FechaInicio'=> $request['FechaInicio'],
-                'FechaFin'=> $request['FechaFin'],
-                'Enabled'=> $request['Enabled'],
-            ]);
-            $compone->save();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Modelo recibido y procesado']);
+            if($request['RolId']== 1){
+                $countPropietario = Compone::where('PropiedadId','=', $request['PropiedadId'])
+                                        ->where('RolComponeCoReId','=', 1)
+                                        ->where('Enabled','=', 1)
+                                        ->count();
+                $countArrendatario=0;
+            
+            }elseif($request['RolId']== 2){
+                $countArrendatario = Compone::where('PropiedadId','=', $request['PropiedadId'])
+                                        ->where('RolComponeCoReId','=', 2)
+                                        ->where('Enabled','=', 1)
+                                        ->count();
+                $countPropietario =0;
+            }else{
+                $countArrendatario = 0;
+                $countPropietario = 0;
+            }   
+
+            if($countPropietario == 0){
+                if($countArrendatario == 0){
+
+                    $compone = Compone::create([
+                        'PersonaId' => $request['PersonaId'],
+                        'PropiedadId'=> $request['PropiedadId'],
+                        'RolComponeCoReId'=> $request['RolId'],
+                        'FechaInicio'=> $request['FechaInicio'],
+                        'FechaFin'=> $request['FechaFin'],
+                        'Enabled'=> $request['Enabled'],
+                    ]);
+                    $compone->save();
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Modelo recibido y procesado']);
+                }else{
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ya existe Residente Arrendatario']);
+                }
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ya existe Propietario Activo']);
+            }   
+
         }catch(Exception $e){
             return response()->json([
                 'success' => false,
@@ -120,7 +155,7 @@ class ComponeController extends Controller
         $request = $request->input('data');
 
         try{
-            $compone = Compone::select('Compone.Id','Comunidad.Nombre as Comunidad', 'Propiedad.Numero as Propiedad','RolComponeCoRe.Nombre as Rol','FechaInicio','FechaFin','Compone.Enabled')
+            $compone = Compone::select('Compone.Id','Comunidad.Nombre as Comunidad','Compone.PersonaId', 'Propiedad.Numero as Propiedad','RolComponeCoRe.Nombre as Rol','FechaInicio','FechaFin','Compone.Enabled')
             ->where('Compone.PersonaId','=',$request)
             ->join('Propiedad', 'Propiedad.Id', '=', 'Compone.PropiedadId')
             ->join('Comunidad', 'Comunidad.Id', '=', 'Propiedad.ComunidadId')
@@ -190,6 +225,31 @@ class ComponeController extends Controller
         ]);
     }
 
+    //Ver Comunidad disponible para una PersonaId determinada
+    public function VerComunidadDisponible(Request $request){
+    
+        $request = $request->input('data');
+
+        $PersonaId =$request;
+
+        $comunidades = Comunidad::select('Comunidad.Id', 'Comunidad.Nombre')
+                            ->where('Comunidad.Enabled', 1)
+                            ->get();
+
+      
+        /* $propiedades = Propiedad::select('Comunidad.Id','Comunidad.Nombre')
+                            ->where('Compone.PersonaId',$PersonaId)
+                            ->join('Comunidad','Comunidad.Id','=','Propiedad.ComunidadId')
+                            ->join('Compone','Compone.PropiedadId','=','Propiedad.Id')
+                            ->distinct()
+                            ->get();
+        */
+        return response()->json([
+            'success' => true,
+            'data' => $comunidades
+        ]);
+
+    }
     //Ver personas disponible para asignar un residente, la persona no tiene que ya componer la residencia
     public function VerPersonaDisponible(Request $request){
         $request = $request->input('data');
@@ -213,27 +273,28 @@ class ComponeController extends Controller
                             ]);
                             
     }
-    public function CambioEstado(Request $request){
-    $request = $request->input('data');
 
-    try{
-        $componeEdit = Compone::find($request);
-        DB::beginTransaction();
-        $componeEdit->update([
-               'Enabled' => ($componeEdit['Enabled'] == 1)? 2: 1 
-        ]);
-        //$usuario->save();
-        DB::commit();
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Modelo recibido y procesado']);
-    }catch(Exception $e){
-        DB::rollBack();
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()]);
-    }
+    public function CambioEstado(Request $request){
+        $request = $request->input('data');
+
+        try{
+            $componeEdit = Compone::find($request);
+            DB::beginTransaction();
+            $componeEdit->update([
+                'Enabled' => ($componeEdit['Enabled'] == 1)? 2: 1 
+            ]);
+            //$usuario->save();
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Modelo recibido y procesado']);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
     
     }
 }

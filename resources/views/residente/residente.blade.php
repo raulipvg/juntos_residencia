@@ -121,7 +121,7 @@ $today = date('Y-m-d');
                             </div>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" data-kt-docs-datatable-subtable="expand_row" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Propiedades">
+                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" data-kt-docs-datatable-subtable="expand_row" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial de Residencia">
                                 <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
                                 <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
                                 <span class="indicator-label"></span>
@@ -395,7 +395,7 @@ $today = date('Y-m-d');
     <div class="modal-dialog mt-20">
         <div class="modal-content" id="div-bloquear-compone">
             <div class="modal-header bg-light p-2 ps-5">
-                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Propiedad de Usuario</h2>
+                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Residencia para </h2>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -412,7 +412,7 @@ $today = date('Y-m-d');
             </div>
             <form id="Formulario-Compone" action="" method="post">
                 <div class="modal-body">
-                    <div id="AlertaError2" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true" style="display: none">
+                    <div id="AlertaError3" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true" style="display: none">
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-2">
@@ -424,6 +424,7 @@ $today = date('Y-m-d');
                                     @endforeach
                                 </select>
                                 <label for="ComunidadIdInputCom" class="form-label">Comunidad</label>
+                                <input hidden type="number" id="PersonaIdInputCom" name="PersonaId" />
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
@@ -448,31 +449,6 @@ $today = date('Y-m-d');
                                     @endforeach
                                 </select>
                                 <label for="RolIdInputCom" class="form-label">Rol</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <input type="date" class="form-control" placeholder="Ingrese la fecha de inicio" value="{{ now()->format('Y-m-d') }}" id="FechaInicioInputCom" name="FechaInicio" max="" />
-                                <label for="FechaInicioInputCom" class="form-label">Fecha Inicio</label>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <input type="date" class="form-control" placeholder="Ingrese la fecha final" value="{{ now()->format('Y-m-d') }}" id="FechaFinInputCom" name="FechaFin" max="" />
-                                <label for="FechaFinInputCom" class="form-label">Fecha Fin</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <select id="EnabledInputCom" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
-                                    <option></option>
-                                    <option value="1">Activo</option>
-                                    <option value="2">Inactivo</option>
-                                </select>
-                                <label for="EnabledInputCom" class="form-label">Estado</label>
                             </div>
                         </div>
                     </div>
@@ -511,7 +487,8 @@ $today = date('Y-m-d');
     const GuardarCompone = "{{ route('GuardarCompone') }}"
     const CambioEstadoCompone = "{{ route('CambioEstadoCompone') }}"
 
-    const VerPropiedades = "{{ route('VerPorComunidad') }}";
+    const VerPropiedades = "{{ route('VerPropiedadesDisponiblesPorComunidad') }}";
+    const VerComunidadDisponible = "{{ route('VerComunidadDisponible') }}"
 
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 </script>

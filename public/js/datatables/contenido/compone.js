@@ -12,8 +12,8 @@ function format(data) {
                 '<th class="p-0 ps-3">Fecha inicio</th>'+
                 '<th class="p-0 ps-3">Fecha fin</th>'+
                 '<th class="text-center p-0 ps-3">Estado'+
-                    '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Propiedad">'+ 
-                        '<button type="button" data-info="'+data.PersonaId+'" class="registrar-acceso btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-compone">'+
+                    '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Residencia">'+ 
+                        '<button type="button" data-info="'+data[0].PersonaId+'" class="registrar-residencia btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-compone">'+
                             '<i class="ki-outline ki-plus-square fs-2"></i>'+
                         '</button>'+
                     '</span>'+
@@ -50,7 +50,7 @@ function format(data) {
             html = html +
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<a class="editar-residente btn btn-light-success w-115px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Desactivar Propiedad">Activo</a>'+
+                            '<a class="editar-residente btn btn-light-success w-75px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Desactivar Residencia">ACTIVO</a>'+
                         '</div>'+
                     '</td>'+
                 '</tr>'
@@ -59,7 +59,7 @@ function format(data) {
                 html = html +
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<a class="editar-residente btn btn-light-warning w-115px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Desactivar Propiedad">Inactivo</a>'+
+                            '<a class="btn btn-light-warning w-75px p-2 disabled" >INACTIVO</a>'+
                         '</div>'+
                     '</td>'+
                 '</tr>'
@@ -386,18 +386,24 @@ miTabla.on('click', 'td.dt-control', function (e) {
                 boton.children().eq(0).show();
                 boton.addClass('active')
                 if(data.success){
-                    //console.log(data.data);
+                    
                     data = data.data;
+                    //console.log(data);
                     row.child(format(data)).show();
-                    $(".editar-acceso").tooltip();
+                    $(".editar-residente").tooltip();
                     $(".dar-acceso").tooltip();
                      //location.reload();
                 }else{
                     //console.log(data.message)
-                    html = '<ul><li style="">'+data.message+'</li></ul>';
-                    $("#AlertaError").append(html);
-
-                    $("#AlertaError").show();
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
                    //console.log("error");
                 }
             },

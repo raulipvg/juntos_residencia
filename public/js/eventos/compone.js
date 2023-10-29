@@ -35,32 +35,7 @@ $(document).ready(function() {
                             message: 'Digitos'
                         }
                     }
-                },
-                'FechaInicio': {
-                    validators: {
-                        notEmpty: {
-                            message: 'Requerido'
-                        }
-                    }
-                },
-                'FechaFin': {
-                    validators: {
-                        notEmpty: {
-                            message: 'Requerido'
-                        }
-                    }
-                },
-                'Enabled': {
-                    validators: {
-                        notEmpty: {
-                            message: 'Requerido'
-                        }
-                    },
-                    digits: {
-                        message: 'Digitos'
-                    }
                 }
-
             },
 
             plugins: {
@@ -94,21 +69,79 @@ $(document).ready(function() {
 
         });
     }
+    const target2 = document.querySelector("#div-bloquear-compone");
+    const blockUI2 = new KTBlockUI(target2);
 
-    $("#tabla-compone").on("click",'#registrar-compone', function(e) {
+    //EVENTO DE LA SUBTABLA DE COMPONE Y SE INICIALIZA EL MODAL PARA REGISTRAR UNA NUEVA RESIDENCIA
+    $("#tabla-residente").on("click",'.registrar-residencia', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         //console.log('click')
         $('.form-select').val("").trigger("change").prop("disabled",false);
         $("#AlertaError2").hide();
-        validator.resetForm();
+        validator2.resetForm();
         actualizarValidSelect2();
         //console.log($(this).attr("data-info"))
-        $("#PersonaIdInput").val($(this).attr("data-info"));
+        $("#PersonaIdInputCom").val($(this).attr("data-info"));
+        var userId= $(this).attr("data-info");
+        blockUI2.block();
+
+        $.ajax({
+            type: 'POST',
+            url: VerComunidadDisponible,
+            data: {
+                _token: csrfToken,
+                data: userId},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+               
+                if(data.success){
+                    //console.log(data.data);               
+                    data = data.data;
+                    var select = $('#ComunidadIdInputCom');
+                    select.empty();
+                    // Agrega las opciones al select
+                    var option = new Option('', '');
+                    select.append(option);      
+                    for (const comunidad in data) {
+                            var option = new Option(data[comunidad].Nombre, data[comunidad].Id);
+                            select.append(option);                        
+                    }
+                }else{
+                    //console.log(data.message)
+                    html = '<ul><li style="">'+data.message+'</li></ul>';
+                    $("#AlertaError2").append(html);
+
+                    $("#AlertaError2").show();
+                   //console.log("error");
+                }
+                blockUI2.release();
+            },
+            error: function () {
+                //alert('Error');
+                blockUI2.release();
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }
+        });
+
+
 
     });
 
     $('#ComunidadIdInputCom').on('select2:select', function(e) {
         const idComunidad = $(this).val();
-        
+        //console.log(idComunidad)
+        blockUI2.block();
         $.ajax({
             type: 'POST',
             url: VerPropiedades,
@@ -122,29 +155,40 @@ $(document).ready(function() {
                 
             },
             success: function (data) {
-                console.log(data);
-                var select = $('#PropiedadIdInputCom');
+                //console.log(data);
+                if(data.success){
+                    data= data.data;
+                    var select = $('#PropiedadIdInputCom');
                     select.empty();
-                    // Agrega las opciones al select
                     var option = new Option('', '');
                     select.append(option);
-                    for (const propiedad in data) {
-                            var option = new Option(data[propiedad].Numero, data[propiedad].Id);
-                            select.append(option);
+                    if(data.length != 0 ){
+                        for (const propiedad in data) {
+                                var option = new Option(data[propiedad].Numero, data[propiedad].Id);
+                                select.append(option);
+                        }
+                    }else{
+                        Swal.fire({
+                            text: "Error - No existen Propiedades Disponibles",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
                     }
-                if(data.success){
-                    
-                     location.reload();
+                     //location.reload();
                 }else{
                         html = '<ul><li style="">'+data.message+'</li></ul>';
-                       $("#AlertaError").append(html);
-
-                    
-                    $("#AlertaError").show();
+                       $("#AlertaError2").append(html);
+                       $("#AlertaError2").show();
                     
                 }
+                blockUI2.release();
             },
             error: function (e) {
+                blockUI2.release();
                 Swal.fire({
                     text: "Error",
                     icon: "error",
@@ -160,7 +204,10 @@ $(document).ready(function() {
     
     const target = document.querySelector("#div-bloquear");
     const blockUI = new KTBlockUI(target);
+
+
     const submitButton2 = document.getElementById('AddSubmitCom');
+    //EVENTO QUE MANEJA EL SUBMIT DE REGISTRAR UNA RESIDENCIA PARA UN USUARIO EN ESPECIFICO
     submitButton2.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
@@ -168,7 +215,6 @@ $(document).ready(function() {
         //console.log('guardar')
         $("#AlertaError2").hide();
         $("#AlertaError2").empty();
-        $('.form-select').val("").trigger("change").prop("disabled",false);
 
         // Validate form before submit
         if (validator2) {
@@ -191,10 +237,7 @@ $(document).ready(function() {
                             const value = decodeURIComponent(pair[1]);
                             keyValueObject[key] = value;
                         }
-
-                        submitButton.setAttribute('data-kt-indicator', 'on');
-                        submitButton.disabled = true;
-                        blockUI.block();
+                        blockUI2.block();
                         $.ajax({
                             type: 'POST',
                             url: GuardarCompone,
@@ -210,20 +253,19 @@ $(document).ready(function() {
                                 if(data.success){
                                     location.reload();
                                 }else{
-                                        html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError").append(html);
-
-                                    
-                                    $("#AlertaError").show();
+                                    console.log(data)
+                                        html = '<ul class="m-0"><li style="">'+data.message+'</li></ul>';
+                                    $("#AlertaError3").append(html);
+                                    $("#AlertaError3").show();
                                     
                                    //console.log("error");
                                 }
-                                blockUI.release();
+                                blockUI2.release();
                             },
                             error: function (e) {
-                                //console.log(e)
+                                console.log(e)
                                 //alert('Error');
-                                blockUI.release();
+                                blockUI2.release();
                                 Swal.fire({
                                     text: "Error",
                                     icon: "error",
@@ -237,13 +279,13 @@ $(document).ready(function() {
                             }
                         });
                     // form.submit(); // Submit form
-                    submitButton.removeAttribute('data-kt-indicator');
-                    submitButton.disabled = false;
+                  
                 }
             });
         }
     });
 
+    //EVENTO QUE MANEJA EL CAMBIO DE ESTADO PARA LA RESIDENCIA QUE COMPONE
     $("#tabla-residente tbody").on("click", '.editar-residente', function (e) {
         e.preventDefault();
         e.stopPropagation();

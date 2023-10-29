@@ -677,7 +677,7 @@ $(document).ready(function() {
 
     //Evento al presion el boton de Registrar ACCESO en la subtabla
     $("#tabla-usuario tbody").on("click",'.registrar-acceso', function(e) {
-        console.log('click')
+        //console.log('click')
         e.preventDefault();
         e.stopPropagation();
         $('.form-select').val("").trigger("change").prop("disabled",false);

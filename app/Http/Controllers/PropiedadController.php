@@ -192,12 +192,22 @@ class PropiedadController extends Controller
         }
     }
 
-    public function ObtenerPropiedadesDeComunidad(Request $request){
-        $request = $request->input('data');
-        $comunidad = Propiedad::select('Propiedad.Id', 'Propiedad.Numero')
-                                ->where('Propiedad.ComunidadId', '=' ,$request)
+    public function VerPropiedadesDisponiblesPorComunidad(Request $request){
+        $comunidadId = $request->input('data');
+        try{
+            $comunidad = Propiedad::select('Propiedad.Id', 'Propiedad.Numero')
+                                ->where('Propiedad.ComunidadId', '=' ,$comunidadId)
                                 ->where('Propiedad.Enabled','=', 1)
                                 ->get();
-        return response()->json($comunidad);
+
+            return response()->json([
+                    'success'=> true,
+                    'data' => $comunidad]);
+        }catch(Exception $e){
+            return response()->json([ 
+                'success'=> false,
+                'message'=> $e->getMessage()
+                ]);
+        }
     }
 }

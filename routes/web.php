@@ -61,8 +61,7 @@ Route::group(['prefix' => '/propiedad'], function () {
     Route::post('/ver', [PropiedadController::class, 'VerId'])->name('VerPropiedad');
     Route::post('/editar', [PropiedadController::class, 'Editar'])->name('EditarPropiedad');
     Route::post('/cambiarestado', [PropiedadController::class, 'CambiarEstado'])->name('CambiarEstadoPropiedad');
-
-    Route::post('/verPorComunidad', [PropiedadController::class, 'ObtenerPropiedadesDeComunidad'])->name('VerPorComunidad');
+    Route::post('/verporcomunidad', [PropiedadController::class, 'VerPropiedadesDisponiblesPorComunidad'])->name('VerPropiedadesDisponiblesPorComunidad');
 });
 
 Route::group(['prefix' => '/espaciocomun'], function () {
@@ -97,6 +96,7 @@ Route::group(['prefix' => '/compone'], function () {
     Route::post('/verporpropiedad', [ComponeController::class, 'VerPorPropiedadId'])->name('VerPorPropiedad');
     Route::post('/Verpersonadisponible', [ComponeController::class, 'VerPersonaDisponible'])->name('VerPersonaDisponible');
     Route::post('/cambioestado', [ComponeController::class, 'CambioEstado'])->name('CambioEstadoCompone');
+    Route::post('/vercomunidaddisponible', [ComponeController::class, 'VerComunidadDisponible'])->name('VerComunidadDisponible');
 
     
 });
