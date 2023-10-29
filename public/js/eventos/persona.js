@@ -518,6 +518,9 @@ $(document).ready(function() {
         //console.log("click");
 
         var userId =  $(this).closest('td').next().find('a.ver').attr('info');
+        var btn = $(this);
+
+        btn.attr("data-kt-indicator", "on");
         $.ajax({
             type: 'POST',
             url: CambiarEstadoPersona,
@@ -530,9 +533,19 @@ $(document).ready(function() {
                 //console.log(data);
                 //blockUI2.release();
                 if(data.success){
-                    //console.log(data.data);               
-                    location.reload();
+                    //console.log(data.data);
+                    //console.log(btn)
+                    btn.removeAttr("data-kt-indicator");
+                    if(btn.hasClass('btn-light-success')){
+                        btn.removeClass('btn-light-success').addClass('btn-light-warning');
+                        btn.find("span.indicator-label").first().text('INACTIVO')
+                    }else{
+                        btn.removeClass('btn-light-warning').addClass('btn-light-success');
+                        btn.find("span.indicator-label").first().text('ACTIVO')
+                    }          
+                    //location.reload();
                 }else{
+                    btn.removeAttr("data-kt-indicator");
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -547,6 +560,7 @@ $(document).ready(function() {
             error: function () {
                 //alert('Error');
                 //blockUI2.release();
+                btn.removeAttr("data-kt-indicator");
                 Swal.fire({
                     text: "Error",
                     icon: "error",

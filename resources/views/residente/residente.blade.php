@@ -96,11 +96,21 @@ $today = date('Y-m-d');
                         <td class="text-capitalize">{{ $persona->Nombre }} {{ $persona->Apellido }}</td>
                         @if ($persona->Enabled == 1 )
                         <td data-search="Enabled">
-                            <button class="btn btn-sm btn-light-success estado-residente fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Residente">Activo</button>
+                            <button class="btn btn-sm btn-light-success estado-residente fs-7 text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Residente">
+                                <span class="indicator-label">Activo</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
                         </td>
                         @else
                         <td data-search="Disabled">
-                            <button class="btn btn-light-warning fs-7 estado-residente text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Residente">Inactivo</button>
+                            <button class="btn btn-light-warning fs-7 estado-residente text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Residente">
+                                <span class="indicator-label">Inactivo</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
                         </td>
                         @endif
                         <td class="text-center p-0">
@@ -505,6 +515,7 @@ $today = date('Y-m-d');
 
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 </script>
+
 <!-- Datatables y Configuracion de la Tabla -->
 <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
 <script src="{{ asset('js/datatables/contenido/compone.js') }}"></script>

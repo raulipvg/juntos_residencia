@@ -358,7 +358,7 @@ miTabla.on('click', 'td.dt-control', function (e) {
     let tr = e.target.closest('tr');
     let row = miTabla.row(tr);
 
-    let cell = row.cell(tr, 8);
+    let cell = row.cell(tr, 5);
     let boton= $(cell.node()).find('button');
 
     let userId= $(this).prev().find('a.editar').attr("info")
@@ -370,8 +370,8 @@ miTabla.on('click', 'td.dt-control', function (e) {
     }
     else {
         // Open this row
-        boton.addClass('active')
-       
+        boton.children().eq(0).hide();
+        boton.attr("data-kt-indicator", "on");
 
         $.ajax({
             type: 'POST',
@@ -386,7 +386,7 @@ miTabla.on('click', 'td.dt-control', function (e) {
                 boton.children().eq(0).show();
                 boton.addClass('active')
                 if(data.success){
-                    console.log(data.data);
+                    //console.log(data.data);
                     data = data.data;
                     row.child(format(data)).show();
                     $(".editar-acceso").tooltip();

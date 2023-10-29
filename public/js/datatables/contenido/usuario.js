@@ -351,10 +351,17 @@ let miTabla = $('#tabla-usuario').DataTable({
         });
       
 $(document).ready(function() {
+var clickFlag = true;
 // Add event listener for opening and closing details
 miTabla.on('click', 'td.dt-control', function (e) {
     e.preventDefault();
     e.stopPropagation();
+    if(!clickFlag ){
+        //console.log('blokiao')
+        return;
+    }
+    clickFlag=false;
+
     let tr = e.target.closest('tr');
     let row = miTabla.row(tr);
 
@@ -420,6 +427,11 @@ miTabla.on('click', 'td.dt-control', function (e) {
             }
         });
     }
+
+     // Habilita los clics después de un cierto período de tiempo (por ejemplo, después de 1 segundo)
+     setTimeout(function () {
+        clickFlag = true;
+    }, 1000); // 1000 milisegundos = 1 segundo
 });
 
 

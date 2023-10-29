@@ -231,7 +231,7 @@
         <div class="modal-content" id="div-bloquear-residente">
             <div class="modal-header bg-light p-2 ps-5">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2 id="modal-titulo-residente" class="modal-title text-uppercase">Residentes de la Comunidad Demo - 133C </h2>
+                    <h2 id="modal-titulo-residente" class="modal-title text-uppercase"> </h2>
                     <button id="AddBtn-Residente" type="button" class="btn btn-sm btn-success ms-5 abrir-modal" data-bs-stacked-modal="#editar-residente">
                         Registrar
                     </button>
