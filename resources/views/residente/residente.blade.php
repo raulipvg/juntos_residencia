@@ -358,8 +358,8 @@ $today = date('Y-m-d');
                             <div class="form-floating fv-row">
                                 <select id="EnabledInput2" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true" data-dropdown-parent="#editar-espacio">
                                     <option></option>
-                                    <option value="1">Activo</option>
-                                    <option value="2">Inactivo</option>
+                                    <option value="1">Visible</option>
+                                    <option value="2">Oculto</option>
                                 </select>
                                 <label for="EnabledInput2" class="form-label">Estado</label>
                             </div>
@@ -482,6 +482,7 @@ $today = date('Y-m-d');
     const GuardarHojaVida = "{{ route('GuardarHojaVida') }}";
     const VerHojaVida = "{{ route('VerHojaVida') }}";
     const EditarHojaVida = "{{ route('EditarHojaVida') }}";
+    const CambiarEstadoHojaVida = "{{ route('CambiarEstadoHojaVida') }}";
 
     const VerCompone = "{{ route('VerCompone') }}"
     const GuardarCompone = "{{ route('GuardarCompone') }}"

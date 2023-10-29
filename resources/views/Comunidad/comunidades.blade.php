@@ -94,11 +94,21 @@
                         <td>{{\Carbon\Carbon::parse($comunidad->FechaRegistro)->format('d-m-Y')}}</td>
                         @if ($comunidad->Enabled == 1 )
                         <td data-search="Enabled">
-                            <button class="btn btn-sm btn-light-success estado-comunidad fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Comunidad">Activo</button>
+                            <button class="btn btn-sm btn-light-success estado-comunidad fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Comunidad">
+                                <span class="indicator-label">Activo</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
                         </td>
                         @else
                         <td data-search="Disabled">
-                            <button class="btn btn-light-warning fs-7 estado-comunidad text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Comunidad">Inactivo</button>
+                            <button class="btn btn-light-warning fs-7 estado-comunidad text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Comunidad">
+                                <span class="indicator-label">Inactivo</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
                         </td>
                         @endif
                         <td>{{ $comunidad->tipo_comunidad->Nombre }}</td>

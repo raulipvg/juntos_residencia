@@ -86,6 +86,7 @@ Route::group(['prefix' => '/hojavida'], function () {
     Route::post('/registrar', [HojaVidaController::class, 'Guardar'])->name('GuardarHojaVida');
     Route::post('/ver', [HojaVidaController::class, 'VerId'])->name('VerHojaVida');
     Route::post('/editar', [HojaVidaController::class, 'Editar'])->name('EditarHojaVida');
+    Route::post('/cambiarestadoHojaVida', [HojaVidaController::class, 'CambiarEstadoHojaVida'])->name('CambiarEstadoHojaVida');
 });
 
 Route::group(['prefix' => '/compone'], function () {

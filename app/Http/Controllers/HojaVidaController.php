@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\HojaVida;
 use App\Models\Persona;
-use App\Models\Compone;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class HojaVidaController extends Controller
 {
@@ -100,6 +100,30 @@ class HojaVidaController extends Controller
                     'success' => false,
                     'message' => $e->getMessage()]);
             }
+    }
+
+    public function CambiarEstadoHojaVida(Request $request){
+        $request = $request->input('data');
+        // Accede a los atributos del modelo
+
+        try{
+            $hojavidaEdit = HojaVida::find($request);
+            DB::beginTransaction();
+            $hojavidaEdit->update([
+                   'Enabled' => ($hojavidaEdit['Enabled'] == 1)? 2: 1 
+            ]);
+            //$usuario->save();
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Modelo recibido y procesado']);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
     }
 
 }

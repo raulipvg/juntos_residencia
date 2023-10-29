@@ -562,6 +562,9 @@ $(document).ready(function () {
         //console.log("click");
 
         var userId = $(this).closest("td").next().find("a.ver").attr("info");
+        var btn = $(this);
+
+        btn.attr("data-kt-indicator", "on");
         $.ajax({
             type: "POST",
             url: CambiarEstado,
@@ -576,8 +579,16 @@ $(document).ready(function () {
                 //blockUI2.release();
                 if (data.success) {
                     //console.log(data.data);
-                    location.reload();
+                    btn.removeAttr("data-kt-indicator");
+                    if(btn.hasClass('btn-light-success')){
+                        btn.removeClass('btn-light-success').addClass('btn-light-warning');
+                        btn.find("span.indicator-label").first().text('INACTIVO')
+                    }else{
+                        btn.removeClass('btn-light-warning').addClass('btn-light-success');
+                        btn.find("span.indicator-label").first().text('ACTIVO')
+                    }   
                 } else {
+                    btn.removeAttr("data-kt-indicator");
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -592,6 +603,7 @@ $(document).ready(function () {
             error: function () {
                 //alert('Error');
                 //blockUI2.release();
+                btn.removeAttr("data-kt-indicator");
                 Swal.fire({
                     text: "Error",
                     icon: "error",
@@ -648,7 +660,12 @@ $(document).ready(function () {
                         for (let row in data) {
                             if (data[row].Enabled == 1) {
                                 var enabled =
-                                    '<button class="btn btn-sm btn-light-success estado-residente fs-7 text-uppercase justify-content-center p-1 w-65px" data-info="'+data[row].Id+'" >ACTIVO</button>';
+                                    '<button class="btn btn-sm btn-light-success estado-residente fs-7 text-uppercase justify-content-center p-1 w-65px" data-info="'+data[row].Id+'" >'+
+                                    '<span class="indicator-label">Activo</span>'+
+                                    '<span class="indicator-progress">'+
+                                        '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                                    '</span>'+
+                                    '</button>';
                             } else {
                                 var enabled =
                                     '<button class="btn btn-sm btn-light-warning fs-7 text-uppercase justify-content-center p-1 w-65px disabled">INACTIVO</button>';
@@ -899,6 +916,9 @@ $(document).ready(function () {
         console.log("cambio-estado")
         componeId = $(this).attr("data-info");
 
+        var btn = $(this);
+
+        btn.attr("data-kt-indicator", "on");
         $.ajax({
             type: "POST",
             url: CambioEstadoCompone,
@@ -913,8 +933,14 @@ $(document).ready(function () {
                 //blockUI2.release();
                 if (data.success) {
                     //console.log(data.data);
-                    location.reload();
+                    btn.removeAttr("data-kt-indicator");
+                    if(btn.hasClass('btn-light-success')){
+                        btn.removeClass('btn-light-success').addClass('btn-light-warning');
+                        btn.find("span.indicator-label").first().text('INACTIVO');
+                        btn.prop("disabled", true);
+                    }
                 } else {
+                    btn.removeAttr("data-kt-indicator");
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -929,6 +955,7 @@ $(document).ready(function () {
             error: function () {
                 //alert('Error');
                 //blockUI2.release();
+                btn.removeAttr("data-kt-indicator");
                 Swal.fire({
                     text: "Error",
                     icon: "error",

@@ -116,9 +116,19 @@ $(document).ready(function() {
 
                         for(let row in data){
                             if(data[row].Enabled == 1){
-                            var enabled =  '<span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Habilitado</span>';
-                            }else{
-                            var enabled = '<span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Deshabilitado</span>';  
+                                var enabled =  '<button class="btn btn-sm btn-light-success estado-hojavida fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ocultar Hoja Vida">'+
+                                '<span class="indicator-label">Visible</span>'+
+                                '<span class="indicator-progress">'+
+                                    '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                                '</span>'+
+                                '</button>';
+                                }else{
+                                var enabled = '<button class="btn btn-light-warning fs-7 estado-hojavida text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Visible Hoja Vida">'+
+                                '<span class="indicator-label">Oculto</span>'+
+                                    '<span class="indicator-progress">'+
+                                        '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                                    '</span>'+
+                                '</button>';  
                             }
 
                             var accion = '<div class="btn-group btn-group-sm" role="group">'+
@@ -575,5 +585,66 @@ $(document).ready(function() {
                     });
             }
         });
+    });
+
+    $("#tabla-espacios tbody").on("click", '.estado-hojavida', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        //
+
+        var id =  $(this).closest('td').next().find('a.ver-espacio').attr('info');
+        var btn = $(this);
+
+        btn.attr("data-kt-indicator", "on");
+        $.ajax({
+            type: 'POST',
+            url: CambiarEstadoHojaVida,
+            data: {
+                _token: csrfToken,
+                data: id},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                //blockUI2.release();
+                if(data.success){
+                    //console.log(data.data);               
+                    btn.removeAttr("data-kt-indicator");
+                    if(btn.hasClass('btn-light-success')){
+                        btn.removeClass('btn-light-success').addClass('btn-light-warning');
+                        btn.find("span.indicator-label").first().text('Oculto')
+                    }else{
+                        btn.removeClass('btn-light-warning').addClass('btn-light-success');
+                        btn.find("span.indicator-label").first().text('Visible')
+                    }   
+                }else{
+                    btn.removeAttr("data-kt-indicator");
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                }
+            },
+            error: function () {
+                //alert('Error');
+                //blockUI2.release();
+                btn.removeAttr("data-kt-indicator");
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }
+        });
+
     });
 });

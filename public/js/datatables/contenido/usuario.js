@@ -44,7 +44,12 @@ function format(data) {
             html = html +
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<a class="editar-acceso btn btn-light-success w-115px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Acceso">HABILITADO</a>'+
+                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Habilitar Acceso">'+
+                            '<span class="indicator-label">Activo</span>'+
+                            '<span class="indicator-progress">'+
+                                '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                            '</span>'+
+                            '</button>';
                         '</div>'+
                     '</td>'+
                 '</tr>'
@@ -53,8 +58,13 @@ function format(data) {
             html = html +
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<a class="editar-acceso btn btn-light-warning w-115px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Acceso">DESHABILITADO</a>'+
-                        '</div>'+
+                            '<button class="btn btn-sm btn-light-warning editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Deshabilitar Acceso">'+
+                            '<span class="indicator-label">Inactivo</span>'+
+                            '<span class="indicator-progress">'+
+                                '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                            '</span>'+
+                            '</button>';
+                         '</div>'+
                     '</td>'+
                 '</tr>'
 

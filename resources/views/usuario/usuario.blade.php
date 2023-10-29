@@ -91,11 +91,21 @@
                         <td>{{ $usuario->rol->Nombre }}</td>
                         @if ($usuario->EstadoId == 1 )
                         <td data-search="Enabled">
-                            <button class="btn btn-sm btn-light-success estado-usuario fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Usuario">{{ $usuario->estado_usuario->Nombre}}</button>
+                            <button class="btn btn-sm btn-light-success estado-usuario fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Usuario">
+                                <span class="indicator-label">Activo</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
                         </td>
                         @else
                         <td data-search="Disabled">
-                            <button class="btn btn-light-warning fs-7 estado-usuario text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Usuario">{{ $usuario->estado_usuario->Nombre}}</button>
+                            <button class="btn btn-light-warning fs-7 estado-usuario text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Usuario">
+                                <span class="indicator-label">Inactivo</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
                         </td>
                         @endif
                         <td class="text-center p-0">

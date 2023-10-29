@@ -93,11 +93,21 @@
                         <td class="text-capitalize">{{ $propiedad->tipo_propiedad->Nombre }}</td>
                         @if ($propiedad->Enabled == 1 )
                         <td data-search="Enabled">
-                            <button class="btn btn-sm btn-light-success estado-propiedad fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Propiedad">ACTIVO</button>
+                            <button class="btn btn-sm btn-light-success estado-propiedad fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Propiedad">
+                                <span class="indicator-label">Activo</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
                         </td>
                         @else
                         <td data-search="Disabled">
-                            <button class="btn btn-sm btn-light-warning estado-propiedad fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Propiedad">INACTIVO</button>
+                            <button class="btn btn-sm btn-light-warning estado-propiedad fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Propiedad">
+                                <span class="indicator-label">Inactivo</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
                         </td>
                         @endif
                         <td class="text-center p-0">
@@ -194,8 +204,8 @@
                             <div class="form-floating fv-row">
                                 <select id="EstadoInput" name="Estado" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
-                                    <option value="1">Habilitado</option>
-                                    <option value="2">Deshabilitado</option>
+                                    <option value="1">Activo</option>
+                                    <option value="2">Inactivo</option>
                                 </select>
                                 <label for="EstadoInput" class="form-label">Estado</label>
                             </div>

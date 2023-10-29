@@ -390,10 +390,12 @@ $(document).ready(function() {
     $("#tabla-comunidad tbody").on("click", '.estado-comunidad', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log("click");
+        //
 
         var id =  $(this).closest('td').next().next().find('a.ver').attr('info');
-        console.log(id);
+        var btn = $(this);
+
+        btn.attr("data-kt-indicator", "on");
         $.ajax({
             type: 'POST',
             url: CambiarEstadoComunidad,
@@ -407,8 +409,16 @@ $(document).ready(function() {
                 //blockUI2.release();
                 if(data.success){
                     //console.log(data.data);               
-                    location.reload();
+                    btn.removeAttr("data-kt-indicator");
+                    if(btn.hasClass('btn-light-success')){
+                        btn.removeClass('btn-light-success').addClass('btn-light-warning');
+                        btn.find("span.indicator-label").first().text('INACTIVO')
+                    }else{
+                        btn.removeClass('btn-light-warning').addClass('btn-light-success');
+                        btn.find("span.indicator-label").first().text('ACTIVO');
+                    }   
                 }else{
+                    btn.removeAttr("data-kt-indicator");
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -423,6 +433,7 @@ $(document).ready(function() {
             error: function () {
                 //alert('Error');
                 //blockUI2.release();
+                btn.removeAttr("data-kt-indicator");
                 Swal.fire({
                     text: "Error",
                     icon: "error",

@@ -581,6 +581,9 @@ $(document).ready(function() {
         //console.log("click");
 
         var userId =  $(this).closest('td').next().find('a.ver').attr('info');
+        var btn = $(this);
+
+        btn.attr("data-kt-indicator", "on");
         $.ajax({
             type: 'POST',
             url: CambiarEstado,
@@ -594,8 +597,16 @@ $(document).ready(function() {
                 //blockUI2.release();
                 if(data.success){
                     //console.log(data.data);               
-                    location.reload();
+                    btn.removeAttr("data-kt-indicator");
+                    if(btn.hasClass('btn-light-success')){
+                        btn.removeClass('btn-light-success').addClass('btn-light-warning');
+                        btn.find("span.indicator-label").first().text('INACTIVO')
+                    }else{
+                        btn.removeClass('btn-light-warning').addClass('btn-light-success');
+                        btn.find("span.indicator-label").first().text('ACTIVO')
+                    }   
                 }else{
+                    btn.removeAttr("data-kt-indicator");
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -610,6 +621,7 @@ $(document).ready(function() {
             error: function () {
                 //alert('Error');
                 //blockUI2.release();
+                btn.removeAttr("data-kt-indicator");
                 Swal.fire({
                     text: "Error",
                     icon: "error",
@@ -630,8 +642,9 @@ $(document).ready(function() {
         e.stopPropagation();
         //console.log("click")
         var accesoId =$(this).attr("info");
+        var btn = $(this);
         //console.log(accesoId)
-
+        btn.attr("data-kt-indicator", "on");
         $.ajax({
             type: 'POST',
             url: EditarAcceso,
@@ -643,9 +656,16 @@ $(document).ready(function() {
             success: function (data) {
                 //console.log(data.errors);
                 if(data.success){
-                    
-                    location.reload();
+                    btn.removeAttr("data-kt-indicator");
+                    if(btn.hasClass('btn-light-success')){
+                        btn.removeClass('btn-light-success').addClass('btn-light-warning');
+                        btn.find("span.indicator-label").first().text('Inactivo')
+                    }else{
+                        btn.removeClass('btn-light-warning').addClass('btn-light-success');
+                        btn.find("span.indicator-label").first().text('Activo')
+                    }   
                 }else{
+                    btn.removeAttr("data-kt-indicator");
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -659,6 +679,7 @@ $(document).ready(function() {
             },
             error: function () {
                 //alert('Error');
+                btn.removeAttr("data-kt-indicator");
                 Swal.fire({
                     text: "Error",
                     icon: "error",
