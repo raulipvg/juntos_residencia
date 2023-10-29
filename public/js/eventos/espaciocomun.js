@@ -156,7 +156,7 @@ $(document).ready(function() {
                             var enabled = '<button class="btn btn-light-warning fs-7 estado-espacios text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Espacio">'+
                             '<span class="indicator-label">Inactivo</span>'+
                                 '<span class="indicator-progress">'+
-                                    '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                                    '<span class="spinner-border spinner-border-sm align-middle"></span>'
                                 '</span>'
                             '</button>';  
                             }

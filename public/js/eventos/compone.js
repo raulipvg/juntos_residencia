@@ -293,6 +293,9 @@ $(document).ready(function() {
         console.log("click");
 
         var userId =  $(this).attr('info');
+        var btn = $(this);
+
+        btn.attr("data-kt-indicator", "on");
         $.ajax({
             type: 'POST',
             url: CambioEstadoCompone,
@@ -306,8 +309,13 @@ $(document).ready(function() {
                 //blockUI2.release();
                 if(data.success){
                     //console.log(data.data);               
-                    location.reload();
+                    btn.removeAttr("data-kt-indicator");
+                    if(btn.hasClass('btn-light-success')){
+                        btn.removeClass('btn-light-success').addClass('btn-light-warning');
+                        btn.find("span.indicator-label").first().text('INACTIVO');
+                        btn.prop("disabled", true);
                 }else{
+                    btn.removeAttr("data-kt-indicator");
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -318,10 +326,12 @@ $(document).ready(function() {
                         }
                     });
                 }
+            }
             },
             error: function () {
                 //alert('Error');
                 //blockUI2.release();
+                btn.removeAttr("data-kt-indicator");
                 Swal.fire({
                     text: "Error",
                     icon: "error",

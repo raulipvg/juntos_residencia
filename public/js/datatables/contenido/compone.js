@@ -54,8 +54,13 @@ function format(data, persona) {
             html = html +
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<a class="editar-residente btn btn-light-success w-75px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Desactivar Residencia">ACTIVO</a>'+
-                        '</div>'+
+                            '<button class="btn btn-sm btn-light-success editar-residente fs-7 text-uppercase justify-content-center p-1 w-70px" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Residencia">'+
+                            '<span class="indicator-label">Activo</span>'+
+                            '<span class="indicator-progress">'+
+                                '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                            '</span>'+
+                            '</button>';
+                            '</div>'+
                     '</td>'+
                 '</tr>'
 
@@ -63,7 +68,7 @@ function format(data, persona) {
                 html = html +
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<a class="btn btn-light-warning w-75px p-2 disabled" >INACTIVO</a>'+
+                            '<button class="btn btn-sm btn-light-warning fs-7 text-uppercase justify-content-center p-1 w-70px disabled">INACTIVO</button>';
                         '</div>'+
                     '</td>'+
                 '</tr>'
