@@ -11,6 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CopropietarioController;
 use App\Http\Controllers\EspacioComunController;
+use App\Http\Controllers\GastoMesController;
 use App\Http\Controllers\ResidenteController;
 use App\Http\Controllers\TipoCobro;
 use App\Models\AccesoComunidad;
@@ -100,6 +101,10 @@ Route::group(['prefix' => '/compone'], function () {
     Route::post('/vercomunidaddisponible', [ComponeController::class, 'VerComunidadDisponible'])->name('VerComunidadDisponible');
 
     
+});
+
+Route::group(['prefix'=> '/gastomes'], function () {
+    Route::get('/', [GastoMesController::class, 'Index'])->name('GastoMes');
 });
 
 
