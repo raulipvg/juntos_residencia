@@ -100,8 +100,7 @@ $(document).ready(function() {
             //content: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                //console.log(data);
-                
+                //console.log(data);    
                 if(data.success){
                     
                     comunidadNombre= data.persona.Nombre;
@@ -157,6 +156,7 @@ $(document).ready(function() {
                                 $(fila).find('td').eq(4).addClass('text-center p-0');
                         }
                         miTablaEspacio.draw();
+                        $(".estado-hojavida").tooltip();
                         
                     }
                     
