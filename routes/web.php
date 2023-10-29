@@ -62,6 +62,7 @@ Route::group(['prefix' => '/propiedad'], function () {
     Route::post('/editar', [PropiedadController::class, 'Editar'])->name('EditarPropiedad');
     Route::post('/cambiarestado', [PropiedadController::class, 'CambiarEstado'])->name('CambiarEstadoPropiedad');
 
+    Route::post('/verPorComunidad', [PropiedadController::class, 'ObtenerPropiedadesDeComunidad'])->name('VerPorComunidad');
 });
 
 Route::group(['prefix' => '/espaciocomun'], function () {
@@ -75,12 +76,10 @@ Route::group(['prefix' => '/espaciocomun'], function () {
 
 Route::group(['prefix' => '/residente'], function () {
     Route::get('/', [ComponeController::class, 'Index'])->name('Residente');
-    Route::post('/registrar', [ComponeController::class, 'Guardar'])->name('GuardarResidente');
-    Route::post('/ver', [ComponeController::class, 'VerId'])->name('VerResidente');
-    Route::post('/editar', [ComponeController::class, 'Editar'])->name('EditarResidente');
     Route::post('/registrar-persona', [PersonaController::class, 'Guardar'])->name('GuardarPersona');
     Route::post('/ver-persona', [PersonaController::class, 'VerId'])->name('VerPersona');
     Route::post('/editar-persona', [PersonaController::class, 'Editar'])->name('EditarPersona');
+    Route::post('/cambioestado', [PersonaController::class, 'CambioEstado'])->name('CambioEstadoPersona');
 });
 
 Route::group(['prefix' => '/hojavida'], function () {

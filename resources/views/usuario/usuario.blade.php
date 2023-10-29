@@ -109,7 +109,8 @@
                                 <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
                                 <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
                                 <span class="indicator-label"></span>
-                                <span class="indicator-progress"><span class="spinner-border spinner-border-sm align-middle"></span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
                                 </span>
                             </button>
                         </td>

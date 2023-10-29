@@ -1,22 +1,26 @@
 function format(data) {
     // `d` is the original data object for the row
-    var html = '<div class="d-flex justify-content-center">'+
-    '<table id="services_table" class="services-subtable border border-dashed rounded bg-gray-100 pb-2" style="width: 90%;">'+
+    var html = 
+    '<div class="d-flex justify-content-center">'+
+    '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 70%;">'+
+    '<table id="services_table" class="table table-row-dashed">'+
         '<thead class="services-info">'+
-           '<tr class="text-dark fw-bold">'+
-                '<th>Comundidad</th>'+
-                '<th>Propiedad</th>'+
-                '<th>Rol</th>'+
-                '<th>Fecha inicio</th>'+
-                '<th>Fecha fin</th>'+
-                '<th>Acceso</th>'+
-                '<th class="text-center col-3">Accion'+ 
-                    '<button type="button" data-info="'+data.PersonaId+'" class="registrar-acceso btn btn-sm btn-icon btn-color-primary btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-compone">'+
-                '<i class="ki-outline ki-plus-square fs-2"></i>'+
-            '</button></th>'+
+           '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
+                '<th class="p-0 ps-3">Comundidad</th>'+
+                '<th class="p-0 ps-3">Propiedad</th>'+
+                '<th class="p-0 ps-3">Rol</th>'+
+                '<th class="p-0 ps-3">Fecha inicio</th>'+
+                '<th class="p-0 ps-3">Fecha fin</th>'+
+                '<th class="text-center p-0 ps-3">Estado'+
+                    '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Propiedad">'+ 
+                        '<button type="button" data-info="'+data.PersonaId+'" class="registrar-acceso btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-compone">'+
+                            '<i class="ki-outline ki-plus-square fs-2"></i>'+
+                        '</button>'+
+                    '</span>'+
+                '</th>'+
             '</tr>'+
         '</thead>'+
-        '<tbody class="with-before-element">';
+        '<tbody class="fw-bold text-gray-600">';
         for(const elemento of data) {
             // console.log(elemento.Enabled);
              // Crear un objeto Date a partir de la cadena original
@@ -36,41 +40,37 @@ function format(data) {
              anio = fechaFin.getFullYear();
              var fechaFormateada2 = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
              html = html +
-                     '<tr>'+
-                         '<td>'+elemento.Comunidad+'</td>'+
-                         '<td>'+elemento.Propiedad+'</td>'+
-                         '<td>'+elemento.Rol+'</td>'+
-                         '<td>'+fechaFormateada1+'</td>'+
-                         '<td>'+fechaFormateada2+'</td>';
-     
-             if(elemento.Enabled == 1){
-                 html = html +
-                         '<td><span class="badge badge-light-success fs-7 text-uppercase estado justify-content-center">Enabled</span></td>'+
-                         '<td class="text-center p-0">'+
-                             '<div class="btn-group btn-group-sm" role="group">'+
-                                 '<a class="editar-acceso btn btn-light-warning w-100px" info="'+elemento.Id+'">Deshabilitar</a>'+
-                             '</div>'+
-                         '</td>'+
-                     '</tr>'
-     
+                    '<tr>'+
+                        '<td class="text-gray-700 text-capitalize">'+elemento.Comunidad+'</td>'+
+                        '<td class="text-gray-700 text-capitalize">'+elemento.Propiedad+'</td>'+
+                        '<td class="text-gray-700 text-capitalize">'+elemento.Rol+'</td>'+
+                        '<td>'+fechaFormateada1+'</td>'+
+                        '<td>'+fechaFormateada2+'</td>';
+            if(elemento.Enabled == 1){
+            html = html +
+                    '<td class="text-center p-0">'+
+                        '<div class="btn-group btn-group-sm" role="group">'+
+                            '<a class="editar-residente btn btn-light-success w-115px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Desactivar Propiedad">Activo</a>'+
+                        '</div>'+
+                    '</td>'+
+                '</tr>'
+
             }else{
                 html = html +
-                        '<td><span class="badge badge-light-warning fs-7 text-uppercase estado justify-content-center">Disabled</span></td>'+
-                        '<td class="text-center p-0">'+
-                            '<div class="btn-group btn-group-sm" role="group">'+
-                                '<a class="editar-acceso btn btn-light-success w-100px" info="'+elemento.Id+'">Habilitar</a>'+
-                            '</div>'+
-                        '</td>'+
-                    '</tr>'
-     
-            }
-        }
-     
-            html=  html+        
-                         '</tbody>'+
-                     '</table>'+
-                 '</div>';
+                    '<td class="text-center p-0">'+
+                        '<div class="btn-group btn-group-sm" role="group">'+
+                            '<a class="editar-residente btn btn-light-warning w-115px p-2" info="'+elemento.Id+'" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Desactivar Propiedad">Inactivo</a>'+
+                        '</div>'+
+                    '</td>'+
+                '</tr>'
 
+            }
+                    '</tr>'+
+                '</tbody>'+
+            '</table>'+
+        '</div>'+
+        '</div>';
+        }
     return html;
 }
 
@@ -353,6 +353,8 @@ let miTabla = $('#tabla-residente').DataTable({
 });
 
 miTabla.on('click', 'td.dt-control', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     let tr = e.target.closest('tr');
     let row = miTabla.row(tr);
 
@@ -380,11 +382,15 @@ miTabla.on('click', 'td.dt-control', function (e) {
             //content: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                //console.log(data.errors);
+                boton.removeAttr("data-kt-indicator");
+                boton.children().eq(0).show();
+                boton.addClass('active')
                 if(data.success){
                     console.log(data.data);
                     data = data.data;
                     row.child(format(data)).show();
+                    $(".editar-acceso").tooltip();
+                    $(".dar-acceso").tooltip();
                      //location.reload();
                 }else{
                     //console.log(data.message)

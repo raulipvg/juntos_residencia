@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Persona;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PersonaController extends Controller
 {
@@ -73,4 +74,27 @@ class PersonaController extends Controller
                 'message' => $e->getMessage()]);
             }
     }
+
+    public function CambioEstado(Request $request){
+        $request = $request->input('data');
+    
+        try{
+            $personaEdit = Persona::find($request);
+            DB::beginTransaction();
+            $personaEdit->update([
+                   'Enabled' => ($personaEdit['Enabled'] == 1)? 2: 1 
+            ]);
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Modelo recibido y procesado']);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
+        
+        }
 }

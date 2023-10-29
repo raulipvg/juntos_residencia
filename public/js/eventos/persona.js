@@ -109,54 +109,7 @@ $(document).ready(function() {
                 }
             }
     );
-    const form2 = document.getElementById('Formulario-Compone');
-
-    const validator2 = FormValidation.formValidation(
-        form2,
-        {
-            fields: {   
-                'ComunidadId': {
-                    validators: {
-                        notEmpty: {
-                            message: 'Requerido'
-                        },
-                        digits: {
-                            message: 'Digitos'
-                        }
-                    }
-                },
-                'PropiedadId': {
-                    validators: {
-                        notEmpty: {
-                            message: 'Requerido'
-                        },
-                        digits: {
-                            message: 'Digitos'
-                        }
-                    }
-                },
-                'RolId': {
-                    validators: {
-                        notEmpty: {
-                            message: 'Requerido'
-                        },
-                        digits: {
-                            message: 'Digitos'
-                        }
-                    }
-                }
-            },
-
-            plugins: {
-                trigger: new FormValidation.plugins.Trigger(),
-                bootstrap: new FormValidation.plugins.Bootstrap5({
-                    rowSelector: '.fv-row',
-                    eleInvalidClass: 'is-invalid',
-                    eleValidClass: 'is-valid'
-                })
-            }
-        }
-);
+    
 
     function actualizarValidSelect2(){
 
@@ -184,6 +137,7 @@ $(document).ready(function() {
         //Inicializacion
         //console.log("AddBtn")
         e.preventDefault();
+        e.stopPropagation();
         $("#modal-titulo").empty().html("Registrar Residente");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
@@ -201,6 +155,7 @@ $(document).ready(function() {
     submitButton.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
+        e.stopPropagation();
 
         $("#AlertaError").hide();
         $("#AlertaError").empty();
@@ -245,17 +200,16 @@ $(document).ready(function() {
                                     data: keyValueObject 
                                 },
                             dataType: "json",
-                            //content: "application/json; charset=utf-8",
                             beforeSend: function() {
                                 
                             },
                             success: function (data) {
-                                //console.log(data.errors);
+                                
                                 if(data.success){
-                                    //console.log("exito");
+                                
                                      location.reload();
                                 }else{
-                                    //console.log(data.error);
+                                
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
                                        $("#AlertaError").append(html);
 
@@ -293,6 +247,7 @@ $(document).ready(function() {
     //Evento al presionar el Boton Editar
     $("#tabla-residente tbody").on("click",'.editar', function (e) {
         e.preventDefault();
+        e.stopPropagation();
         //Inicializacion
         $("#modal-titulo").empty().html("Editar Residente");
         $("input").val('').prop("disabled",false);
@@ -331,7 +286,7 @@ $(document).ready(function() {
                     $("#RutInput").val(data.RUT)
 
                     $("#SexoIdInput").val(data.Sexo).trigger("change");
-                    $("#NacionalidadInput").val(data.NacionalidadId).trigger("change");
+                    $("#NacionalidadIdInput").val(data.NacionalidadId).trigger("change");
                     $("#TelefonoInput").val(data.Telefono)
                     $("#CorreoInput").val(data.Email)
                     
@@ -383,6 +338,7 @@ $(document).ready(function() {
     submitEditButton.addEventListener('click', function (e) {
             // Prevent default button action
             e.preventDefault();
+            e.stopPropagation();
             $("#AlertaError").hide();
              $("#AlertaError").empty();
 
@@ -417,7 +373,7 @@ $(document).ready(function() {
                                 const value = decodeURIComponent(pair[1]);
                                 keyValueObject[key] = value;
                             }
-
+                            blockUI.block();
                              $.ajax({
                                 type: 'POST',
                                 url: EditarPersona,
@@ -428,6 +384,7 @@ $(document).ready(function() {
                                 dataType: "json",
                                 success: function (data) {
                                     //console.log(data.errors);
+                                    blockUI.release();
                                     if(data.success){
                                         //console.log("exito");
                                          location.reload();
@@ -443,6 +400,7 @@ $(document).ready(function() {
                                 },
                                 error: function () {
                                     //alert('Error');
+                                    blockUI.release();
                                     Swal.fire({
                                         text: "Error",
                                         icon: "error",
@@ -462,7 +420,7 @@ $(document).ready(function() {
 
     $("#tabla-residente tbody").on("click",'.ver', function () {
         //console.log("wena");
-        $("#modal-titulo").empty().html("Ver Comunidad");
+        $("#modal-titulo").empty().html("Ver Residente");
         $("input").val('');
         $('.form-select').val("").trigger("change");
 
@@ -488,22 +446,22 @@ $(document).ready(function() {
             success: function (data) {
                 console.log(data);
                 if(data){
-
+                    
                     data=data.data;
                     //console.log("wena");
                     //Agrego los valores al formulario
                     $("#IdInput").val(data.Id);
-                    $("#NombreInput").val(data.Nombre)
-                    $("#ApellidoInput").val(data.Apellido)
-                    $("#RutInput").val(data.RUT)
+                    $("#NombreInput").val(data.Nombre).prop('disabled',true)
+                    $("#ApellidoInput").val(data.Apellido).prop('disabled',true)
+                    $("#RutInput").val(data.RUT).prop('disabled',true)
 
-                    $("#SexoIdInput").val(data.Sexo).trigger("change");
-                    $("#NacionalidadInput").val(data.NacionalidadId).trigger("change");
+                    $("#SexoIdInput").val(data.Sexo).trigger("change").prop('disabled',true);
+                    $("#NacionalidadIdInput").val(data.NacionalidadId).trigger("change").prop('disabled',true);
                     $("#TelefonoInput").val(data.Telefono)
                     $("#CorreoInput").val(data.Email).prop('disabled',true);
                     
 
-                    $("#EnabledInput3").val(data.Enabled).trigger("change");
+                    $("#EnabledInput3").val(data.Enabled).trigger("change").prop('disabled',true);
                                     
                     blockUI.release();
 
@@ -554,106 +512,53 @@ $(document).ready(function() {
 
     });
 
-    $("#tabla-compone").on("click",'.registrar-compone', function(e) {
-        //console.log('click')
-        $('.form-select').val("").trigger("change").prop("disabled",false);
-        $("#AlertaError2").hide();
-        validator.resetForm();
-        actualizarValidSelect2();
-        //console.log($(this).attr("data-info"))
-        $("#PersonaIdInput").val($(this).attr("data-info"));
-
-    });
-
-    const submitButton2 = document.getElementById('AddSubmit-acceso');
-    submitButton2.addEventListener('click', function (e) {
-        // Prevent default button action
+    $("#tabla-residente tbody").on("click", '.estado-residente', function (e) {
         e.preventDefault();
-        console.log('guardar')
-        $("#AlertaError2").hide();
-        $("#AlertaError2").empty();
+        e.stopPropagation();
+        //console.log("click");
 
-        // Validate form before submit
-        if (validator2) {
-            validator2.validate().then(function (status) {
-                 actualizarValidSelect2();
-
-                //console.log('validated!');
-                //status
-                if (status == 'Valid') {
-                    // Show loading indication                       
-                        let form1= $("#Formulario-Compone");
-                        var fd = form1.serialize();
-                        const pairs = fd.split('&');
-
-                        const keyValueObject = {};
-                       
-                        for (let i = 0; i < pairs.length; i++) {
-                            const pair = pairs[i].split('=');
-                            const key = decodeURIComponent(pair[0]);
-                            const value = decodeURIComponent(pair[1]);
-                            keyValueObject[key] = value;
+        var userId =  $(this).closest('td').next().find('a.ver').attr('info');
+        $.ajax({
+            type: 'POST',
+            url: CambiarEstadoPersona,
+            data: {
+                _token: csrfToken,
+                data: userId},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                //blockUI2.release();
+                if(data.success){
+                    //console.log(data.data);               
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
                         }
-
-                        submitButton.setAttribute('data-kt-indicator', 'on');
-                        // Disable button to avoid multiple click
-                        submitButton.disabled = true;     
-                        // Remove loading indication
-                        //submitButton.removeAttribute('data-kt-indicator');
-                        // Enable button
-                        //submitButton.disabled = true;
-
-                        $.ajax({
-                            type: 'POST',
-                            url: GuardarAcceso,
-                            data: { 
-                                    _token: csrfToken,    
-                                    data: keyValueObject 
-                                },
-                            dataType: "json",
-                            //content: "application/json; charset=utf-8",
-                            beforeSend: function() {
-                                
-                            },
-                            success: function (data) {
-                                //console.log(data.errors);
-                                if(data.success){
-                                    //console.log("exito");
-                                     location.reload();
-                                }else{
-                                    //console.log(data.error);
-                                        html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError").append(html);
-
-                                    
-                                    $("#AlertaError").show();
-                                    
-                                   //console.log("error");
-                                }
-                            },
-                            error: function (e) {
-                                //console.log(e)
-                                //alert('Error');
-                                Swal.fire({
-                                    text: "Error",
-                                    icon: "error",
-                                    buttonsStyling: false,
-                                    confirmButtonText: "OK",
-                                    customClass: {
-                                        confirmButton: "btn btn-danger btn-cerrar"
-                                    }
-                                });
-                            }
-                        });
-                    // form.submit(); // Submit form
-                    submitButton.removeAttribute('data-kt-indicator');
-                    submitButton.disabled = false;
+                    });
                 }
-            });
-        }
-    });
-    
+            },
+            error: function () {
+                //alert('Error');
+                //blockUI2.release();
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }
+        });
 
-    
+    });
 
 });

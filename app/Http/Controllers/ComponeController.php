@@ -120,7 +120,7 @@ class ComponeController extends Controller
         $request = $request->input('data');
 
         try{
-            $compone = Compone::select('Comunidad.Nombre as Comunidad', 'Propiedad.Numero as Propiedad','RolComponeCoRe.Nombre as Rol','FechaInicio','FechaFin','Compone.Enabled')
+            $compone = Compone::select('Compone.Id','Comunidad.Nombre as Comunidad', 'Propiedad.Numero as Propiedad','RolComponeCoRe.Nombre as Rol','FechaInicio','FechaFin','Compone.Enabled')
             ->where('Compone.PersonaId','=',$request)
             ->join('Propiedad', 'Propiedad.Id', '=', 'Compone.PropiedadId')
             ->join('Comunidad', 'Comunidad.Id', '=', 'Propiedad.ComunidadId')

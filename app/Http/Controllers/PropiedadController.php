@@ -191,4 +191,13 @@ class PropiedadController extends Controller
                 'message' => $e->getMessage()]);
         }
     }
+
+    public function ObtenerPropiedadesDeComunidad(Request $request){
+        $request = $request->input('data');
+        $comunidad = Propiedad::select('Propiedad.Id', 'Propiedad.Numero')
+                                ->where('Propiedad.ComunidadId', '=' ,$request)
+                                ->where('Propiedad.Enabled','=', 1)
+                                ->get();
+        return response()->json($comunidad);
+    }
 }
