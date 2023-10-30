@@ -284,7 +284,7 @@ $today = date('Y-m-d');
             <div class="modal-body">
                 <table id="tabla-espacios" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
                     <thead>
-                        <tr class="fw-bolder text-uppercase">
+                        <tr class="fw-bolder text-uppercase" style="vertical-align: middle;">
                             <th scope="col">#</th>
                             <th scope="col">Titulo</th>
                             <th scope="col">Fecha</th>

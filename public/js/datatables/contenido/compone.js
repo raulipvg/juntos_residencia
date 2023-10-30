@@ -5,7 +5,7 @@ function format(data, persona) {
     '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 70%;">'+
     '<table id="services_table" class="table table-row-dashed">'+
         '<thead class="services-info">'+
-           '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
+           '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0" style="vertical-align: middle;">'+
                 '<th class="p-0 ps-3">Comundidad</th>'+
                 '<th class="p-0 ps-3">Propiedad</th>'+
                 '<th class="p-0 ps-3">Rol</th>'+

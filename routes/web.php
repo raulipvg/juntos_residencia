@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CopropietarioController;
 use App\Http\Controllers\EspacioComunController;
 use App\Http\Controllers\GastoMesController;
+use App\Http\Controllers\GastosDetalleController;
 use App\Http\Controllers\ResidenteController;
 use App\Http\Controllers\TipoCobro;
 use App\Models\AccesoComunidad;
@@ -105,6 +106,14 @@ Route::group(['prefix' => '/compone'], function () {
 
 Route::group(['prefix'=> '/gastomes'], function () {
     Route::get('/', [GastoMesController::class, 'Index'])->name('GastoMes');
+    Route::post('/vermeses', [GastoMesController::class, 'VerMeses'])->name('VerMeses');
+    Route::post('/abrirmes', [GastoMesController::class, 'AbrirMes'])->name('AbrirMes');
+    Route::post('/cerrarmes', [GastoMesController::class, 'CerrarMes'])->name('CerrarMes');
+
+});
+
+Route::group(['prefix'=> '/gastodetalle'], function () {
+    Route::post('/nuevogasto', [GastosDetalleController::class, 'NuevoGasto'])->name('NuevoGasto');
 });
 
 
