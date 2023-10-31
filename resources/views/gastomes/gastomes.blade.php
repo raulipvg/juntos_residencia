@@ -51,7 +51,7 @@
 <!--end::Toolbar-->
 <!--begin::Content-->
 <div class="d-flex flex-column flex-column-fluid">
-    <div class="card mx-5">
+    <div class="card mx-5 mb-2">
         <div class="card-body p-2">
             <div class="d-flex flex-row justify-content-between align-items-center">
                 <div class="w-md-200px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
@@ -74,12 +74,69 @@
                     </button>
                 </div>
                 
-            </div>
-            
+            </div>          
         </div>
     </div>
-    <div id="nuevo" class="mx-5 mt-2">
+    <div id="agregar-gasto" class="mx-5">
 
+    </div>
+
+    <div id="gasto-detalle" class="mx-5">
+        <div class="card mb-2">
+            <div class="card-body">
+            <table id="tabla-gasto-detalle" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
+                <thead>
+                    <tr class="fw-bolder text-uppercase">
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre Completo</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Estado</th>
+                        <th class="text-center" scope="col">Accion</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    
+                    <tr class="center-2">
+                        <th>1</th>
+                        <td class="text-capitalize">2</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td data-search="Enabled">
+                            <button class="btn btn-sm btn-light-success estado-usuario fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Usuario">
+                                <span class="indicator-label">Activo</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
+                        </td>
+                      
+                        <td class="text-center p-0">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="1">Ver</a>
+                                <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="1">Editar</a>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Acceso">
+                                <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
+                                <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
+                                <span class="indicator-label"></span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+            </div>
+        </div>
     </div>
     
 </div>
@@ -98,5 +155,12 @@
 
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
+    
+    <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/gastodetalle.js?id=1') }}"></script>
     <script src="{{ asset('js/eventos/gastomes.js?id=2') }}"></script>    
 @endpush
+
+
+
+

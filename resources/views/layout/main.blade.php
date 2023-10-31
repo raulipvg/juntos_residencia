@@ -45,6 +45,8 @@
        
     
         @stack('Script')
+
+		@stack('Script2')
 	
 	</body>
 	<!--end::Body-->

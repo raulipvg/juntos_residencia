@@ -159,50 +159,58 @@ $(document).ready(function() {
     });
 
 
+    let flag=true;
     //EVENTO que agrega un Gasto Detalle
     $("#NuevoGasto").click( function (e) {
         e.preventDefault();
-        e.stopPropagation();
-       
-        console.log("Agregar Gasto")
-        bloquear();
-        $.ajax({
-            type: 'POST',
-            url: NuevoGasto,
-            data: { 
-                    _token: csrfToken,    
-                    data: ComunidadId 
+        e.stopPropagation();    
+        //console.log("Agregar Gasto")
+        if(flag){
+            flag= false;
+            bloquear();
+            $.ajax({
+                type: 'POST',
+                url: NuevoGasto,
+                data: { 
+                        _token: csrfToken,    
+                        data: ComunidadId 
+                    },
+                dataType: "html",
+                //content: "application/json; charset=utf-8",
+                beforeSend: function() {
+                    KTApp.showPageLoading();
                 },
-            dataType: "json",
-            //content: "application/json; charset=utf-8",
-            beforeSend: function() {
-                KTApp.showPageLoading();
-            },
-            success: function (data) {
-                console.log(data);
-                $("#nuevo").append(data.html)
-                if(data.success){
-                     //location.reload();
-                }else{             
-                    
-                }
-            },
-            error: function (e) {
-                Swal.fire({
-                    text: "Error",
-                    icon: "error",
-                    buttonsStyling: false,
-                    confirmButtonText: "OK",
-                    customClass: {
-                        confirmButton: "btn btn-danger btn-cerrar"
+                success: function (data) {
+                    //console.log(data);
+                    $("#agregar-gasto").append(data)
+                    if(data.success){
+                        //location.reload();
+                    }else{             
+                        
                     }
-                });
-            },
-            complete: function(){
-                KTApp.hidePageLoading();
-                loadingEl.remove();
-            }  
-        });
+                },
+                error: function (e) {
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                },
+                complete: function(){
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+                }  
+            });
+        }
+    });
+
+    $("#agregar-gasto").on("click", '.cerrar-gasto', function (e) {
+        e.preventDefault();
+        if(!flag){flag=true;}       
     });
 
 });
