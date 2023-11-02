@@ -1,6 +1,6 @@
 <div class="card card-flush hover-elevate-up shadow-sm parent-hover pb-2 mb-2">
     <div class="card-header min-h-40px px-3">
-        <h3 class="card-title m-0">Agregar Gasto</h3>
+        <h3 class="card-title m-0 ps-2 fs-3 fw-bold text-primary text-uppercase">Agregar Gasto</h3>
         <div class="card-toolbar m-0">
             <a href="#" class="btn btn-icon btn-sm btn-active-color-primary" data-kt-card-action="remove" data-kt-card-confirm="false">
                 <i class="ki-duotone ki-cross fs-1"><span class="path1"></span>
@@ -9,9 +9,10 @@
             </a>
         </div>
     </div>
-    <div class="card-body py-0 px-4">
+    <div class="card-body pt-0 pb-2 px-4">
+        <form id="Formulario-nuevogasto">
         <div class="row">
-            <div class="col-md-3 col-12">
+            <div class="col-md-3 col-12 fv-row">
                 <label for="TipoGastoInput" class="form-label">Tipo de Gasto</label>
                 <select id="TipoGastoInput" name="TipoGasto" class="form-select select-1" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
                     <option></option>
@@ -52,13 +53,17 @@
                 <input type="number" class="form-control" placeholder="Ingrese el monto gastado" id="PrecioInput" name="Precio" />
             </div>
             <div class="col-md-3 col-12 d-flex align-items-end justify-content-end mt-md-0 mt-2">
-                     <button id="AgregarGasto" type="button" class="btn btn-sm btn-primary" style="height: 42.56px;" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Gasto">
+                     <button id="AgregarGasto" type="button" class="btn btn-sm btn-primary hover-rotate-end" style="height: 42.56px;" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Gasto">
                         AGREGAR GASTO  <i class="ki-outline ki-plus fs-2"></i>
                     </button>
             </div>
             
         </div>
+</form>
     </div>
 </div>
 
-<script src="{{ asset('js/eventos/gastodetalle.js?id=3') }}"></script>
+<script src="{{ asset('js/eventos/gastodetalle.js?id=6') }}"></script>   
+
+
+

@@ -61,17 +61,22 @@ $(document).ready(function() {
     });
 
     const abrirMes = document.getElementById('AccionMesInput');
-    //EVENTO QUE MANEJA EL SUBMIT DE REGISTRAR UNA RESIDENCIA PARA UN USUARIO EN ESPECIFICO
+    //EVENTO QUE MANEJA EL SUBMIT PARA ABRIR O CERRAR UN MES DE GASTO MES
     abrirMes.addEventListener('click', function (e) { 
         e.preventDefault();
         e.stopPropagation();
         bloquear();
-        if(abrirMes.classList.contains('abrir-mes')){
-            abrirMes.classList.remove('abrir-mes','btn-success');
-            abrirMes.classList.add('cerrar-mes','btn-warning');
-            abrirMes.textContent = 'CERRAR MES'
+        if(abrirMes.classList.contains('abrir-mes')){            
             console.log("Abrir Mes")
+            //BOTON DE AGREGAR GASTO DETALLE
+            let btn= '<button id="NuevoGasto" type="button" class="btn btn-sm btn-primary h-40px hover-scale" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Gasto">'+
+                        'GASTO<i class="ki-outline ki-plus fs-2"></i>'+
+                      '</button>';
 
+            // Encuentra el elemento contenedor <div class="col ms-2 text-end">
+            var tag= $(this).parent().next('.col.ms-2.text-end');
+
+            console.log(tag)
             $.ajax({
                 type: 'POST',
                 url: AbrirMes,
@@ -85,9 +90,14 @@ $(document).ready(function() {
                     KTApp.showPageLoading();
                 },
                 success: function (data) {
+                    
                     //console.log(data);
                     if(data.success){
-                 
+                        abrirMes.classList.remove('abrir-mes','btn-success');
+                        abrirMes.classList.add('cerrar-mes','btn-warning');
+                        abrirMes.textContent = 'CERRAR MES'
+                        tag.append(btn)
+
                          //location.reload();
                     }else{
                           
@@ -108,8 +118,7 @@ $(document).ready(function() {
                 complete: function(){
                     KTApp.hidePageLoading();
                     loadingEl.remove();
-                }
-                
+                }               
             });
 
         }else if(abrirMes.classList.contains('cerrar-mes')){
@@ -130,6 +139,11 @@ $(document).ready(function() {
                 success: function (data) {
                     //console.log(data);
                     if(data.success){
+                        abrirMes.classList.remove('cerrar-mes','btn-warning');
+                        abrirMes.classList.add('btn-dark','disabled');
+                        abrirMes.textContent =  'MES CERRADO';
+                        $("#NuevoGasto").remove();
+                        $("#agregar-gasto").empty();
                  
                          //location.reload();
                     }else{
@@ -161,7 +175,7 @@ $(document).ready(function() {
 
     let flag=true;
     //EVENTO que agrega un Gasto Detalle
-    $("#NuevoGasto").click( function (e) {
+    $("#div-adm").on("click",'#NuevoGasto', function(e) {
         e.preventDefault();
         e.stopPropagation();    
         //console.log("Agregar Gasto")
@@ -207,7 +221,6 @@ $(document).ready(function() {
             });
         }
     });
-
     $("#agregar-gasto").on("click", '.cerrar-gasto', function (e) {
         e.preventDefault();
         if(!flag){flag=true;}       

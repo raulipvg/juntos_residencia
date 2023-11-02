@@ -35,8 +35,8 @@
         <div class="d-flex align-items-center flex-wrap" style="width: 200px;" >
             <!--begin::Wrapper-->
             <select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
-                        <option value="0" selected>TODAS</option>
-                        <option value="1">Comunidad 1</option>
+                        <option value="0" >TODAS</option>
+                        <option value="1" selected>Comunidad 1</option>
                         <option value="2">Comunidad 2</option>
                         <option value="3">Comunidad 3</option>
                         <option value="4">Comunidad 4</option>
@@ -53,7 +53,7 @@
 <div class="d-flex flex-column flex-column-fluid">
     <div class="card mx-5 mb-2">
         <div class="card-body p-2">
-            <div class="d-flex flex-row justify-content-between align-items-center">
+            <div id="div-adm" class="d-flex flex-row justify-content-between align-items-center">
                 <div class="w-md-200px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
                     <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
                         <option value="0" selected>10-2023</option>
@@ -69,9 +69,7 @@
                     </button>
                 </div>
                 <div class="col ms-2 text-end">
-                    <button id="NuevoGasto" type="button" class="btn btn-sm btn-primary h-40px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Gasto">
-                        GASTO<i class="ki-outline ki-plus fs-2"></i>
-                    </button>
+                    
                 </div>
                 
             </div>          
@@ -83,58 +81,336 @@
 
     <div id="gasto-detalle" class="mx-5">
         <div class="card mb-2">
-            <div class="card-body">
-            <table id="tabla-gasto-detalle" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
-                <thead>
-                    <tr class="fw-bolder text-uppercase">
-                        <th scope="col">#</th>
-                        <th scope="col">Nombre Completo</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Correo</th>
-                        <th scope="col">Rol</th>
-                        <th scope="col">Estado</th>
-                        <th class="text-center" scope="col">Accion</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="card-body px-4 py-2">
 
-                    
-                    <tr class="center-2">
-                        <th>1</th>
-                        <td class="text-capitalize">2</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td data-search="Enabled">
-                            <button class="btn btn-sm btn-light-success estado-usuario fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Usuario">
-                                <span class="indicator-label">Activo</span>
-                                <span class="indicator-progress">
-                                    <span class="spinner-border spinner-border-sm align-middle"></span>
-                                </span>
-                            </button>
-                        </td>
-                      
-                        <td class="text-center p-0">
-                            <div class="btn-group btn-group-sm" role="group">
-                                <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="1">Ver</a>
-                                <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="1">Editar</a>
+            <div class="accordion accordion-icon-toggle" id="accordion-gastos">
+                <!--begin::Item-->
+                <div class="accordion-item">
+                    <!--begin::Header-->
+                    <div class="accordion-header py-2 d-flex bg-gray-300" data-bs-toggle="collapse" data-bs-target="#accordion-gastos-adm" aria-expanded="false">
+                        <span class="accordion-icon"><i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i></span>
+                        <div class="col-12 pe-5">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Administración</h3>
+                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ 570.750</div>
                             </div>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Acceso">
-                                <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
-                                <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
-                                <span class="indicator-label"></span>
-                                <span class="indicator-progress">
-                                    <span class="spinner-border spinner-border-sm align-middle"></span>
-                                </span>
-                            </button>
-                        </td>
-                    </tr>
-                    
-                </tbody>
-            </table>
+                            
+                        </div>
+                        
+                    </div>
+                    <!--end::Header-->
+
+                    <!--begin::Body-->
+                    <div id="accordion-gastos-adm" class="fs-6 px-5 collapse show" data-bs-parent="#accordion-gastos" style="">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-row-bordered gy-5">
+                                <thead>
+                                    <tr class="text-start text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
+                                        <th colspan="5" class="p-2">Remuneraciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fw-bold text-gray-600 fs-6">
+                                    <tr>
+                                        <td class="py-0 px-2">Mantencion</td>
+                                        <td class="py-0">Ismael Aguilera</td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">320.800</span> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-0 px-2">Conserje de Planta</td>
+                                        <td class="py-0">Jose Perez</td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">170.750</span>
+
+                                        </td>
+                                    </tr>
+                                    <tr class="text-start text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
+                                        <th colspan="4" class="py-0 px-2">TOTAL REMUNERACIONES</th>
+                                        <th class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">570.750</span>        
+                                        </th>
+                                    </tr>
+                                </tbody>
+                                
+                                <thead>
+                                    <tr class="text-start text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
+                                        <th colspan="5" class="p-2">Caja Chica</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fw-bold text-gray-600 fs-6">
+                                    <tr>
+                                        <td class="py-0 px-2">Mantencion</td>
+                                        <td class="py-0">Ismael Aguilera</td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">320.800</span> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-0 px-2">Conserje de Planta</td>
+                                        <td class="py-0">Jose Perez</td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">170.750</span> 
+                                        </td>
+                                    </tr>
+                                    <tr class="text-start text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
+                                        <th colspan="4" class="py-0 px-2">TOTAL CAJA CHICA</th>
+                                        <th class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">570.750</span> 
+                                        </th>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr class="text-start text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
+                                        <th colspan="5" class="p-2">Otros Gastos</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fw-bold text-gray-600 fs-6">
+                                    <tr>
+                                        <td class="py-0 px-2">Mantencion</td>
+                                        <td class="py-0">Ismael Aguilera</td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">320.800</span> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-0 px-2">Conserje de Planta</td>
+                                        <td class="py-0">Jose Perez</td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0"></td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>170.750</td>
+                                    </tr>
+                                    <tr class="text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
+                                        <th colspan="4" class="py-0 px-2">TOTAL OTROS GASTOS</th>
+                                        <th class="py-0 pe-2 text-gray-800 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            570.750</th>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
+                                        <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE ADMINISTRACIÓN</th>
+                                        <th class="py-0 pe-2 fw-bolder text-white d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            570.750
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Item-->
+
+                <!--begin::Item-->
+                <div class="accordion-item">
+                    <!--begin::Header-->
+                    <div class="accordion-header py-2 d-flex bg-gray-300 collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-gasto-uso" aria-expanded="false">
+                        <span class="accordion-icon"><i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i></span>
+                        <div class="col-12 pe-5">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Uso o Consumo</h3>
+                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ 570.750</div>
+                            </div>
+                        </div>   
+                    </div>
+                    <!--end::Header-->
+
+                    <!--begin::Body-->
+                    <div id="accordion-gasto-uso" class="fs-6 px-5 collapse" data-bs-parent="#accordion-gastos" style="">
+                    <div class="table-responsive">
+                            <table class="table table-hover table-row-bordered gy-5">
+                                <thead>
+                                    <tr>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody class="fw-bold text-gray-600 fs-6">
+                                    <tr>
+                                        <td class="py-0 px-2">Agua</td>
+                                        <td class="py-0">Essbio cliente n 92832</td>
+                                        <td class="py-0 text-gray-400">Consumo entre 17.10 y el 16.11</td>
+                                        <td class="py-0 text-gray-400">Bol 3213213</td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">320.800</span> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-0 px-2">Electricidad</td>
+                                        <td class="py-0">CGE cliente n 89457302</td>
+                                        <td class="py-0 text-gray-400">Consumo entre 17.10 y el 16.11</td>
+                                        <td class="py-0 text-gray-400">Bol 453223</td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">170.750</span>
+
+                                        </td>
+                                    </tr>
+                                    <thead>
+                                        <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
+                                            <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE USO O CONSUMO</th>
+                                            <th class="py-0 pe-2 fw-bolder text-white d-flex justify-content-between">
+                                                <span class="text-start">$</span>
+                                                570.750
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </tbody>                            
+                            </table>
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Item-->
+
+                <!--begin::Item-->
+                <div class="accordion-item">
+                    <!--begin::Header-->
+                    <div class="accordion-header py-2 d-flex bg-gray-300 collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-gasto-mantencion" aria-expanded="false">
+                        <span class="accordion-icon"><i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i></span>
+                        <div class="col-12 pe-5">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Mantención</h3>
+                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ 870.000</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div id="accordion-gasto-mantencion" class="collapse fs-6 px-5" data-bs-parent="#accordion-gastos">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-row-bordered gy-5">
+                                <thead>
+                                    <tr></tr>
+                                </thead>
+                                <tbody class="fw-bold text-gray-600 fs-6">
+                                    <tr>
+                                        <td class="py-0 px-2">Ascensores</td>
+                                        <td class="py-0">D y M Ltda</td>
+                                        <td class="py-0 text-gray-400">Mantencion Preventiva</td>
+                                        <td class="py-0 text-gray-400">Fact 3231213</td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">320.800</span> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-0 px-2">Central Termica</td>
+                                        <td class="py-0">Ferrosur</td>
+                                        <td class="py-0 text-gray-400">Mantencion Preventiva</td>
+                                        <td class="py-0 text-gray-400">Fact 234234</td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">170.750</span>
+
+                                        </td>
+                                    </tr>
+                                    <thead>
+                                        <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
+                                            <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE MANTENCION</th>
+                                            <th class="py-0 pe-2 fw-bolder text-white d-flex justify-content-between">
+                                                <span class="text-start">$</span>
+                                                870.000
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </tbody>                            
+                            </table>
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Item-->
+
+                <!--begin::Item-->
+                <div class="accordion-item">
+                    <!--begin::Header-->
+                    <div class="accordion-header py-2 d-flex bg-gray-300 collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-gasto-reparacion" aria-expanded="false">
+                        <span class="accordion-icon"><i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i></span>
+                        <div class="col-12 pe-5">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Reparación</h3>
+                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ 170.000</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Header-->
+
+                    <!--begin::Body-->
+                    <div id="accordion-gasto-reparacion" class="collapse fs-6 px-5" data-bs-parent="#accordion-gastos">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-row-bordered gy-5">
+                                <thead>
+                                    <tr></tr>
+                                </thead>
+                                <tbody class="fw-bold text-gray-600 fs-6">
+                                    <tr>
+                                        <td class="py-0 px-2">Ascensores</td>
+                                        <td class="py-0">D y M Ltda</td>
+                                        <td class="py-0 text-gray-400">Cagó</td>
+                                        <td class="py-0 text-gray-400">Fact 3231213</td>
+                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                            <span class="text-start">$</span>
+                                            <span class="text-end">320.800</span> 
+                                        </td>
+                                    </tr>
+                                    <thead>
+                                        <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
+                                            <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE REPARACIÓN</th>
+                                            <th class="py-0 pe-2 fw-bolder text-white d-flex justify-content-between">
+                                                <span class="text-start">$</span>
+                                                870.000
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </tbody>                            
+                            </table>
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Item-->
+            </div>
+            <div class="d-flex align-items-end flex-column">
+                <div class="d-flex flex-stack bg-gray-300 p-3">
+					<!--begin::Content-->
+					<div class="fs-3 fw-bold text-dark">
+						<span class="d-block lh-1 mb-2">Total Gastos del Mes</span>
+					    <span class="d-block mb-7">Fondo de Reserva 5%</span>
+						<span class="d-block fs-2qx lh-1">TOTAL</span>
+					</div>
+					<!--end::Content-->
+					<!--begin::Content-->
+					<div class="fs-3 fw-bold text-dark text-end pe-4">
+						<span class="d-block lh-1 mb-2" >$2.181.500</span>
+						<span class="d-block mb-7">$109.075</span>
+						<span class="d-block fs-2qx lh-1">$2.290.575</span>
+					</div>
+					<!--end::Content-->
+				</div>
+            </div>
+
+            
             </div>
         </div>
     </div>
@@ -158,7 +434,7 @@
     
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/contenido/gastodetalle.js?id=1') }}"></script>
-    <script src="{{ asset('js/eventos/gastomes.js?id=2') }}"></script>    
+    <script src="{{ asset('js/eventos/gastomes.js?id=2') }}"></script> 
 @endpush
 
 
