@@ -34,20 +34,11 @@
         <!--begin::Action group-->
         <div class="d-flex align-items-center flex-wrap" style="width: 200px;" >
             <!--begin::Wrapper-->
-<<<<<<< Updated upstream
-            <select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
-                        <option value="0" >TODAS</option>
-                        <option value="1" selected>Comunidad 1</option>
-                        <option value="2">Comunidad 2</option>
-                        <option value="3">Comunidad 3</option>
-                        <option value="4">Comunidad 4</option>
-=======
             <select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
                         <option></option>
                         @foreach($comunidades as $comunidad)
                         <option value="{{ $comunidad->Id }}">{{ $comunidad->Nombre }}</option>
                         @endforeach
->>>>>>> Stashed changes
                     </select>
            
             <!--end::Wrapper-->
@@ -442,11 +433,7 @@
     
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/contenido/gastodetalle.js?id=1') }}"></script>
-<<<<<<< Updated upstream
-    <script src="{{ asset('js/eventos/gastomes.js?id=2') }}"></script> 
-=======
     <script src="{{ asset('js/eventos/gastomes.js?id=3') }}"></script>    
->>>>>>> Stashed changes
 @endpush
 
 

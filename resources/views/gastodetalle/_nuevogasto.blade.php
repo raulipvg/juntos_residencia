@@ -9,13 +9,8 @@
             </a>
         </div>
     </div>
-<<<<<<< Updated upstream
-    <div class="card-body pt-0 pb-2 px-4">
-        <form id="Formulario-nuevogasto">
-=======
     <div class="card-body py-0 px-4 " id="div-bloquear">
         <form id="Formulario-nuevogasto" action="" method="post">
->>>>>>> Stashed changes
         <div class="row">
             <div class="col-md-3 col-12 fv-row">
                 <label for="TipoGastoInput" class="form-label">Tipo de Gasto</label>
@@ -58,26 +53,12 @@
                 <input type="number" class="form-control" placeholder="Ingrese el monto gastado" id="PrecioInput" name="Precio" />
             </div>
             <div class="col-md-3 col-12 d-flex align-items-end justify-content-end mt-md-0 mt-2">
-<<<<<<< Updated upstream
-                     <button id="AgregarGasto" type="button" class="btn btn-sm btn-primary hover-rotate-end" style="height: 42.56px;" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Gasto">
-=======
                      <button id="AgregarGasto" name="AgregarGasto" type="button" class="btn btn-sm btn-primary" style="height: 42.56px;" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Gasto">
->>>>>>> Stashed changes
                         AGREGAR GASTO  <i class="ki-outline ki-plus fs-2"></i>
                     </button>
             </div>
         
         </div>
-<<<<<<< Updated upstream
-</form>
-    </div>
-</div>
-
-<script src="{{ asset('js/eventos/gastodetalle.js?id=6') }}"></script>   
-
-
-
-=======
     </form>
     </div>
 </div>
@@ -89,4 +70,3 @@ var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('
 </script>
 
 <script src="{{ asset('js/eventos/gastodetalle.js?id=3') }}"></script>
->>>>>>> Stashed changes

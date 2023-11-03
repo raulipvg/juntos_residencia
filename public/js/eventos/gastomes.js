@@ -66,15 +66,6 @@ $(document).ready(function() {
     abrirMes.addEventListener('click', function (e) { 
         e.preventDefault();
         e.stopPropagation();
-<<<<<<< Updated upstream
-        bloquear();
-        if(abrirMes.classList.contains('abrir-mes')){            
-            console.log("Abrir Mes")
-            //BOTON DE AGREGAR GASTO DETALLE
-            let btn= '<button id="NuevoGasto" type="button" class="btn btn-sm btn-primary h-40px hover-scale" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Gasto">'+
-                        'GASTO<i class="ki-outline ki-plus fs-2"></i>'+
-                      '</button>';
-=======
        
     bloquear();
         if(abrirMes.classList.contains('abrir-mes')){
@@ -84,7 +75,6 @@ $(document).ready(function() {
             console.log("Abrir Mes")
             //console.log(comunidadInputValue);
             //console.log(gastoMesIdInputValue);   
->>>>>>> Stashed changes
 
             // Encuentra el elemento contenedor <div class="col ms-2 text-end">
             var tag= $(this).parent().next('.col.ms-2.text-end');
@@ -106,17 +96,8 @@ $(document).ready(function() {
                     
                     //console.log(data);
                     if(data.success){
-<<<<<<< Updated upstream
-                        abrirMes.classList.remove('abrir-mes','btn-success');
-                        abrirMes.classList.add('cerrar-mes','btn-warning');
-                        abrirMes.textContent = 'CERRAR MES'
-                        tag.append(btn)
-
-                         //location.reload();
-=======
                  
                          location.reload();
->>>>>>> Stashed changes
                     }else{
                         html =
                         '<ul><li style="">' +
