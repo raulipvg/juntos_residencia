@@ -15,7 +15,8 @@ $(document).ready(function() {
     $('#GastoMesIdInput').on('select2:select', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log("click Mes");        
+        console.log("click Mes");   
+ 
         bloquear();
         $.ajax({
             type: 'POST',
@@ -65,6 +66,7 @@ $(document).ready(function() {
     abrirMes.addEventListener('click', function (e) { 
         e.preventDefault();
         e.stopPropagation();
+<<<<<<< Updated upstream
         bloquear();
         if(abrirMes.classList.contains('abrir-mes')){            
             console.log("Abrir Mes")
@@ -72,6 +74,17 @@ $(document).ready(function() {
             let btn= '<button id="NuevoGasto" type="button" class="btn btn-sm btn-primary h-40px hover-scale" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Gasto">'+
                         'GASTO<i class="ki-outline ki-plus fs-2"></i>'+
                       '</button>';
+=======
+       
+    bloquear();
+        if(abrirMes.classList.contains('abrir-mes')){
+            abrirMes.classList.remove('abrir-mes','btn-success');
+            abrirMes.classList.add('cerrar-mes','btn-warning');
+            abrirMes.textContent = 'CERRAR MES'
+            console.log("Abrir Mes")
+            //console.log(comunidadInputValue);
+            //console.log(gastoMesIdInputValue);   
+>>>>>>> Stashed changes
 
             // Encuentra el elemento contenedor <div class="col ms-2 text-end">
             var tag= $(this).parent().next('.col.ms-2.text-end');
@@ -82,7 +95,7 @@ $(document).ready(function() {
                 url: AbrirMes,
                 data: { 
                         _token: csrfToken,    
-                        data: ComunidadId 
+                        ComunidadId: ComunidadId,
                     },
                 dataType: "json",
                 //content: "application/json; charset=utf-8",
@@ -93,14 +106,26 @@ $(document).ready(function() {
                     
                     //console.log(data);
                     if(data.success){
+<<<<<<< Updated upstream
                         abrirMes.classList.remove('abrir-mes','btn-success');
                         abrirMes.classList.add('cerrar-mes','btn-warning');
                         abrirMes.textContent = 'CERRAR MES'
                         tag.append(btn)
 
                          //location.reload();
+=======
+                 
+                         location.reload();
+>>>>>>> Stashed changes
                     }else{
-                          
+                        html =
+                        '<ul><li style="">' +
+                        data.message +
+                        "</li></ul>";
+                    $("#AlertaError").append(html);
+
+                    $("#AlertaError").show();
+
                         
                     }
                 },

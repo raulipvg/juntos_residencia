@@ -115,6 +115,7 @@ Route::group(['prefix'=> '/gastomes'], function () {
 Route::group(['prefix'=> '/gastodetalle'], function () {
     Route::post('/nuevogasto', [GastosDetalleController::class, 'NuevoGasto'])->name('NuevoGasto');
     Route::get('/', [GastosDetalleController::class,'index'])->name('index');
+    Route::post('/registrar', [GastosDetalleController::class,'Guardar'])->name('GuardarGastoDetalle');
 });
 
 

@@ -7,6 +7,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 
 /**
  * Class GastosDetalle
@@ -65,4 +68,30 @@ class GastosDetalle extends Model
 	{
 		return $this->belongsTo(TipoGasto::class, 'TipoGastoId');
 	}
+	public function validate(array $data)
+    {
+		if(isset($data['Id'])){
+			$id = $data['Id'];
+		}else{
+			$id = null;
+		}
+
+        $rules = [
+            'GastoMesId' => 'required|numeric',
+            'Nombre' => 'required|string|max:50',
+			'Responsable' => 'required|string|max:50',
+			'Descripcion' => 'string|nulleable|max:50',
+			'NroDocumento' => 'string|nulleable|max:50',
+			'TipoDocumentoId' => 'required|numeric',
+			'Precio' => 'required|numeric',
+            'TipoGastoId' => 'required|numeric',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
+
 }

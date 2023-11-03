@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GastoMe;
+use App\Models\GastosDetalle;
 use App\Models\TipoDocumento;
 use App\Models\TipoGasto;
 use Doctrine\DBAL\Schema\View;
@@ -40,5 +42,34 @@ class GastosDetalleController extends Controller
             return view('gastodetalle._nuevogasto')
                     ->with([
                         'variable' => $variable ])->render();
+    }
+
+    public function Guardar(Request $request){
+        $request = $request->input('data');
+        
+        //$request['GastoMesId'] = $request['GastoMesId'];
+        $request['Nombre'] = strtolower($request['Nombre']);
+        $request['Responsable'] = strtolower($request['Responsable']);
+        $request['Descripcion'] = strtolower($request['Descripcion']);
+        $request['NroDocumento'] = strtolower($request['NroDocumento']);
+        $request['TipoDocumentoId'] = $request['TipoDocumentoId'];
+        $request['Precio'] = $request['Precio'];
+        $request['TipoGastoId'] = $request['TipoGastoId'];
+
+        try{
+            $gastodetalle = new GastosDetalle();
+            $gastodetalle->validate($request);
+            $gastodetalle->fill($request);
+   
+            $gastodetalle->save(); 
+            return response()->json([
+                'success' => true,
+                'message' => 'Modelo recibido y procesado']);
+        }catch(Exception $e){
+                
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
     }
 }
