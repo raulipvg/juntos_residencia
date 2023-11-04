@@ -96,8 +96,7 @@ $(document).ready(function() {
                     
                     //console.log(data);
                     if(data.success){
-                 
-                         location.reload();
+                         //location.reload();
                     }else{
                         html =
                         '<ul><li style="">' +
