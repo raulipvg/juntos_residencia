@@ -4,7 +4,16 @@
 @push('css')
 <link href='' rel='stylesheet' type="text/css"/>
 <style>
-
+.rounded-bottom-1 {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 20px!important;
+    border-bottom-right-radius: 20px!important;
+}
+.rounded-top-1{
+    border-top-left-radius: 20px!important;
+    border-top-right-radius: 20px !important;
+}
 </style>
 @endpush
 
@@ -84,9 +93,9 @@
 
             <div class="accordion accordion-icon-toggle" id="accordion-gastos">
                 <!--begin::Item-->
-                <div class="accordion-item">
+                <div class="accordion-item rounded-top-1">
                     <!--begin::Header-->
-                    <div class="accordion-header py-2 d-flex bg-gray-300" data-bs-toggle="collapse" data-bs-target="#accordion-gastos-adm" aria-expanded="false">
+                    <div class="accordion-header py-2 d-flex bg-gray-300 rounded-top-1" data-bs-toggle="collapse" data-bs-target="#accordion-gastos-adm" aria-expanded="false">
                         <span class="accordion-icon"><i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i></span>
                         <div class="col-12 pe-5">
                             <div class="d-flex justify-content-between align-items-center">
@@ -100,7 +109,7 @@
                     <!--end::Header-->
 
                     <!--begin::Body-->
-                    <div id="accordion-gastos-adm" class="fs-6 px-5 collapse show" data-bs-parent="#accordion-gastos" style="">
+                    <div id="accordion-gastos-adm" class="fs-6 px-5 collapse show" data-bs-parent="#accordion-gastos" >
                         <div class="table-responsive">
                             <table class="table table-hover table-row-bordered gy-5">
                                 <thead>
@@ -207,9 +216,10 @@
                                 <thead>
                                     <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
                                         <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE ADMINISTRACIÓN</th>
-                                        <th class="py-0 pe-2 fw-bolder text-white d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            570.750
+                                        <th class="py-0 pe-2">
+                                            <div class="d-flex justify-content-between fw-bolder text-white">
+                                                <span class="text-start">$</span>570.750
+                                            </div>
                                         </th>
                                     </tr>
                                 </thead>
@@ -235,7 +245,7 @@
                     <!--end::Header-->
 
                     <!--begin::Body-->
-                    <div id="accordion-gasto-uso" class="fs-6 px-5 collapse" data-bs-parent="#accordion-gastos" style="">
+                    <div id="accordion-gasto-uso" class="fs-6 px-5 collapse" data-bs-parent="#accordion-gastos">
                     <div class="table-responsive">
                             <table class="table table-hover table-row-bordered gy-5">
                                 <thead>
@@ -268,9 +278,10 @@
                                     <thead>
                                         <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
                                             <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE USO O CONSUMO</th>
-                                            <th class="py-0 pe-2 fw-bolder text-white d-flex justify-content-between">
-                                                <span class="text-start">$</span>
-                                                570.750
+                                            <th class="py-0 pe-2">
+                                                <div class="d-flex justify-content-between fw-bolder text-white">
+                                                    <span class="text-start">$</span>570.750
+                                                </div>
                                             </th>
                                         </tr>
                                     </thead>
@@ -327,9 +338,10 @@
                                     <thead>
                                         <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
                                             <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE MANTENCION</th>
-                                            <th class="py-0 pe-2 fw-bolder text-white d-flex justify-content-between">
-                                                <span class="text-start">$</span>
-                                                870.000
+                                            <th class="py-0 pe-2">
+                                                <div class="d-flex justify-content-between fw-bolder text-white">
+                                                    <span class="text-start">$</span>870.000
+                                                </div>
                                             </th>
                                         </tr>
                                     </thead>
@@ -376,9 +388,12 @@
                                     <thead>
                                         <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
                                             <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE REPARACIÓN</th>
-                                            <th class="py-0 pe-2 fw-bolder text-white d-flex justify-content-between">
+                                            <th class="py-0 pe-2">
+                                                <div class="d-flex justify-content-between fw-bolder text-white">
                                                 <span class="text-start">$</span>
                                                 870.000
+                                                </div>
+                                                
                                             </th>
                                         </tr>
                                     </thead>
@@ -391,7 +406,7 @@
                 <!--end::Item-->
             </div>
             <div class="d-flex align-items-end flex-column">
-                <div class="d-flex flex-stack bg-gray-300 p-3">
+                <div class="d-flex flex-stack bg-gray-300 p-3 rounded-bottom-1">
 					<!--begin::Content-->
 					<div class="fs-3 fw-bold text-dark">
 						<span class="d-block lh-1 mb-2">Total Gastos del Mes</span>
