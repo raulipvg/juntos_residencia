@@ -8,6 +8,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class ReservaEspacio
@@ -79,4 +81,30 @@ class ReservaEspacio extends Model
 	{
 		return $this->belongsTo(EspacioComun::class, 'EspacioComunId');
 	}
+
+	public function validate(array $data)
+    {
+		if(isset($data['Id'])){
+			$id = $data['Id'];
+		}else{
+			$id = null;
+		}
+
+        $rules = [
+            'FechaSolicitud' => 'required|date',
+            'FechaUso' => 'required|date',
+			'Cantidad' => 'required|date',
+			'Total' => 'required|numeric',
+			'GastoComunId' => 'required|numeric',
+			'PropiedadId' => 'required|numeric',
+            'EstadoReservaId' => 'required|numeric',
+            'EstadoComunId' => 'required|numeric',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }

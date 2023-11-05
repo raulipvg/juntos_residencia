@@ -355,6 +355,17 @@
                                         <!--end:Menu link-->
                                     </div>
 
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{route('GastoMes') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Gastos Mensuales</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+
                                     <!--begin:Menu item-->
                                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                         <!--begin:Menu link-->

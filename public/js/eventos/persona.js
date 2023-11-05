@@ -457,7 +457,7 @@ $(document).ready(function() {
 
                     $("#SexoIdInput").val(data.Sexo).trigger("change").prop('disabled',true);
                     $("#NacionalidadIdInput").val(data.NacionalidadId).trigger("change").prop('disabled',true);
-                    $("#TelefonoInput").val(data.Telefono)
+                    $("#TelefonoInput").val(data.Telefono).prop('disabled',true);
                     $("#CorreoInput").val(data.Email).prop('disabled',true);
                     
 

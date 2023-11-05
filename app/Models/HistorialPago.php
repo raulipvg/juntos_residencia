@@ -8,6 +8,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class HistorialPago
@@ -68,4 +70,29 @@ class HistorialPago extends Model
 	{
 		return $this->belongsTo(EstadoPago::class, 'EstadoPagoId');
 	}
+
+	public function validate(array $data)
+    {
+		if(isset($data['Id'])){
+			$id = $data['Id'];
+		}else{
+			$id = null;
+		}
+
+        $rules = [
+            'NroDoc' => 'nullable|numeric',
+            'TipoPagoId' => 'nullable|numeric',
+			'FechaPago' => 'nullable|date',
+			'MontoAPagar' => 'required|numeric',
+			'MontoPagado' => 'required|numeric',
+			'GastoComunId' => 'required|numeric',
+            'EstadoPagoId' => 'required|numeric',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }

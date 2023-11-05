@@ -8,6 +8,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class TipoCobro
@@ -51,4 +53,26 @@ class TipoCobro extends Model
 	{
 		return $this->hasMany(CobroIndividual::class, 'TipoCobroId');
 	}
+
+	public function validate(array $data)
+    {
+		if(isset($data['Id'])){
+			$id = $data['Id'];
+		}else{
+			$id = null;
+		}
+
+        $rules = [
+            'Nombre' => 'required|string|max:50',
+            'Precio' => 'numeric|nullable',
+			'Enabled' => 'required|numeric',
+			'ComunidadId' => 'required|numeric',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }

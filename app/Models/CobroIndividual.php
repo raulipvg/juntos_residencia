@@ -7,6 +7,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class CobroIndividual
@@ -55,4 +57,28 @@ class CobroIndividual extends Model
 	{
 		return $this->belongsTo(GastoComun::class, 'GastoComunId');
 	}
+
+	public function validate(array $data)
+    {
+		if(isset($data['Id'])){
+			$id = $data['Id'];
+		}else{
+			$id = null;
+		}
+
+        $rules = [
+            'Nombre' => 'required|string|max:50',
+            'Descipcion' => 'required|string|max:50',
+            'Cantidad' => 'required|numeric',
+            'MontoTotal' => 'required|numeric',
+            'TipoCobroId' => 'required|numeric',
+            'GastoComunId' => 'required|numeric',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }

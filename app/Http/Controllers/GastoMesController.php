@@ -68,7 +68,7 @@ class GastoMesController extends Controller
 
                 $gastoMes = new GastoMe();
 
-            //$gastoMes->validate($request);
+                $gastoMes->validate($aux);
                 $gastoMes->fill($aux);
                 $gastoMes->save();
                 return response()->json([
