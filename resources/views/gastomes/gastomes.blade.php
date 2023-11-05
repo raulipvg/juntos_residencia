@@ -45,8 +45,8 @@
             <!--begin::Wrapper-->
             <select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
                         <option></option>
-                        @foreach($comunidades as $comunidad)
-                        <option value="{{ $comunidad->Id }}">{{ $comunidad->Nombre }}</option>
+                        @foreach($comunidades as $comunidad)                          
+                        <option @if($comunidadId == $comunidad->Id) selected  @endif value="{{ $comunidad->Id }}">{{ Str::title($comunidad->Nombre)  }}</option>
                         @endforeach
                     </select>
            
@@ -59,25 +59,46 @@
 <!--end::Toolbar-->
 <!--begin::Content-->
 <div class="d-flex flex-column flex-column-fluid">
-    <div class="card mx-5 mb-2">
+    <div class="card mx-5 mb-2">                   
+
         <div class="card-body p-2">
             <div id="div-adm" class="d-flex flex-row justify-content-between align-items-center">
                 <div class="w-md-200px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
                     <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
-                        <option value="0">10-2023</option>
-                        <option value="1">09-2023</option>
-                        <option value="2">08-2023</option>
-                        <option value="3">07-2023</option>
-                        <option value="4">06-2023</option>
+                    @foreach ($gastosmeses as $gastomes )
+                        <option value="{{ $gastomes->Id }}">{{ $gastomes->Fecha->format('m-Y') }} </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col ms-2">
+                    
+                    @if ($gasto == null )
+                        <button id="AccionMesInput" type="button" class="btn btn-sm btn-success h-40px abrir-mes">
+                            ABRIR MES
+                        </button>
+                    @else
+                        @if ($gasto->EstadoId == 1)
+                            <button id="AccionMesInput" type="button" class="btn btn-sm btn-warning h-40px cerrar-mes">
+                                CERRAR MES
+                            </button>
+                        @elseif ($gasto->EstadoId == 2)
+                            <button id="AccionMesInput" type="button" class="btn btn-sm btn-dark h-40px disabled">
+                                MES CERRADO
+                            </button>
+                        @endif
+                    @endif
+                    <!--
                     <button id="AccionMesInput" type="button" class="btn btn-sm btn-success h-40px abrir-mes">
                         ABRIR MES
                     </button>
+                    -->
                 </div>
                 <div class="col ms-2 text-end">
-                    
+                    @if($gasto != null && $gasto->EstadoId == 1)
+                        <button id="NuevoGasto" type="button" class="btn btn-sm btn-primary h-40px hover-scale" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Gasto">
+                        GASTO<i class="ki-outline ki-plus fs-2"></i>
+                        </button>
+                    @endif
                 </div>
                 
             </div>          
@@ -86,11 +107,11 @@
     <div id="agregar-gasto" class="mx-5">
 
     </div>
-
+    @if(count($gastosmeses) != 0 )
     <div id="gasto-detalle" class="mx-5">
         <div class="card mb-2">
             <div class="card-body px-4 py-2">
-
+            
             <div class="accordion accordion-icon-toggle" id="accordion-gastos">
                 <!--begin::Item-->
                 <div class="accordion-item rounded-top-1">
@@ -100,7 +121,9 @@
                         <div class="col-12 pe-5">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Administración</h3>
-                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ 570.750</div>
+                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">
+                                    $ {{ number_format($gasto->TotalAdm, 0, '', '.')}}                                    
+                                </div>
                             </div>
                             
                         </div>
@@ -118,32 +141,30 @@
                                     </tr>
                                 </thead>
                                 <tbody class="fw-bold text-gray-600 fs-6">
-                                    <tr>
-                                        <td class="py-0 px-2">Mantencion</td>
-                                        <td class="py-0">Ismael Aguilera</td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">320.800</span> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-0 px-2">Conserje de Planta</td>
-                                        <td class="py-0">Jose Perez</td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">170.750</span>
-
-                                        </td>
-                                    </tr>
+                                    
+                                    @foreach ( $gasto->gastos_detalles as $indice => $detalle )
+                                        @if ( $detalle->TipoGastoId == 1)
+                                            <tr>
+                                                <td class="py-0 px-2 text-capitalize">{{ $detalle->Nombre }}</td> <!--Nombre -->
+                                                <td class="py-0 text-capitalize">{{ $detalle->Responsable}}</td> <!--Responsable-->
+                                                <td class="py-0 text-gray-400">{{ $detalle->Detalle }}</td> <!-- Detalle, Descripcion -->
+                                                <td class="py-0 text-gray-400"> {{ $detalle->NroDocumento }}</td> <!-- Tipo + Nro Documento -->
+                                                <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                                    <span class="text-start">$</span>
+                                                    <span class="text-end">{{ number_format($detalle->Precio, 0, '', '.') }}</span>  <!--Monto,Precio -->
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $gasto->gastos_detalles->forget($indice) 
+                                            @endphp
+                                        @endif
+                                    @endforeach                                                       
+                                    
                                     <tr class="text-start text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
                                         <th colspan="4" class="py-0 px-2">TOTAL REMUNERACIONES</th>
                                         <th class="py-0 pe-2 fw-bolder d-flex justify-content-between">
                                             <span class="text-start">$</span>
-                                            <span class="text-end">570.750</span>        
+                                            <span class="text-end">{{ number_format($gasto->TotalRemuneracion, 0, '', '.')}} </span>        
                                         </th>
                                     </tr>
                                 </tbody>
@@ -154,33 +175,31 @@
                                     </tr>
                                 </thead>
                                 <tbody class="fw-bold text-gray-600 fs-6">
-                                    <tr>
-                                        <td class="py-0 px-2">Mantencion</td>
-                                        <td class="py-0">Ismael Aguilera</td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">320.800</span> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-0 px-2">Conserje de Planta</td>
-                                        <td class="py-0">Jose Perez</td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">170.750</span> 
-                                        </td>
-                                    </tr>
-                                    <tr class="text-start text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
+                                    @foreach ( $gasto->gastos_detalles as $indice => $detalle )
+                                        @if ( $detalle->TipoGastoId == 2)
+                                            <tr>
+                                                <td class="py-0 px-2 text-capitalize">{{ $detalle->Nombre }}</td> <!--Nombre -->
+                                                <td class="py-0 text-capitalize">{{ $detalle->Responsable}}</td> <!--Responsable-->
+                                                <td class="py-0 text-gray-400">{{ $detalle->Detalle }}</td> <!-- Detalle, Descripcion -->
+                                                <td class="py-0 text-gray-400"> {{ $detalle->NroDocumento }}</td> <!-- Tipo + Nro Documento -->
+                                                <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                                    <span class="text-start">$</span>
+                                                    <span class="text-end">{{ number_format($detalle->Precio, 0, '', '.') }}</span>  <!--Monto,Precio -->
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $gasto->gastos_detalles->forget($indice) 
+                                            @endphp
+                                        @endif
+                                    @endforeach
+                                    <tr class="text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
                                         <th colspan="4" class="py-0 px-2">TOTAL CAJA CHICA</th>
-                                        <th class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                        <th class="py-0 pe-2 text-gray-800 fw-bolder d-flex justify-content-between">
                                             <span class="text-start">$</span>
-                                            <span class="text-end">570.750</span> 
-                                        </th>
-                                    </tr>
+                                            {{ number_format($gasto->TotalCajaChica, 0, '', '.')  }}</th>
+                                    </tr>  
+
+                                    
                                 </tbody>
                                 <thead>
                                     <tr class="text-start text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
@@ -188,29 +207,29 @@
                                     </tr>
                                 </thead>
                                 <tbody class="fw-bold text-gray-600 fs-6">
-                                    <tr>
-                                        <td class="py-0 px-2">Mantencion</td>
-                                        <td class="py-0">Ismael Aguilera</td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">320.800</span> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-0 px-2">Conserje de Planta</td>
-                                        <td class="py-0">Jose Perez</td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0"></td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>170.750</td>
-                                    </tr>
+                                    @foreach ( $gasto->gastos_detalles as $indice => $detalle )
+                                        @if ( $detalle->TipoGastoId == 6)
+                                            <tr>
+                                                <td class="py-0 px-2 text-capitalize">{{ $detalle->Nombre }}</td> <!--Nombre -->
+                                                <td class="py-0 text-capitalize">{{ $detalle->Responsable}}</td> <!--Responsable-->
+                                                <td class="py-0 text-gray-400">{{ $detalle->Detalle }}</td> <!-- Detalle, Descripcion -->
+                                                <td class="py-0 text-gray-400"> {{ $detalle->NroDocumento }}</td> <!-- Tipo + Nro Documento -->
+                                                <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                                    <span class="text-start">$</span>
+                                                    <span class="text-end">{{ number_format($detalle->Precio, 0, '', '.') }}</span>  <!--Monto,Precio -->
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $gasto->gastos_detalles->forget($indice) 
+                                            @endphp
+                                        @endif
+                                    @endforeach
+                                    
                                     <tr class="text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
                                         <th colspan="4" class="py-0 px-2">TOTAL OTROS GASTOS</th>
                                         <th class="py-0 pe-2 text-gray-800 fw-bolder d-flex justify-content-between">
                                             <span class="text-start">$</span>
-                                            570.750</th>
+                                            {{ number_format($gasto->TotasOtros, 0, '', '.')  }}</th>
                                     </tr>
                                 </tbody>
                                 <thead>
@@ -218,7 +237,8 @@
                                         <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE ADMINISTRACIÓN</th>
                                         <th class="py-0 pe-2">
                                             <div class="d-flex justify-content-between fw-bolder text-white">
-                                                <span class="text-start">$</span>570.750
+                                                <span class="text-start">$</span>
+                                                {{ number_format($gasto->TotalAdm, 0, '', '.') }}
                                             </div>
                                         </th>
                                     </tr>
@@ -238,7 +258,7 @@
                         <div class="col-12 pe-5">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Uso o Consumo</h3>
-                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ 570.750</div>
+                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ {{ number_format($gasto->TotalConsumo, 0, '', '.') }}</div>
                             </div>
                         </div>   
                     </div>
@@ -254,33 +274,30 @@
                                     </tr>
                                 </thead>
                                 <tbody class="fw-bold text-gray-600 fs-6">
-                                    <tr>
-                                        <td class="py-0 px-2">Agua</td>
-                                        <td class="py-0">Essbio cliente n 92832</td>
-                                        <td class="py-0 text-gray-400">Consumo entre 17.10 y el 16.11</td>
-                                        <td class="py-0 text-gray-400">Bol 3213213</td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">320.800</span> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-0 px-2">Electricidad</td>
-                                        <td class="py-0">CGE cliente n 89457302</td>
-                                        <td class="py-0 text-gray-400">Consumo entre 17.10 y el 16.11</td>
-                                        <td class="py-0 text-gray-400">Bol 453223</td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">170.750</span>
-
-                                        </td>
-                                    </tr>
+                                    @foreach ( $gasto->gastos_detalles as $indice => $detalle )
+                                        @if ( $detalle->TipoGastoId == 3)
+                                            <tr>
+                                                <td class="py-0 px-2 text-capitalize">{{ $detalle->Nombre }}</td> <!--Nombre -->
+                                                <td class="py-0 text-capitalize">{{ $detalle->Responsable}}</td> <!--Responsable-->
+                                                <td class="py-0 text-gray-400">{{ $detalle->Detalle }}</td> <!-- Detalle, Descripcion -->
+                                                <td class="py-0 text-gray-400"> {{ $detalle->NroDocumento }}</td> <!-- Tipo + Nro Documento -->
+                                                <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                                    <span class="text-start">$</span>
+                                                    <span class="text-end">{{ number_format($detalle->Precio, 0, '', '.') }}</span>  <!--Monto,Precio -->
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $gasto->gastos_detalles->forget($indice) 
+                                            @endphp
+                                        @endif
+                                    @endforeach
+                                    
                                     <thead>
                                         <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
                                             <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE USO O CONSUMO</th>
                                             <th class="py-0 pe-2">
                                                 <div class="d-flex justify-content-between fw-bolder text-white">
-                                                    <span class="text-start">$</span>570.750
+                                                    <span class="text-start">$</span>{{ number_format($gasto->TotalConsumo, 0, '', '.') }}
                                                 </div>
                                             </th>
                                         </tr>
@@ -301,7 +318,7 @@
                         <div class="col-12 pe-5">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Mantención</h3>
-                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ 870.000</div>
+                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ {{ number_format($gasto->TotalMantencion, 0, '', '.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -314,33 +331,29 @@
                                     <tr></tr>
                                 </thead>
                                 <tbody class="fw-bold text-gray-600 fs-6">
-                                    <tr>
-                                        <td class="py-0 px-2">Ascensores</td>
-                                        <td class="py-0">D y M Ltda</td>
-                                        <td class="py-0 text-gray-400">Mantencion Preventiva</td>
-                                        <td class="py-0 text-gray-400">Fact 3231213</td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">320.800</span> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-0 px-2">Central Termica</td>
-                                        <td class="py-0">Ferrosur</td>
-                                        <td class="py-0 text-gray-400">Mantencion Preventiva</td>
-                                        <td class="py-0 text-gray-400">Fact 234234</td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">170.750</span>
-
-                                        </td>
-                                    </tr>
+                                    @foreach ( $gasto->gastos_detalles as $indice => $detalle )
+                                        @if ( $detalle->TipoGastoId == 4)
+                                            <tr>
+                                                <td class="py-0 px-2 text-capitalize">{{ $detalle->Nombre }}</td> <!--Nombre -->
+                                                <td class="py-0 text-capitalize">{{ $detalle->Responsable}}</td> <!--Responsable-->
+                                                <td class="py-0 text-gray-400">{{ $detalle->Detalle }}</td> <!-- Detalle, Descripcion -->
+                                                <td class="py-0 text-gray-400"> {{ $detalle->NroDocumento }}</td> <!-- Tipo + Nro Documento -->
+                                                <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                                    <span class="text-start">$</span>
+                                                    <span class="text-end">{{ number_format($detalle->Precio, 0, '', '.') }}</span>  <!--Monto,Precio -->
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $gasto->gastos_detalles->forget($indice) 
+                                            @endphp
+                                        @endif
+                                    @endforeach
                                     <thead>
                                         <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
                                             <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE MANTENCION</th>
                                             <th class="py-0 pe-2">
                                                 <div class="d-flex justify-content-between fw-bolder text-white">
-                                                    <span class="text-start">$</span>870.000
+                                                    <span class="text-start">$</span>{{ number_format($gasto->TotalMantencion, 0, '', '.') }}
                                                 </div>
                                             </th>
                                         </tr>
@@ -361,7 +374,7 @@
                         <div class="col-12 pe-5">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Reparación</h3>
-                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ 170.000</div>
+                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ {{ number_format($gasto->TotalReparacion, 0, '', '.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -375,23 +388,30 @@
                                     <tr></tr>
                                 </thead>
                                 <tbody class="fw-bold text-gray-600 fs-6">
-                                    <tr>
-                                        <td class="py-0 px-2">Ascensores</td>
-                                        <td class="py-0">D y M Ltda</td>
-                                        <td class="py-0 text-gray-400">Cagó</td>
-                                        <td class="py-0 text-gray-400">Fact 3231213</td>
-                                        <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
-                                            <span class="text-start">$</span>
-                                            <span class="text-end">320.800</span> 
-                                        </td>
-                                    </tr>
+                                    @foreach ( $gasto->gastos_detalles as $indice => $detalle )
+                                        @if ( $detalle->TipoGastoId == 5)
+                                            <tr>
+                                                <td class="py-0 px-2 text-capitalize">{{ $detalle->Nombre }}</td> <!--Nombre -->
+                                                <td class="py-0 text-capitalize">{{ $detalle->Responsable}}</td> <!--Responsable-->
+                                                <td class="py-0 text-gray-400">{{ $detalle->Detalle }}</td> <!-- Detalle, Descripcion -->
+                                                <td class="py-0 text-gray-400"> {{ $detalle->NroDocumento }}</td> <!-- Tipo + Nro Documento -->
+                                                <td class="py-0 pe-2 fw-bolder d-flex justify-content-between">
+                                                    <span class="text-start">$</span>
+                                                    <span class="text-end">{{ number_format($detalle->Precio, 0, '', '.') }}</span>  <!--Monto,Precio -->
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $gasto->gastos_detalles->forget($indice) 
+                                            @endphp
+                                        @endif
+                                    @endforeach
+                                    
                                     <thead>
                                         <tr class="text-gray-800 fw-bold fs-3 text-uppercase table-dark">
                                             <th colspan="4" class="py-0 px-2 text-white">TOTAL GASTOS DE REPARACIÓN</th>
                                             <th class="py-0 pe-2">
                                                 <div class="d-flex justify-content-between fw-bolder text-white">
-                                                <span class="text-start">$</span>
-                                                870.000
+                                                <span class="text-start">$</span>{{ number_format($gasto->TotalReparacion, 0, '', '.') }}
                                                 </div>
                                                 
                                             </th>
@@ -416,9 +436,9 @@
 					<!--end::Content-->
 					<!--begin::Content-->
 					<div class="fs-3 fw-bold text-dark text-end pe-4">
-						<span class="d-block lh-1 mb-2" >$2.181.500</span>
-						<span class="d-block mb-7">$109.075</span>
-						<span class="d-block fs-2qx lh-1">$2.290.575</span>
+						<span class="d-block lh-1 mb-2" >$ {{ number_format($gasto->TotalMes, 0, '', '.') }}</span>
+						<span class="d-block mb-7">$ {{ number_format($gasto->FondoReserva, 0, '', '.') }}</span>
+						<span class="d-block fs-2qx lh-1">$ {{ number_format($gasto->Total, 0, '', '.') }}</span>
 					</div>
 					<!--end::Content-->
 				</div>
@@ -428,6 +448,7 @@
             </div>
         </div>
     </div>
+    @endif
     
 </div>
 <!--end::Content-->
@@ -442,6 +463,7 @@
         const CerrarMes = "{{ route('CerrarMes') }}";
         const AbrirMes = "{{ route('AbrirMes') }}";
         const NuevoGasto = "{{ route('NuevoGasto') }}";
+        const GuardarGastoDetalle = "{{ route('GuardarGastoDetalle') }}";
 
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>

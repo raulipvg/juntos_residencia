@@ -39,11 +39,13 @@ class GastoMe extends Model
 {
 	protected $table = 'GastoMes';
 	protected $primaryKey = 'Id';
+	public $incrementing = true;
 	public $timestamps = false;
 
 	protected $casts = [
 		'Fecha' => 'datetime',
 		'TotalRemuneracion' => 'int',
+		'TotalCajaChica' => 'int',
 		'TotasOtros' => 'int',
 		'TotalAdm' => 'int',
 		'TotalConsumo' => 'int',
@@ -60,6 +62,7 @@ class GastoMe extends Model
 	protected $fillable = [
 		'Fecha',
 		'TotalRemuneracion',
+		'TotalCajaChica',
 		'TotasOtros',
 		'TotalAdm',
 		'TotalConsumo',

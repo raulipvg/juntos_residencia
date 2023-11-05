@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    let ComunidadId = 1;
-    const loadingEl = document.createElement("div");
+    //let ComunidadId = 1;
+    var loadingEl = document.createElement("div");
 
     function bloquear(){
         document.body.prepend(loadingEl);
@@ -15,9 +15,12 @@ $(document).ready(function() {
     $('#GastoMesIdInput').on('select2:select', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log("click Mes");   
+        //console.log("click Mes");   
  
         bloquear();
+        let ComunidadId = $("#ComunidadInput").val();
+        let GastoMesId = $(this).val(); 
+        console.log(GastoMesId)
         $.ajax({
             type: 'POST',
             url: VerMeses,
@@ -65,27 +68,27 @@ $(document).ready(function() {
     //EVENTO QUE MANEJA EL SUBMIT PARA ABRIR O CERRAR UN MES DE GASTO MES
     abrirMes.addEventListener('click', function (e) { 
         e.preventDefault();
-        e.stopPropagation();
-       
-    bloquear();
+        e.stopPropagation();  
+        bloquear();
+        let ComunidadId = $("#ComunidadInput").val();
         if(abrirMes.classList.contains('abrir-mes')){
             abrirMes.classList.remove('abrir-mes','btn-success');
             abrirMes.classList.add('cerrar-mes','btn-warning');
             abrirMes.textContent = 'CERRAR MES'
-            console.log("Abrir Mes")
+            //console.log("Abrir Mes")
             //console.log(comunidadInputValue);
             //console.log(gastoMesIdInputValue);   
 
             // Encuentra el elemento contenedor <div class="col ms-2 text-end">
             var tag= $(this).parent().next('.col.ms-2.text-end');
-
-            console.log(tag)
+           
+            //console.log(ComunidadId)
             $.ajax({
                 type: 'POST',
                 url: AbrirMes,
                 data: { 
                         _token: csrfToken,    
-                        ComunidadId: ComunidadId,
+                        data: ComunidadId,
                     },
                 dataType: "json",
                 //content: "application/json; charset=utf-8",
@@ -93,20 +96,19 @@ $(document).ready(function() {
                     KTApp.showPageLoading();
                 },
                 success: function (data) {
-                    
                     //console.log(data);
                     if(data.success){
-                         //location.reload();
+                         location.reload();
                     }else{
-                        html =
-                        '<ul><li style="">' +
-                        data.message +
-                        "</li></ul>";
-                    $("#AlertaError").append(html);
-
-                    $("#AlertaError").show();
-
-                        
+                        Swal.fire({
+                            text: "Error: "+data.message,
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });                        
                     }
                 },
                 error: function (e) {
@@ -127,14 +129,14 @@ $(document).ready(function() {
             });
 
         }else if(abrirMes.classList.contains('cerrar-mes')){
-            console.log("Cerrar Mes")
-
+            //console.log("Cerrar Mes")
+            var gastoMesId = $("#GastoMesIdInput").val();
             $.ajax({
                 type: 'POST',
                 url: CerrarMes,
-                data: { 
+                data:{ 
                         _token: csrfToken,    
-                        data: ComunidadId 
+                        data: {ComunidadId, gastoMesId} 
                     },
                 dataType: "json",
                 //content: "application/json; charset=utf-8",
@@ -148,12 +150,18 @@ $(document).ready(function() {
                         abrirMes.classList.add('btn-dark','disabled');
                         abrirMes.textContent =  'MES CERRADO';
                         $("#NuevoGasto").remove();
-                        $("#agregar-gasto").empty();
-                 
+                        $("#agregar-gasto").empty();                
                          //location.reload();
                     }else{
-                          
-                        
+                        Swal.fire({
+                            text: "Error",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });                        
                     }
                 },
                 error: function (e) {
@@ -184,6 +192,8 @@ $(document).ready(function() {
         e.preventDefault();
         e.stopPropagation();    
         //console.log("Agregar Gasto")
+        let comunidadId = $("#ComunidadInput").val();
+        //let gastoMesId = $("#GastoMesIdInput").val();
         if(flag){
             flag= false;
             bloquear();
@@ -192,7 +202,7 @@ $(document).ready(function() {
                 url: NuevoGasto,
                 data: { 
                         _token: csrfToken,    
-                        data: ComunidadId 
+                        data: {comunidadId } 
                     },
                 dataType: "html",
                 //content: "application/json; charset=utf-8",
@@ -227,6 +237,9 @@ $(document).ready(function() {
         }
     });
     $("#agregar-gasto").on("click", '.cerrar-gasto', function (e) {
+        //console.log("cerrar")
+        var script = document.getElementById('prueba');
+        script.parentNode.removeChild(script);
         e.preventDefault();
         if(!flag){flag=true;}       
     });

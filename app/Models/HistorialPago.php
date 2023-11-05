@@ -31,6 +31,7 @@ class HistorialPago extends Model
 {
 	protected $table = 'HistorialPago';
 	protected $primaryKey = 'Id';
+	public $incrementing = true;
 	public $timestamps = false;
 
 	protected $casts = [

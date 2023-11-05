@@ -37,6 +37,7 @@ class GastoComun extends Model
 {
 	protected $table = 'GastoComun';
 	protected $primaryKey = 'Id';
+	public $incrementing = true;
 	public $timestamps = false;
 
 	protected $casts = [

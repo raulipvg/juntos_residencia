@@ -1,29 +1,26 @@
 
 
-var ComunidadId = 1;
-var loadingEl = document.createElement("div");
+    //var ComunidadId = 1;
+    var loadingEl = document.createElement("div");
 
+    function bloquear(){
+        document.body.prepend(loadingEl);
+        loadingEl.classList.add("page-loader");
+        loadingEl.classList.add("flex-column");
+        loadingEl.classList.add("bg-dark");
+        loadingEl.classList.add("bg-opacity-25");
+        loadingEl.innerHTML = `<span class="spinner-border text-primary" role="status"></span>
+                               <span class="text-gray-800 fs-6 fw-semibold mt-5">Cargando...</span>`;
 
-function bloquear(){
-    document.body.prepend(loadingEl);
-    loadingEl.classList.add("page-loader");
-    loadingEl.classList.add("flex-column");
-    loadingEl.classList.add("bg-dark");
-    loadingEl.classList.add("bg-opacity-25");
-    loadingEl.innerHTML = `<span class="spinner-border text-primary" role="status"></span>
-                           <span class="text-gray-800 fs-6 fw-semibold mt-5">Cargando...</span>`;
-}
-$('.select-1').select2();
-//$("#NuevoGasto").tooltip();
-
-
-    
-    const form = document.getElementById('Formulario-nuevogasto');
+    }
+    $('.select-1').select2();
+    //$("#NuevoGasto").tooltip();
+    var form = document.getElementById('Formulario-nuevogasto');
     //console.log(form)
     $("#AlertaError").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
   
-        const validator = FormValidation.formValidation(
+    var validator = FormValidation.formValidation(
             form,
             {
                 fields: {
@@ -53,15 +50,12 @@ $('.select-1').select2();
                             }
                         }
                     },
-                    'Descripcion': {
+                    'Detalle': {
                         validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
                             stringLength: {
                                 min: 0,
-                                max: 50,
-                                message: 'Entre 9 y 50 caracteres'
+                                max: 100,
+                                message: 'Entre 0 y 100 caracteres'
                             }
                         }
                     },
@@ -89,13 +83,13 @@ $('.select-1').select2();
                     },
                     'NroDocumento': {
                         validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
                             stringLength: {
                                 min: 0,
                                 max: 50,
-                                message: 'Entre 9 y 50 caracteres'
+                                message: 'Entre 0 y 50 caracteres'
+                            },
+                            digits: {
+                                message: 'Digitos'
                             }
                         }
                     },
@@ -142,30 +136,25 @@ $('.select-1').select2();
         });
     }
 
-    const target = document.querySelector("#div-bloquear");
-    const blockUI = new KTBlockUI(target);
-
-    const submitButton = document.getElementById("AgregarGasto");
+    var submitButton = document.getElementById("AgregarGasto");
     submitButton.addEventListener("click", function (e) {
         e.preventDefault();
         e.stopPropagation();    
 
         //console.log("Agregar Gasto a la lista")
 
-        $("#AlertaError").hide();
-        $("#AlertaError").empty();
+        //$("#AlertaError").hide();
+        //$("#AlertaError").empty();
 
         if (validator) {
             validator.validate().then(function (status) {
                 actualizarValidSelect2();
-
                 //console.log('validated!');
                 //status
                 if (status == "Valid") {
                  let form1 = $("#Formulario-nuevogasto");
                     var fd = form1.serialize();
                     const pairs = fd.split("&");
-
                     const keyValueObject = {};
 
                     for (let i = 0; i < pairs.length; i++) {
@@ -174,11 +163,11 @@ $('.select-1').select2();
                         const value = decodeURIComponent(pair[1]);
                         keyValueObject[key] = value;
                     }
-                    submitButton.setAttribute("data-kt-indicator", "on");
-                    // Disable button to avoid multiple click
-                    submitButton.disabled = true;
+                    
+                    let comunidadId= $("#ComunidadInput").val();
+                    let gastoMesId = $("#GastoMesIdInput").val();   
 
-                    blockUI.block();
+                    bloquear();
 
                     $.ajax({
                         type: "POST",
@@ -186,33 +175,34 @@ $('.select-1').select2();
                         data: {
                             _token: csrfToken,
                             data: keyValueObject,
+                            info: {comunidadId, gastoMesId}
                         },
                         dataType: "json",
                         //content: "application/json; charset=utf-8",
-                        beforeSend: function () {},
+                        beforeSend: function () {
+                            KTApp.showPageLoading();
+                        },
                         success: function (data) {
                             //console.log(data.errors);
-                            blockUI.release();
                             if (data.success) {
                                 //console.log("exito");
                                 location.reload();
                             } else {
                                 //console.log(data.error);
-                                html =
-                                    '<ul><li style="">' +
-                                    data.message +
-                                    "</li></ul>";
-                                $("#AlertaError").append(html);
-
-                                $("#AlertaError").show();
-
-                                //console.log("error");
+                                Swal.fire({
+                                    text: "Error",
+                                    icon: "error",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "OK",
+                                    customClass: {
+                                        confirmButton: "btn btn-danger btn-cerrar",
+                                    },
+                                });
                             }
                         },
                         error: function (e) {
                             //console.log(e)
                             //alert('Error');
-                            blockUI.release();
                             Swal.fire({
                                 text: "Error",
                                 icon: "error",
@@ -223,10 +213,13 @@ $('.select-1').select2();
                                 },
                             });
                         },
+                        complete: function(e){
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                        }
                     });
                     // form.submit(); // Submit form
-                    submitButton.removeAttribute("data-kt-indicator");
-                    submitButton.disabled = false;
+                    
                 }
             });
             }
