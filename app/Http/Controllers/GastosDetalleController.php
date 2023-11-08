@@ -26,7 +26,6 @@ class GastosDetalleController extends Controller
                                 ->orderBy('Nombre','asc')->get();
 
          $tipodco = TipoDocumento::select('Id','Nombre')->orderBy('Nombre','asc')->get();
-         //$variable= "caca";
 
         try{
             return view('gastodetalle._nuevogasto', compact('tipogastos','tipodco'));

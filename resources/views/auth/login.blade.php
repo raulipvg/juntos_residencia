@@ -138,5 +138,4 @@ if ( document.documentElement )
 </script>
 
 <script src="{{ asset('js/eventos/login.js?id=4') }}"></script>
-<script src="{{ asset('js/eventos/login2.js') }}"></script>
 @endpush

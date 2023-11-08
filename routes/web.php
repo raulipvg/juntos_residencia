@@ -3,6 +3,7 @@
 use App\Http\Controllers\ComponeController;
 use App\Http\Controllers\AccesoComunidadController;
 use App\Http\Controllers\ComunidadController;
+use App\Http\Controllers\HistorialPagoController;
 use App\Http\Controllers\HojaVidaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\PropiedadController;
@@ -124,3 +125,10 @@ Route::group(['prefix'=> '/gastodetalle', 'middleware' => 'auth'], function () {
 
 
 
+Route::group(['prefix'=> '/historial', 'middleware'=> 'auth'], function () {
+    Route::get('/', [HistorialPagoController::class, 'Index'])->name('HistorialPago');
+    Route::post('/registrarPago', [HistorialPagoController::class, 'TraerVista'])->name('NuevoPago');
+    Route::post('/guardarPago', [HistorialPagoController::class, 'Guardar'])->name('GuardarPago');
+    Route::post('/verdetalle', [HistorialPagoController::class, 'Ver'])->name('VerHistorial');
+    Route::post('/ultimoRegistro', [HistorialPagoController::class, 'UltimoRegistroPorGC'])->name('UltimoRegistro');
+});

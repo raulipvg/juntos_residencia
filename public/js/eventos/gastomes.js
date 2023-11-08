@@ -12,6 +12,8 @@ $(document).ready(function() {
                                <span class="text-gray-800 fs-6 fw-semibold mt-5">Cargando...</span>`;
 
     }
+
+    
     $('#GastoMesIdInput').on('select2:select', function(e) {
         e.preventDefault();
         e.stopPropagation();

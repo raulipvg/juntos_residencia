@@ -275,7 +275,7 @@ $(document).ready(function() {
 
     });
 
-    // WEA PARA COLOCAR EL FONDO OSCURO AL MODAL DE ATRAS
+    // COLOCAR EL FONDO OSCURO AL MODAL DE ATRAS
     var modal = new bootstrap.Modal(document.getElementById("editar-espacio"));
     $(document).on("click", ".abrir-modal", function () {
         modal.show();
