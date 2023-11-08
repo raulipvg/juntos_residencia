@@ -186,8 +186,67 @@ $(document).ready(function() {
         }
     
     });
+    
+    const abrirMes2 = document.getElementById('AbrirMesInput2');
+    abrirMes2.addEventListener('click', function (e) { 
+        e.preventDefault();
+        e.stopPropagation();  
+        bloquear();
+        let ComunidadId = $("#ComunidadInput").val();
+            //console.log("Abrir Mes")
+            //console.log(comunidadInputValue);
+            //console.log(gastoMesIdInputValue);   
 
+            // Encuentra el elemento contenedor <div class="col ms-2 text-end">
+            var tag= $(this).parent().next('.col.ms-2.text-end');
+           
+            //console.log(ComunidadId)
+            $.ajax({
+                type: 'POST',
+                url: AbrirMes,
+                data: { 
+                        _token: csrfToken,    
+                        data: ComunidadId,
+                    },
+                dataType: "json",
+                //content: "application/json; charset=utf-8",
+                beforeSend: function() {
+                    KTApp.showPageLoading();
+                },
+                success: function (data) {
+                    //console.log(data);
+                    if(data.success){
+                         location.reload();
+                    }else{
+                        Swal.fire({
+                            text: "Error: "+data.message,
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });                        
+                    }
+                },
+                error: function (e) {
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                },
+                complete: function(){
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+                }               
+            });
 
+    });
     let flag=true;
     //EVENTO que agrega un Gasto Detalle
     $("#div-adm").on("click",'#NuevoGasto', function(e) {

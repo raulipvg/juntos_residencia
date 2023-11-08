@@ -30,8 +30,8 @@ class GastoMesController extends Controller
 
         $gastoMes =  GastoMe::with('gastos_detalles')
                             ->where('ComunidadId', $comunidadId)
+                            ->latest('Fecha') // This will order the results by the created_at column by default, getting the latest entry
                             ->first();
-        
         return View('gastomes.gastomes')->with([
                         'comunidades'=> $comunidades,
                         'gastosmeses'=> $gastosMeses,

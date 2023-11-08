@@ -87,6 +87,9 @@
                             </button>
                         @endif
                     @endif
+                    <button id="AbrirMesInput2" type="button" class="btn btn-sm btn-success h-40px abrir-mes">
+                            ABRIR MES
+                        </button>
                     <!--
                     <button id="AccionMesInput" type="button" class="btn btn-sm btn-success h-40px abrir-mes">
                         ABRIR MES
