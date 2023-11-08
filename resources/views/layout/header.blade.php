@@ -22,8 +22,8 @@
                 <!--begin::Brand-->
                 <div class="aside-logo py-8" id="kt_aside_logo">
                     <!--begin::Logo-->
-                    <a href="../../demo6/dist/index.html" class="d-flex align-items-center">
-                        <img alt="Logo" src="{{ asset('media/logos/logo.png')}}" class="h-45px logo" />
+                    <a href="{{route('Home') }}" class="d-flex align-items-center">
+                        <img alt="Logo" src="{{ asset('img/JRlogo.svg')}}" class="h-140px h-lg-150px logo"  />
                     </a>
                     <!--end::Logo-->
                 </div>
@@ -308,6 +308,7 @@
                                     </div>
                                     <!--end:Menu item-->
                                     <!--begin:Menu item-->
+                                    @if(auth()->user()->RolId == 1)
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
                                         <a class="menu-link" href="{{route('Usuario') }}">
@@ -318,6 +319,7 @@
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
+                                    @endif
                                     <!--end:Menu item-->
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
@@ -1404,7 +1406,7 @@
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
                                 <div class="menu-content px-3 py-3">
-                                    <a class="btn btn-success btn-sm px-4" href="#">Generate Reports</a>
+                                    <a class="btn btn-success btn-sm px-4" href="{{ route('logout')}}">Cerrar Sesion</a>
                                 </div>
                             </div>
                             <!--end::Menu item-->
@@ -1448,6 +1450,9 @@
                                 <!--begin::Activities-->
                                 <div class="d-flex align-items-center ms-1 ms-lg-3">
                                     <!--begin::Drawer toggle-->
+                                    <div class="" id="">
+                                        <h2 class="text-capitalize">{{ auth()->user()->Nombre}} {{ auth()->user()->Apellido}}</h2 >
+                                    </div>
                                     <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_activities_toggle">
                                         <i class="ki-outline ki-notification-bing fs-1"></i>
                                     </div>

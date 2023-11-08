@@ -9,14 +9,11 @@ use App\Http\Controllers\PropiedadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CopropietarioController;
 use App\Http\Controllers\EspacioComunController;
 use App\Http\Controllers\GastoMesController;
 use App\Http\Controllers\GastosDetalleController;
-use App\Http\Controllers\ResidenteController;
-use App\Http\Controllers\TipoCobro;
-use App\Models\AccesoComunidad;
-use App\Models\EspacioComun;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,11 +27,11 @@ use App\Models\EspacioComun;
 */
 
 Route::group(['prefix' => '/'], function () {
-    Route::get('/', [HomeController::class, 'Index'])->name('Home');
+    Route::get('/', [HomeController::class, 'Index'])->name('Home')->middleware('auth');
 });
 
 
-Route::group(['prefix' => '/usuario'], function () {
+Route::group(['prefix' => '/usuario', 'middleware' => 'auth'], function () {
     Route::get('/', [UserController::class, 'Index'])->name('Usuario');
     Route::post('/registrar', [UserController::class, 'Guardar'])->name('GuardarUsuario');
     Route::post('/ver', [UserController::class, 'VerId'])->name('VerUsuario');
@@ -42,7 +39,14 @@ Route::group(['prefix' => '/usuario'], function () {
     Route::post('/cambiarestado', [UserController::class, 'CambiarEstado'])->name('CambiarEstadoUsuario');
 });
 
-Route::group(['prefix' => '/acceso'], function () {
+Route::group(['prefix' => '/login'], function () {
+    Route::get('/', [UserController::class, 'showLogin'])->name('login');
+    Route::post('/', [UserController::class, 'attemptLogin'])->name('login.attempt');
+});
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+
+Route::group(['prefix' => '/acceso', 'middleware' => 'auth'], function () {
     //Route::get('/', [UserController::class, 'Index'])->name('Usuario');
     Route::post('/registrar', [AccesoComunidadController::class, 'Guardar'])->name('RegistrarAcceso');
     Route::post('/ver', [AccesoComunidadController::class, 'VerAccesoPorUsuario'])->name('VerAcceso');
@@ -50,14 +54,14 @@ Route::group(['prefix' => '/acceso'], function () {
     Route::post('/comunidadsinacceso',[AccesoComunidadController::class, 'getComunidadSinAcceso'])->name('ComunidadSinAcceso');
 });
 
-Route::group(['prefix' => '/comunidad'], function () {
+Route::group(['prefix' => '/comunidad', 'middleware' => 'auth'], function () {
     Route::get('/', [ComunidadController::class, 'Index'])->name('Comunidad');
     Route::post('/registrar', [ComunidadController::class, 'Guardar'])->name('GuardarComunidad');
     Route::post('/ver', [ComunidadController::class, 'VerId'])->name('VerComunidad');
     Route::post('/editar', [ComunidadController::class, 'Editar'])->name('EditarComunidad');
     Route::post('/cambiarestadoComunidad', [ComunidadController::class, 'CambiarEstadoComunidad'])->name('CambiarEstadoComunidad');
 });
-Route::group(['prefix' => '/propiedad'], function () {
+Route::group(['prefix' => '/propiedad', 'middleware' => 'auth'], function () {
     Route::get('/', [PropiedadController::class, 'Index'])->name('Propiedad');
     Route::post('/registrar', [PropiedadController::class, 'Guardar'])->name('GuardarPropiedad');
     Route::post('/ver', [PropiedadController::class, 'VerId'])->name('VerPropiedad');
@@ -66,7 +70,7 @@ Route::group(['prefix' => '/propiedad'], function () {
     Route::post('/verporcomunidad', [PropiedadController::class, 'VerPropiedadesDisponiblesPorComunidad'])->name('VerPropiedadesDisponiblesPorComunidad');
 });
 
-Route::group(['prefix' => '/espaciocomun'], function () {
+Route::group(['prefix' => '/espaciocomun', 'middleware' => 'auth'], function () {
     Route::post('/listar', [EspacioComunController::class, 'Index'])->name('EspacioComun');
     Route::post('/registrar', [EspacioComunController::class, 'Guardar'])->name('GuardarEspacioComun');
     Route::post('/ver', [EspacioComunController::class, 'VerId'])->name('VerEspacioComun');
@@ -75,7 +79,7 @@ Route::group(['prefix' => '/espaciocomun'], function () {
 });
 
 
-Route::group(['prefix' => '/residente'], function () {
+Route::group(['prefix' => '/residente', 'middleware' => 'auth'], function () {
     Route::get('/', [ComponeController::class, 'Index'])->name('Residente');
     Route::post('/registrar-persona', [PersonaController::class, 'Guardar'])->name('GuardarPersona');
     Route::post('/ver-persona', [PersonaController::class, 'VerId'])->name('VerPersona');
@@ -83,7 +87,7 @@ Route::group(['prefix' => '/residente'], function () {
     Route::post('/cambioestado', [PersonaController::class, 'CambioEstado'])->name('CambioEstadoPersona');
 });
 
-Route::group(['prefix' => '/hojavida'], function () {
+Route::group(['prefix' => '/hojavida', 'middleware' => 'auth'], function () {
     Route::post('/listar', [HojaVidaController::class, 'Index'])->name('HojaVida');
     Route::post('/registrar', [HojaVidaController::class, 'Guardar'])->name('GuardarHojaVida');
     Route::post('/ver', [HojaVidaController::class, 'VerId'])->name('VerHojaVida');
@@ -91,7 +95,7 @@ Route::group(['prefix' => '/hojavida'], function () {
     Route::post('/cambiarestadoHojaVida', [HojaVidaController::class, 'CambiarEstadoHojaVida'])->name('CambiarEstadoHojaVida');
 });
 
-Route::group(['prefix' => '/compone'], function () {
+Route::group(['prefix' => '/compone', 'middleware' => 'auth'], function () {
     Route::post('/registrar', [ComponeController::class, 'Guardar'])->name('GuardarCompone');
     Route::post('/registrar2', [ComponeController::class, 'Guardar2'])->name('GuardarCompone2');
     Route::post('/ver', [ComponeController::class, 'VerId'])->name('VerCompone');
@@ -104,7 +108,7 @@ Route::group(['prefix' => '/compone'], function () {
     
 });
 
-Route::group(['prefix'=> '/gastomes'], function () {
+Route::group(['prefix'=> '/gastomes', 'middleware' => 'auth'], function () {
     Route::get('/', [GastoMesController::class, 'Index'])->name('GastoMes');
     Route::post('/vermeses', [GastoMesController::class, 'VerMeses'])->name('VerMeses');
     Route::post('/abrirmes', [GastoMesController::class, 'AbrirMes'])->name('AbrirMes');
@@ -112,7 +116,7 @@ Route::group(['prefix'=> '/gastomes'], function () {
 
 });
 
-Route::group(['prefix'=> '/gastodetalle'], function () {
+Route::group(['prefix'=> '/gastodetalle', 'middleware' => 'auth'], function () {
     Route::post('/nuevogasto', [GastosDetalleController::class, 'NuevoGasto'])->name('NuevoGasto');
     Route::get('/', [GastosDetalleController::class,'index'])->name('index');
     Route::post('/registrar', [GastosDetalleController::class,'Guardar'])->name('GuardarGastoDetalle');

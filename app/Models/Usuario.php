@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Validation\Rule;
 
 /**
@@ -30,7 +31,7 @@ use Illuminate\Validation\Rule;
  *
  * @package App\Models
  */
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
 	protected $table = 'Usuario';
 	protected $primaryKey = 'Id';
@@ -51,6 +52,10 @@ class Usuario extends Model
 		'EstadoId',
 		'RolId'
 	];
+	public function getAuthPassword()
+	{
+		return $this->Password;
+	}
 
 	public function estado_usuario()
 	{
@@ -89,7 +94,7 @@ class Usuario extends Model
 						'max:255',
 						Rule::unique('Usuario','Correo')->ignore($id, 'Id'),
 					],
-            'Password' => 'required|string|min:8|max:12',
+            'Password' => 'required|min:8',
             'EstadoId' => 'required|max:255',
             'RolId' => 'required'
         ];

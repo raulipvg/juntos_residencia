@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -35,7 +36,6 @@ class UserController extends Controller
         ]);
     }
 
-
     public function Guardar(Request $request){
               
 
@@ -48,6 +48,7 @@ class UserController extends Controller
            $request['Correo']= strtolower($request['Correo']);
            $request['FechaAcceso'] = Carbon::now();
            $request['Enabled']= 1;
+
            
         
         try{
@@ -68,10 +69,11 @@ class UserController extends Controller
                    'Apellido' => $request['Apellido'],
                    'Username' => $request['Username'],
                    'Correo' => $request['Correo'],
-                   'Password' => $request['Password'],
+                   'Password' => bcrypt($request['Password']),
                    'EstadoId' => $request['EstadoId'],
                    'RolId' => $request['RolId']
             ]);
+            Auth::login($usuario);
 
             $acessoComunidad = AccesoComunidad::create([
                 'ComunidadId' => $request['ComunidadId'],
@@ -137,7 +139,7 @@ class UserController extends Controller
                    'Apellido' => $request['Apellido'],
                    'Username' => $request['Username'],
                    'Correo' => $request['Correo'],
-                   'Password' => $request['Password'],
+                   'Password' => bcrypt($request['Password']),
                    'EstadoId' => $request['EstadoId'],
                    'RolId' => $request['RolId']
             ]);
@@ -178,5 +180,39 @@ class UserController extends Controller
                 'success' => false,
                 'message' => $e->getMessage()]);
         }
+    }
+
+    public function showLogin(){
+        return View('auth.login');
+    }
+
+    public function attemptLogin(Request $request){
+        try {
+        $requestdata = $request->input('data');
+        $credentials = ['Username' => $requestdata['Username'], 'password' => $requestdata['password']];
+
+        if(Auth::attempt($credentials)){
+            $usuario = Auth::user();
+                    if (Auth::user()->EstadoId == 1) {
+                        return response()->json(['success' => true, 'message' => 'Inicio de sesión exitoso']);
+                    
+                    } else {
+                        auth()->logout();
+                        return response()->json(['success' => false, 'message' => 'Tu cuenta está inactiva. Comunícate con el administrador.']);
+                
+                    }
+                        }else{
+                            // dd($credentials);
+                            return response()->json(['success' => false, 'message' => 'Credenciales incorrectas']);
+                            }
+        } catch (Exception $e) {
+             // Manejar excepciones, si es necesario
+            return response()->json(['success' => false, 'message' => 'Error en el inicio de sesión']);
+    }
+    }
+
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('login');
     }
 }

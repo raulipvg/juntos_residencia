@@ -10,6 +10,9 @@
 		<meta property="og:type" content="article" />
 		<meta property="og:site_name" content="Campus Abierto" />
 		<link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico') }}" />
+		<meta property="og:url" content="https://keenthemes.com/metronic" />
+		<link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
+		<meta property="og:site_name" content="Keenthemes | Metronic" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -26,13 +29,11 @@
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
-	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed">
+	<body id="kt_body" class="auth-bg">
 
-		@include('layout.header')	
         
         @yield('main-content')
-        
-        @include('layout.footer')
+
 
 		<!--begin::Javascript-->
 		<script>var hostUrl = "assets/";</script>

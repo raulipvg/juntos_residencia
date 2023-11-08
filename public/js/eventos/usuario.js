@@ -16,8 +16,8 @@ $(document).ready(function() {
                             },
                             stringLength: {
                                 min: 4,
-                                max: 15,
-                                message: 'Entre 4 y 15 caracteres'
+                                max: 25,
+                                message: 'Entre 4 y 25 caracteres'
                             }
                         }
                     },

@@ -131,6 +131,8 @@ $today = date('Y-m-d');
                             </button>
                         </td>
                     </tr>
+                    {{-- @endif
+                    @endforeach --}}
                     @endforeach
                 </tbody>
             </table>

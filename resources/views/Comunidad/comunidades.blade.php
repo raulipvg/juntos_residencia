@@ -86,6 +86,8 @@
                 <tbody>
 
                     @foreach ($Comunidades as $comunidad)
+                    {{-- @foreach ($comunidad->acceso_comunidads as $accesoComunidad)
+                        @if ($accesoComunidad->UsuarioId == auth()->user()->Id && $accesoComunidad->Enabled == 1) --}}
                     <tr class="center-2">
                         <th>{{ $comunidad->Id }}</th>
                         <td>{{ $comunidad->Nombre }}</td>
@@ -120,6 +122,8 @@
                             </div>
                         </td>
                     </tr>
+                    {{-- @endif
+                    @endforeach --}}
                     @endforeach
                 </tbody>
             </table>
