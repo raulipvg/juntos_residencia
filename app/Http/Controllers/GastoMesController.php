@@ -16,28 +16,57 @@ use function Laravel\Prompts\select;
 
 class GastoMesController extends Controller
 {
-    public function Index(){
-        //FALTA SEGUN USER
-        $comunidadId= 12;
+    public function Index(Request $request){
+        $request = $request->input("data");
+        $flag = false;
+        if(isset($request['ComunidadId']) &&  isset($request['GastoMesId'])){
+            $comunidadId =  $request['ComunidadId'];
+            $gastoMesBuscarId = $request['GastoMesId'];
 
-        $comunidades = Comunidad::select('Id','Nombre')
-                            ->where('Enabled', 1) 
-                            ->get();
-
-        $gastosMeses = GastoMe::select('Id','Fecha')
-                            ->where('ComunidadId', $comunidadId)
-                            ->get();
-
-        $gastoMes =  GastoMe::with('gastos_detalles')
+            $gasto = GastoMe::with('gastos_detalles')
+                            ->where('Id', $gastoMesBuscarId)
+                            ->first();
+            $flag=true;
+        }else{
+            //FALTA SEGUN USER
+            $comunidadId= 12;
+             //EL GASTO DE MES PARA UNA COMUNIDAD Y FECHA ESTABLECIDA
+            $gasto =  GastoMe::with('gastos_detalles')
                             ->where('ComunidadId', $comunidadId)
                             ->latest('Fecha') // This will order the results by the created_at column by default, getting the latest entry
                             ->first();
-        return View('gastomes.gastomes')->with([
-                        'comunidades'=> $comunidades,
-                        'gastosmeses'=> $gastosMeses,
-                        'gasto' => $gastoMes,
-                        'comunidadId'=> $comunidadId
-                    ]);
+            $flag=false;
+        }
+        
+
+        //TODAS LAS COMUNIDADES HABILITADAS
+        $comunidades = Comunidad::select('Id','Nombre')
+                            ->where('Enabled', 1)
+                            ->orderBy('Nombre','asc')
+                            ->get();
+
+        //TODOS LOS GASTOS MES PARA UNA COMUNIDAD
+        $gastosMeses = GastoMe::select('Id','Fecha')
+                            ->where('ComunidadId', $comunidadId)
+                            ->latest('Fecha')
+                            ->get();
+
+        // SI ES POR LLAMADA AJAX SELECT2
+        if($flag){            
+            return view('gastodetalle._gastodetalle', 
+                    compact('gasto')
+                );
+
+        // SI ES UNA LLAMADA AL INDEX SIN PARAMETROS    
+        }else{
+            return View('gastomes.gastomes')->with([
+                'comunidades'=> $comunidades,
+                'gastosmeses'=> $gastosMeses,
+                'gasto' => $gasto,
+                'comunidadId'=> $comunidadId
+            ]);
+        }
+       
     }
 
     public function AbrirMes(Request $request){
