@@ -252,7 +252,7 @@ $(document).ready(function() {
         $('#CopropietarioInput').val(celdas[2].textContent);
         $('#MontoTotalInput').val(celdas[3].textContent);
 
-        $('#EstadoPagoInput').val(Number($(this).attr("state"))).trigger("change");
+        $('#EstadoPagoInput').val(Number($(this).attr("state"))).trigger("change").prop('disabled',true);
         
 
         let gcId = Number($(this).attr("info"));                            // Obtiene el id del gasto común
@@ -274,9 +274,13 @@ $(document).ready(function() {
                             const id = document.createElement('td');
                             id.textContent=historial.Id;
                             const fecha = document.createElement('td');
-                            fecha.textContent=historial.FechaPago;
+                            fecha.textContent=new Date(historial.FechaPago).toLocaleDateString('es-CL', {
+                                day: 'numeric',
+                                month: 'numeric',
+                                year: 'numeric'
+                              });
                             const montoPagado = document.createElement('td');
-                            montoPagado.textContent=historial.MontoPagado;
+                            montoPagado.textContent=historial.MontoPagado.toLocaleString('es-CL', {style: 'currency', currency: 'CLP'});
                             const medioPago = document.createElement('td');
                             medioPago.textContent=historial.TipoPago;
                             const numDoc = document.createElement('td');

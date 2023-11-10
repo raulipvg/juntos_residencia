@@ -23,7 +23,7 @@
                 <div class="aside-logo py-8" id="kt_aside_logo">
                     <!--begin::Logo-->
                     <a href="{{route('Home') }}" class="d-flex align-items-center">
-                        <img alt="Logo" src="{{ asset('img/JRlogo.svg')}}" class="h-140px h-lg-150px logo"  />
+                        <img alt="JuntosResidencia Logo" src="{{ asset('img/JRlogo.svg')}}" class="h-140px h-lg-150px logo"  />
                     </a>
                     <!--end::Logo-->
                 </div>

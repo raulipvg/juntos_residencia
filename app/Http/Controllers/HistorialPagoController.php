@@ -20,6 +20,8 @@ class HistorialPagoController extends Controller
         $comunidadId = 12;                 // recibe el id de la comunidad, el mes y año del período, id de gasto comun
         $gastosMeses = GastoMe::select('Id','Fecha')
                             ->where('ComunidadId', $comunidadId)
+                            ->where('EstadoId','2')
+                            ->orderBy('Fecha','desc')
                             ->get();
         $gastosComunesMes = $gastosMeses->first();
         $historialesPagos = HistorialPago::select('GastoComunId','EstadoPagoId','EstadoPago.Nombre')
@@ -70,6 +72,12 @@ class HistorialPagoController extends Controller
                         'message' => 'El monto pagado no puede ser mayor al monto por pagar']);
                 }
 
+                if($historialModificar['MontoAPagar'] < 1){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'El monto pagado no puede ser menor o igual a 0']);
+                }
+
                 $historialModificar->update([
                     'NroDoc'=> $request['NumDoc'],
                     'TipoPagoId'=> $request['TipoPago'],
@@ -92,10 +100,23 @@ class HistorialPagoController extends Controller
         if($historialesDeGC[0]['EstadoPagoId'] == 2 ){
 
 
-            if(( (int)$request['MontoPago'] ) < $historialesDeGC[0]['MontoAPagar'])
-                $estado = '2';
-            else
-                $estado = '3';
+            if(( (int)$request['MontoPago'] ) < 0){
+                if((int)$request['MontoPago'] <=0){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'El monto pagado no puede ser menor o igual a 0']);
+                }
+                $estado = 2;
+            }
+            else{
+                if((int)$request['MontoPago'] > $historialesDeGC[0]['MontoAPagar']){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'El monto pagado no puede ser mayor al monto por pagar']);
+                }
+
+                $estado = 3;
+            }
             try{
                 $nuevoHistorial = HistorialPago::create([
                     'NroDoc'=> $request['NumDoc'],

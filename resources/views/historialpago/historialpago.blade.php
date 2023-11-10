@@ -88,7 +88,7 @@
                                     })->first()->persona;
                                 @endphp
                                 <td>{{$personaFiltrada->Nombre}} {{$personaFiltrada->Apellido}}</td>
-                                <td>{{ $gastoComun->TotalCobroMes }}</td>
+                                <td>$ {{ number_format($gastoComun->TotalCobroMes, 0, '', '.')  }}</td>
                                 @php
                                     $estadoPagoActual = $HistorialesPagos->filter(function($historial) use ($gastoComun){
                                         return $historial->GastoComunId == $gastoComun->Id;
@@ -149,7 +149,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="number" class="form-control" placeholder="Monto a Pagar" id="MontoPagarInput" name="MontoPagar" value="500000" disabled/>
+                                <input type="text" class="form-control" placeholder="Monto a Pagar" id="MontoPagarInput" name="MontoPagar" value="500000" disabled/>
                                 <label for="MontoPagarInput" class="form-label">Monto a pagar:</label>
                                 <input hidden type="number" id="gastoComunIdInput" name="gastoComunId" />
 
@@ -242,7 +242,7 @@
                     </div><div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="number" class="form-control" placeholder="Monto a Pagar" id="MontoTotalInput" name="MontoPagar" disabled/>
+                                <input type="text" class="form-control" placeholder="Monto a Pagar" id="MontoTotalInput" name="MontoPagar" disabled/>
                                 <label for="MontoPagarInput" class="form-label">Monto a pagar:</label>
 
                             </div>
