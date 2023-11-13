@@ -1,6 +1,6 @@
 <div id="agregar-cobro-ctrl" class="card card-flush shadow-sm"> 
     <div class="card-header min-h-40px px-3">
-        <h3 class="card-title m-0 ps-2 fs-3 fw-bold text-primary text-uppercase">Agregar Cobro a la Propiedad: {{$propiedad->Numero}}</h3>
+        <h3 class="card-title m-0 p-2 fs-3 fw-bold text-primary text-uppercase">Agregar Cobro a la Propiedad: {{$propiedad->Numero}}</h3>
         <div class="card-toolbar m-0">
             <a href="#" class="btn btn-icon btn-sm btn-active-color-primary" data-kt-card-action="remove" data-kt-card-confirm="false">
                 <i class="ki-duotone ki-cross fs-1"><span class="path1"></span>

@@ -68,7 +68,7 @@
             <div class="col-md-8 col-12  mb-3">
                 <div id="propiedades-ctrl" class="card">
                 
-                    <div class="card-body card-scroll h-400px p-2">
+                    <div class="card-body card-scroll p-2" style="max-height: 290px;">
                         <ul class="nav nav-pills d-flex justify-content-between nav-pills-custom gap-3" role="tablist">
                             
                             @foreach ($propiedades as $propiedad )
