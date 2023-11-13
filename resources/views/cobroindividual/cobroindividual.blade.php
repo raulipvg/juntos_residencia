@@ -9,7 +9,7 @@
 }
 .btn-plus{
     top: 4px;
-    left: 101px;
+    left: 71px;
     z-index: 50;
 }
 
@@ -78,16 +78,16 @@
 									<i class="ki-outline ki-plus-square fs-2"></i>
 								</button>
                                 <!--begin::Nav link-->
-                                <a class="nav-link nav-link-border-solid ver-cobro btn btn-outline btn-flex btn-active-color-primary flex-column flex-stack pt-4 pb-2 page-bg"
-                                    data-info="{{$propiedad->Id}}" data-bs-toggle="pill" href="#kt_pos_food_content_1" style="width: 140px;height: 140px" aria-selected="true" role="tab">
+                                <a class="nav-link nav-link-border-solid ver-cobro btn btn-outline btn-flex btn-active-color-primary flex-column flex-stack p-1 page-bg"
+                                    data-info="{{$propiedad->Id}}" data-bs-toggle="pill" href="#kt_pos_food_content_1" style="width: 110px;height: 132px" aria-selected="true" role="tab">
                                     <!--begin::Icon-->
-                                    <div class="nav-icon mb-3">
-                                        <i class="ki-duotone ki-home fs-4x"></i>
+                                    <div class="nav-icon">
+                                        <i class="ki-duotone ki-home pt-6 pt-md-1 fs-4x"></i>
                                     </div>
                                     <!--end::Icon-->
                                     <!--begin::Info-->
                                     <div class="">
-                                        <span class="text-gray-800 fw-bold fs-2 d-block text-uppercase">{{$propiedad->Numero}}</span>
+                                        <span class="text-gray-800 fw-bold fs-4 d-block text-uppercase">{{$propiedad->Numero}}</span>
                                         <span class="text-gray-400 fw-semibold fs-7 text-capitalize">{{$propiedad->Nombre}} {{$propiedad->Apellido}}</span>
                                     </div>
                                     <!--end::Info-->
