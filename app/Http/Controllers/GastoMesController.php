@@ -33,19 +33,17 @@ class GastoMesController extends Controller
              //EL GASTO DE MES PARA UNA COMUNIDAD Y FECHA ESTABLECIDA
             $gasto =  GastoMe::with('gastos_detalles')
                             ->where('ComunidadId', $comunidadId)
-                            ->latest('Fecha') // This will order the results by the created_at column by default, getting the latest entry
+                            ->latest('Fecha')
                             ->first();
             $flag=false;
         }
-        
-
         //TODAS LAS COMUNIDADES HABILITADAS
         $comunidades = Comunidad::select('Id','Nombre')
                             ->where('Enabled', 1)
                             ->orderBy('Nombre','asc')
                             ->get();
 
-        //TODOS LOS GASTOS MES PARA UNA COMUNIDAD
+        //TODOS LOS GASTOS MES PARA UNA COMUNIDAD SELECT2
         $gastosMeses = GastoMe::select('Id','Fecha')
                             ->where('ComunidadId', $comunidadId)
                             ->latest('Fecha')
@@ -56,7 +54,6 @@ class GastoMesController extends Controller
             return view('gastodetalle._gastodetalle', 
                     compact('gasto')
                 );
-
         // SI ES UNA LLAMADA AL INDEX SIN PARAMETROS    
         }else{
             return View('gastomes.gastomes')->with([

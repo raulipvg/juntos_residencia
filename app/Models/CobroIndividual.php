@@ -30,13 +30,17 @@ class CobroIndividual extends Model
 {
 	protected $table = 'CobroIndividual';
 	protected $primaryKey = 'Id';
+	public $incrementing = true;
 	public $timestamps = false;
 
 	protected $casts = [
 		'Cantidad' => 'int',
 		'MontoTotal' => 'int',
 		'TipoCobroId' => 'int',
-		'GastoComunId' => 'int'
+		'GastoComunId' => 'int',
+		'PropiedadId'=> 'int',
+		'EstadoId'=> 'int',
+		'Fecha'=> 'datetime',
 	];
 
 	protected $fillable = [
@@ -45,7 +49,10 @@ class CobroIndividual extends Model
 		'Cantidad',
 		'MontoTotal',
 		'TipoCobroId',
-		'GastoComunId'
+		'GastoComunId',
+		'PropiedadId',
+		'EstadoId',
+		'Fecha',
 	];
 
 	public function tipo_cobro()
@@ -68,11 +75,13 @@ class CobroIndividual extends Model
 
         $rules = [
             'Nombre' => 'required|string|max:50',
-            'Descipcion' => 'required|string|max:50',
+            'Descripcion' => 'required|string|max:50',
             'Cantidad' => 'required|numeric',
             'MontoTotal' => 'required|numeric',
             'TipoCobroId' => 'required|numeric',
-            'GastoComunId' => 'required|numeric',
+            'GastoComunId' => 'nullable|numeric',
+			'EstadoId' => 'required|numeric',
+			'Fecha' => 'required|date',
         ];
 
         $validator = Validator::make($data, $rules);

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ComponeController;
 use App\Http\Controllers\AccesoComunidadController;
+use App\Http\Controllers\CobroIndividualController;
 use App\Http\Controllers\ComunidadController;
 use App\Http\Controllers\HistorialPagoController;
 use App\Http\Controllers\HojaVidaController;
@@ -11,10 +12,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EspacioComunController;
+use App\Http\Controllers\GastoComunController;
 use App\Http\Controllers\GastoMesController;
 use App\Http\Controllers\GastosDetalleController;
-
-
+use App\Models\GastoComun;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,10 +120,20 @@ Route::group(['prefix'=> '/gastomes', 'middleware' => 'auth'], function () {
 
 Route::group(['prefix'=> '/gastodetalle', 'middleware' => 'auth'], function () {
     Route::post('/nuevogasto', [GastosDetalleController::class, 'NuevoGasto'])->name('NuevoGasto');
-    Route::get('/', [GastosDetalleController::class,'index'])->name('index');
+    Route::get('/', [GastosDetalleController::class,'Index'])->name('index');
     Route::post('/registrar', [GastosDetalleController::class,'Guardar'])->name('GuardarGastoDetalle');
 });
 
+Route::group(['prefix'=> '/gastocomun', 'middleware'=> 'auth'], function () {
+    Route::get('/', [GastoComunController::class,'VerGastosComunes'])->name('VerGastosComunes');
+});
+
+Route::group(['prefix'=> '/cobroindividual', 'middleware'=> 'auth'], function (){
+    Route::get('/', [CobroIndividualController::class,'Index'])->name('CobroIndividual');
+    Route::post('/ver', [CobroIndividualController::class, 'VerCobro'])->name('VerCobro');
+    Route::post('/agregar', [CobroIndividualController::class, 'AgregarCobro'])->name('AgregarCobro');
+    Route::post('/guardar', [CobroIndividualController::class, 'GuardarCobro'])->name('GuardarCobro');
+});
 
 
 Route::group(['prefix'=> '/historial', 'middleware'=> 'auth'], function () {

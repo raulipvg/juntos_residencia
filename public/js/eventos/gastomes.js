@@ -23,7 +23,7 @@ $(document).ready(function() {
         let ComunidadId = $("#ComunidadInput").val();
         let GastoMesId = $(this).val(); 
 
-        console.log(GastoMesId)
+        //console.log(GastoMesId)
         $.ajax({
             type: 'GET',
             url: Index,
@@ -41,30 +41,24 @@ $(document).ready(function() {
                 $("#gasto-detalle").html(data);
                 var estado = $("#gastoEstado").val();
 
-                if( estado == 1 ){ //MES ABIERTO
-                    $("#AccionMesInput")
+                if( estado == 1 ){ //MES ABIERTO         
                     $("#AccionMesInput").text('CERRAR MES')
                                         .addClass('cerrar-mes btn-warning')
                                         .removeClass('disabled btn-dark');
-                    var nuevoGasto = '<button id="NuevoGasto" type="button" class="btn btn-sm btn-primary h-40px hover-scale" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Gasto">'+
-                                        'GASTO<i class="ki-outline ki-plus fs-2"></i>'+
-                                     '</button>';
+
+                    if( $("#NuevoGasto").lenght <= 0 ){
+                        var nuevoGasto = '<button id="NuevoGasto" type="button" class="btn btn-sm btn-primary h-40px hover-scale" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Gasto">'+
+                        'GASTO<i class="ki-outline ki-plus fs-2"></i>'+
+                     '</button>';
+                    }
+                   
                     $("#btn-nuevo").append(nuevoGasto);
                 }else if( estado ==2){ // MES CERRADO
                     $("#AccionMesInput").text('MES CERRADO')
                                         .addClass('disabled btn-dark')
                                         .removeClass('cerrar-mes btn-warning');
                     $("#NuevoGasto").remove()
-                }
-
-                console.log(estado)
-                if(data.success){
-             
-                     //location.reload();
-                }else{
-                      
-                    
-                }
+                }               
             },
             error: function (e) {
                 Swal.fire({
@@ -298,6 +292,7 @@ $(document).ready(function() {
                 success: function (data) {
                     //console.log(data);
                     $("#agregar-gasto").append(data)
+                    $("#contenedor-1").addClass("mb-prueba")
                     if(data.success){
                         //location.reload();
                     }else{             
@@ -327,6 +322,7 @@ $(document).ready(function() {
         var script = document.getElementById('prueba');
         script.parentNode.removeChild(script);
         e.preventDefault();
+        $("#contenedor-1").removeClass("mb-prueba mb-prueba-2")
         if(!flag){flag=true;}       
     });
 

@@ -13,9 +13,9 @@
                                <span class="text-gray-800 fs-6 fw-semibold mt-5">Cargando...</span>`;
 
     }
-    $('.select-1').select2();
+    $('#TipoCobroInput').select2();
     //$("#NuevoGasto").tooltip();
-    var form = document.getElementById('Formulario-nuevogasto');
+    var form = document.getElementById('Formulario-nuevocobro');
     //console.log(form)
     $("#AlertaError").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
@@ -24,7 +24,7 @@
             form,
             {
                 fields: {
-                    'TipoGasto': {
+                    'TipoCobroId': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -41,16 +41,16 @@
                             },
                             stringLength: {
                                 min: 3,
-                                max: 20,
+                                max: 50,
                                 message: 'Entre 3 y 20 caracteres'
                             },
                             regexp: {
-                                regexp: /^[a-zñáéíóú\s]+$/i,
-                                message: 'Solo letras de la A-Z '
+                                regexp: /^[a-z0-9ñáéíóú\s]+$/i,
+                                message: 'Solo letras de la A-Z y 0-9 '
                             }
                         }
                     },
-                    'Detalle': {
+                    'Descripcion': {
                         validators: {
                             stringLength: {
                                 min: 0,
@@ -59,19 +59,7 @@
                             }
                         }
                     },
-                    'Responsable': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 0,
-                                max: 50,
-                                message: 'Entre 9 y 50 caracteres'
-                            }
-                        }
-                    },
-                    'TipoDocumentoId': {
+                    'MontoTotal': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -80,31 +68,8 @@
                                 message: 'Digitos'
                             }
                         }
-                    },
-                    'NroDocumento': {
-                        validators: {
-                            stringLength: {
-                                min: 0,
-                                max: 50,
-                                message: 'Entre 0 y 50 caracteres'
-                            },
-                            digits: {
-                                message: 'Digitos'
-                            }
-                        }
-                    },
-                    'Precio': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            digits: {
-                                message: 'Digitos'
-                            }
-                        }
-                    }
+                    }                   
                 },
-
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
                     bootstrap: new FormValidation.plugins.Bootstrap5({
@@ -136,7 +101,7 @@
         });
     }
 
-    var submitButton = document.getElementById("AgregarGasto");
+    var submitButton = document.getElementById("AgregarCobro");
     submitButton.addEventListener("click", function (e) {
         e.preventDefault();
         e.stopPropagation();    
@@ -152,7 +117,7 @@
                 //console.log('validated!');
                 //status
                 if (status == "Valid") {
-                 let form1 = $("#Formulario-nuevogasto");
+                 let form1 = $("#Formulario-nuevocobro");
                     var fd = form1.serialize();
                     const pairs = fd.split("&");
                     const keyValueObject = {};
@@ -164,18 +129,17 @@
                         keyValueObject[key] = value;
                     }
                     
-                    let comunidadId= $("#ComunidadInput").val();
-                    let gastoMesId = $("#GastoMesIdInput").val();   
+                    //let comunidadId= $("#ComunidadInput").val();
+                    //let gastoMesId = $("#GastoMesIdInput").val();   
 
                     bloquear();
 
                     $.ajax({
                         type: "POST",
-                        url: GuardarGastoDetalle,
+                        url: GuardarCobro,
                         data: {
                             _token: csrfToken,
-                            data: keyValueObject,
-                            info: {comunidadId, gastoMesId}
+                            data: keyValueObject
                         },
                         dataType: "json",
                         //content: "application/json; charset=utf-8",

@@ -38,7 +38,7 @@ class GastosDetalleController extends Controller
         }
     }
 
-    public function index(Request $request){
+    public function Index(Request $request){
         $variable = 'Soy una variable pulenta 2';
 
             return view('gastodetalle._nuevogasto')
