@@ -16,14 +16,23 @@ use Illuminate\Support\Facades\DB;
 class HistorialPagoController extends Controller
 {
     // Acción que trae las tuplas de pagos
-    public function Index(){
-        $comunidadId = 12;                 // recibe el id de la comunidad, el mes y año del período, id de gasto comun
-        $gastosMeses = GastoMe::select('Id','Fecha')
-                            ->where('ComunidadId', $comunidadId)
-                            ->where('EstadoId','2')
-                            ->orderBy('Fecha','desc')
-                            ->get();
-        $gastosComunesMes = $gastosMeses->first();
+    public function Index(Request $request){
+        $request = $request->data;
+
+        
+        if($request==null){
+            $comunidadId = 12;                 // recibe el id de la comunidad, el mes y año del período, id de gasto comun
+            $gastosMeses = GastoMe::select('Id','Fecha')
+                                ->where('ComunidadId', $comunidadId)
+                                ->where('EstadoId','2')
+                                ->orderBy('Fecha','desc')
+                                ->get();
+            $gastosComunesMes = $gastosMeses->first();
+        }
+        else{
+            $comunidadId = $request['ComunidadId'];
+            $gastosComunesMes['Id'] = $request["idMes"];
+        }
         $historialesPagos = HistorialPago::select('GastoComunId','EstadoPagoId','EstadoPago.Nombre')
                             ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComunId')
                             ->join('GastoMes','GastoComun.GastoMesId','=','GastoMes.Id')
@@ -31,20 +40,34 @@ class HistorialPagoController extends Controller
                             ->where('GastoMes.ComunidadId', $comunidadId)
                             ->orderBy('HistorialPago.FechaPago')
                             ->get();
-        $gastosComunes = GastoComun::where("GastoMesId", "=", $gastosComunesMes->Id)
+        $gastosComunes = GastoComun::where("GastoMesId", "=", $gastosComunesMes['Id'])
                             ->get();
         $tiposPagos = TipoPago::select("Id","Nombre")->get();
         $estados = EstadoPago::select("Id","Nombre")->get();
-        try{
-            return view("historialpago.historialpago")->with([
-                'gastosmeses' => $gastosMeses,
-                'GastosComunes'=> $gastosComunes,
-                'HistorialesPagos' => $historialesPagos,
-                'TiposPagos' => $tiposPagos,
-                'Estados' => $estados
-            ]);
-        }catch(\Exception $ex){
-            return $ex;
+        if($request == null) {
+            try{
+                return view("historialpago.historialpago")->with([
+                    'gastosmeses' => $gastosMeses,
+                    'GastosComunes'=> $gastosComunes,
+                    'HistorialesPagos' => $historialesPagos,
+                    'TiposPagos' => $tiposPagos,
+                    'Estados' => $estados
+                ]);
+            }catch(\Exception $ex){
+                return $ex;
+            }
+        }
+        else{
+            try{
+                return view("historialpago._historial")->with([
+                    'GastosComunes'=> $gastosComunes,
+                    'HistorialesPagos' => $historialesPagos,
+                    'TiposPagos' => $tiposPagos,
+                    'Estados' => $estados
+                ]);
+            }catch(\Exception $ex){
+                return $ex;
+            }
         }
        
     }

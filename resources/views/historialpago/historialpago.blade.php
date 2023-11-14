@@ -57,6 +57,7 @@
                     @foreach ($gastosmeses as $gastomes )
                         <option value="{{ $gastomes->Id }}">{{ $gastomes->Fecha->format('m-Y') }} </option>
                         @endforeach
+                        <option value="3"> 09-23 </option>
                     </select>
                 </div>
 
@@ -64,7 +65,7 @@
             </div>
         </div>
         <div id="historiales-pagos" class="mx-5">
-            <div class="card-body">
+        <div class="card-body">
                 <table id="tabla-pagos" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
                     <thead>
                         <tr class="fw-bolder text-uppercase">
@@ -289,6 +290,7 @@
 
     @push('Script')
     <script>
+        var Index = "{{ route('HistorialPago') }}"
         var NuevoPago = "{{ route('NuevoPago') }}"
         var GuardarPago = "{{ route('GuardarPago') }}"
         var UltimoPago = "{{ route('UltimoRegistro') }}"

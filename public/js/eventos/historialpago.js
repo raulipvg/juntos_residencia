@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    let ComunidadId = 1;
+    let ComunidadId = 12;
     const target = document.querySelector("#div-bloquear");
     const blockUI = new KTBlockUI(target);
     const form = document.getElementById('formulario-pago');
@@ -120,35 +120,31 @@ $(document).ready(function() {
         });
     }
 
-    $("#historiales-pagos tbody").on('click','.NuevoPago', function (e) {
-        var modal = new bootstrap.Modal(document.getElementById("modal-nuevo-pago"));
+    $('#GastoMesIdInput').on('select2:select', function(e){
         e.preventDefault();
         e.stopPropagation();
 
-        let gcId = Number($(this).attr("info"));                                    //obtiene el Id del gasto común
-        $('#gastoComunIdInput').val(Number($(this).attr("info")))
-        $('.form-select').val("").trigger("change").prop("disabled",false);
-        validator.resetForm();
-        $("#AlertaError").hide();
-        $("#AlertaError").empty();
+        let idMes = $(this).val();
 
         $.ajax({
-            type: 'POST',
-                url: UltimoPago,
-                data: {
-                        _token : csrfToken,
-                        data: gcId
-                },
-                dataType: 'json',
-                success: function(data){
-                    $('#MontoPagarInput').val(data.data.MontoAPagar);
-                }
+            type: 'GET',
+            url: Index,
+            data: {
+                _token: csrfToken,    
+                data: { ComunidadId,idMes } 
+            },
+            dataType: 'HTML',
+            success: function(data){
+                $("#historiales-pagos").empty();
+                $("#historiales-pagos").html(data)
+            },
+            complete: function(){
+                agregarEvNuevoP();
+            }
         })
-
-        $('#MontoPagoInput').val("");
-        $('#NumDocInput').val("");
-        modal.show();
     })
+
+    
 
     const submitButton = document.getElementById('RegistrarPagoButton');
     //Evento al presionar registrar pago
@@ -231,88 +227,126 @@ $(document).ready(function() {
         }
     })
     
-    $("#historiales-pagos tbody").on('click','.VerRegistro', function (e) {
-        var modal2 = new bootstrap.Modal(document.getElementById("modal-ver-registro"));
-        const tabla = document.getElementById('historial-pagos');
-        const tbody = tabla.querySelector('tbody');
+    agregarEvNuevoP();
 
-        tbody.innerHTML = '';
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        $("#AlertaError2").hide();
-        $("#AlertaError2").empty();
-        modal2.show();
-
-        const fila = this.closest('tr');
-        const celdas = fila.getElementsByTagName('td');
-
-        $('#PropiedadInput').val(celdas[1].textContent);
-        $('#CopropietarioInput').val(celdas[2].textContent);
-        $('#MontoTotalInput').val(celdas[3].textContent);
-
-        $('#EstadoPagoInput').val(Number($(this).attr("state"))).trigger("change").prop('disabled',true);
-        
-
-        let gcId = Number($(this).attr("info"));                            // Obtiene el id del gasto común
-
-        $.ajax({
-            type: 'POST',
-            url: VerHistorial,
-            data: {
-                    _token : csrfToken,
-                    data: gcId
-                },
-                dataType: 'json',
-                success: function(data){
-                    if(data.success){
-                        data=data.data;
-                        const fila = document.createElement('tr');
-                        data.forEach(historial => {
+    function agregarEvNuevoP(){
+        $("#tabla-pagos tbody").on('click','.VerRegistro', function (e) {
+            var modal2 = new bootstrap.Modal(document.getElementById("modal-ver-registro"));
+            const tabla = document.getElementById('historial-pagos');
+            const tbody = tabla.querySelector('tbody');
+    
+            tbody.innerHTML = '';
+    
+            e.preventDefault();
+            e.stopPropagation();
+    
+            $("#AlertaError2").hide();
+            $("#AlertaError2").empty();
+            modal2.show();
+    
+            const fila = this.closest('tr');
+            const celdas = fila.getElementsByTagName('td');
+    
+            $('#PropiedadInput').val(celdas[1].textContent);
+            $('#CopropietarioInput').val(celdas[2].textContent);
+            $('#MontoTotalInput').val(celdas[3].textContent);
+    
+            $('#EstadoPagoInput').val(Number($(this).attr("state"))).trigger("change").prop('disabled',true);
+            
+    
+            let gcId = Number($(this).attr("info"));                            // Obtiene el id del gasto común
+    
+            $.ajax({
+                type: 'POST',
+                url: VerHistorial,
+                data: {
+                        _token : csrfToken,
+                        data: gcId
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.success){
+                            data=data.data;
                             const fila = document.createElement('tr');
-                            const id = document.createElement('td');
-                            id.textContent=historial.Id;
-                            const fecha = document.createElement('td');
-                            fecha.textContent=new Date(historial.FechaPago).toLocaleDateString('es-CL', {
-                                day: 'numeric',
-                                month: 'numeric',
-                                year: 'numeric'
-                              });
-                            const montoPagado = document.createElement('td');
-                            montoPagado.textContent=historial.MontoPagado.toLocaleString('es-CL', {style: 'currency', currency: 'CLP'});
-                            const medioPago = document.createElement('td');
-                            medioPago.textContent=historial.TipoPago;
-                            const numDoc = document.createElement('td');
-                            numDoc.textContent=historial.NroDoc;
-                            
-                            fila.appendChild(id);
-                            fila.appendChild(fecha);
-                            fila.appendChild(montoPagado);
-                            fila.appendChild(medioPago);
-                            fila.appendChild(numDoc);
-
-                            tbody.appendChild(fila);
+                            data.forEach(historial => {
+                                const fila = document.createElement('tr');
+                                const id = document.createElement('td');
+                                id.textContent=historial.Id;
+                                const fecha = document.createElement('td');
+                                fecha.textContent=new Date(historial.FechaPago).toLocaleDateString('es-CL', {
+                                    day: 'numeric',
+                                    month: 'numeric',
+                                    year: 'numeric'
+                                  });
+                                const montoPagado = document.createElement('td');
+                                montoPagado.textContent=historial.MontoPagado.toLocaleString('es-CL', {style: 'currency', currency: 'CLP'});
+                                const medioPago = document.createElement('td');
+                                medioPago.textContent=historial.TipoPago;
+                                const numDoc = document.createElement('td');
+                                numDoc.textContent=historial.NroDoc;
+                                
+                                fila.appendChild(id);
+                                fila.appendChild(fecha);
+                                fila.appendChild(montoPagado);
+                                fila.appendChild(medioPago);
+                                fila.appendChild(numDoc);
+    
+                                tbody.appendChild(fila);
+                            });
+    
+                        }else{
+                            html = '<ul><li style="">'+data.message+'</li></ul>';
+                            $("#AlertaError").append(html);                                    
+                            $("#AlertaError").show();
+                        }
+                    },
+                    error: function(e) {
+                        Swal.fire({
+                            text: "Error",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                container: "swal-custom",
+                                confirmButton: "btn btn-danger btn-cerrar",
+                            },
                         });
-
-                    }else{
-                        html = '<ul><li style="">'+data.message+'</li></ul>';
-                        $("#AlertaError").append(html);                                    
-                        $("#AlertaError").show();
                     }
-                },
-                error: function(e) {
-                    Swal.fire({
-                        text: "Error",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "OK",
-                        customClass: {
-                            container: "swal-custom",
-                            confirmButton: "btn btn-danger btn-cerrar",
-                        },
-                    });
-                }
+            })
         })
-    })
+
+        blockUI.release()
+
+        $("#tabla-pagos tbody").on('click','.NuevoPago', function (e) {
+            console.log("estoy aquí")
+            var modal = new bootstrap.Modal(document.getElementById("modal-nuevo-pago"));
+            e.preventDefault();
+            e.stopPropagation();
+    
+            let gcId = Number($(this).attr("info"));                                    //obtiene el Id del gasto común
+            $('#gastoComunIdInput').val(Number($(this).attr("info")))
+            $('.form-select').val("").trigger("change").prop("disabled",false);
+            validator.resetForm();
+            $("#AlertaError").hide();
+            $("#AlertaError").empty();
+    
+            $.ajax({
+                type: 'POST',
+                    url: UltimoPago,
+                    data: {
+                            _token : csrfToken,
+                            data: gcId
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        $('#MontoPagarInput').val(data.data.MontoAPagar);
+                    }
+            })
+    
+            $('#MontoPagoInput').val("");
+            $('#NumDocInput').val("");
+            modal.show();
+        })
+    
+    }
 })
