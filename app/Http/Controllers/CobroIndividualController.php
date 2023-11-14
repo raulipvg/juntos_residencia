@@ -25,7 +25,7 @@ class CobroIndividualController extends Controller
                             ->get();
 
         $propiedades = Propiedad::select('Propiedad.Id','Propiedad.Numero',
-                                         'Persona.Nombre','Persona.Apellido',
+                                         'Persona.Nombre','Persona.Apellido'
                                         )
                             ->where('Propiedad.ComunidadId', $comunidadId)
                             ->where('Propiedad.Enabled', 1) //Propeidad Habilitada
