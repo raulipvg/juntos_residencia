@@ -15,11 +15,14 @@ $(document).ready(function() {
     const btnAgregar='<button type="button" class="btn-plus btn btn-sm agregar-cobro btn-icon  btn-color-danger btn-active-light btn-active-color-primary position-absolute">'+
                         '<i class="ki-outline ki-plus-square fs-2"></i>'+
                     '</button>';
-                    
+    
+    //EVENTO SELECT2 PARA CAPTURAR EL ESTADO DEL GASTO MES
     $('#GastoMesIdInput').on('select2:select', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        var dataInfo = e.params.data.element.dataset.info;
+
+        //CAPTURO EL VALOR DE DATA-INFO
+        var dataInfo = e.params.data.element.dataset.info; 
 
         if (dataInfo == 2){
             $(".agregar-cobro").remove()
@@ -30,18 +33,15 @@ $(document).ready(function() {
     });
 
     $("#propiedades-ctrl").on('click', '.ver-cobro', function(e){
-        console.log("ver COBRO")
+        //console.log("ver COBRO")
         e.preventDefault();
         e.stopPropagation();    
         //console.log("Agregar Gasto")
         let comunidadId = $("#ComunidadInput").val();
         let propiedadId = $(this).attr("data-info");
         let gastoMesId = $("#GastoMesIdInput").val();
-        console.log(comunidadId)
-        console.log(propiedadId)
-
-        
-            flag= false;
+        //console.log(comunidadId)
+        //console.log(propiedadId)
             bloquear();
             $.ajax({
                 type: 'POST',
@@ -58,12 +58,7 @@ $(document).ready(function() {
                 success: function (data) {
                     //console.log(data);
                     $("#contenedor-3").html(data)
-                    //("#contenedor-1").addClass("mb-prueba")
-                    if(data.success){
-                        //location.reload();
-                    }else{             
-                        
-                    }
+                   
                 },
                 error: function (e) {
                     Swal.fire({
