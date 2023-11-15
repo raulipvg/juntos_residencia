@@ -293,7 +293,7 @@
         var Index = "{{ route('HistorialPago') }}"
         var NuevoPago = "{{ route('NuevoPago') }}"
         var GuardarPago = "{{ route('GuardarPago') }}"
-        var UltimoPago = "{{ route('UltimoRegistro') }}"
+        var UltimoRegistroPorGC = "{{ route('UltimoRegistroPorGC') }}"
         var VerHistorial = "{{ route('VerHistorial') }}"
         
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

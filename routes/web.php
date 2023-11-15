@@ -8,6 +8,7 @@ use App\Http\Controllers\HistorialPagoController;
 use App\Http\Controllers\HojaVidaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\PropiedadController;
+use App\Http\Controllers\ReservaEspacioController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\GastoComunController;
 use App\Http\Controllers\GastoMesController;
 use App\Http\Controllers\GastosDetalleController;
 use App\Models\GastoComun;
+use App\Models\ReservaEspacio;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,7 +141,14 @@ Route::group(['prefix'=> '/cobroindividual', 'middleware'=> 'auth'], function ()
 Route::group(['prefix'=> '/historial', 'middleware'=> 'auth'], function () {
     Route::get('/', [HistorialPagoController::class, 'Index'])->name('HistorialPago');
     Route::post('/registrarPago', [HistorialPagoController::class, 'TraerVista'])->name('NuevoPago');
-    Route::post('/guardarPago', [HistorialPagoController::class, 'Guardar'])->name('GuardarPago');
+    Route::post('/guardarPago', [HistorialPagoController::class, 'GuardarPago'])->name('GuardarPago');
     Route::post('/verdetalle', [HistorialPagoController::class, 'Ver'])->name('VerHistorial');
-    Route::post('/ultimoRegistro', [HistorialPagoController::class, 'UltimoRegistroPorGC'])->name('UltimoRegistro');
+    Route::post('/ultimoRegistro', [HistorialPagoController::class, 'UltimoRegistroPorGC'])->name('UltimoRegistroPorGC');
+});
+
+Route::group(['prefix'=> '/reservaespacio', 'middleware'=> 'auth'], function () {
+    Route::get('/', [ReservaEspacioController::class, 'Index'])->name('ReservaEspacio');
+    Route::post('/vereserva', [ReservaEspacioController::class, 'VerReserva'])->name('VerReserva');
+    Route::post('/agregareserva', [ReservaEspacioController::class, 'AgregarReserva'])->name('AgregarReserva');
+    Route::post('/guardareserva', [ReservaEspacioController::class, 'GuardarReserva'])->name('GuardarReserva');
 });

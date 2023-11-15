@@ -16,8 +16,8 @@
                     <label for="TipoCobroInput" class="form-label">Tipo de Cobro</label>
                     <select id="TipoCobroInput" name="TipoCobroId" class="form-select select-1" data-control="select2" data-placeholder="Seleccione Tipo de Cobro" data-hide-search="false">
                         <option></option>
-                        @foreach($tipoCobros as $tipo)
-                            <option value="{{ $tipo->Id }}">{{ ucwords($tipo->Nombre) }}</option>
+                        @foreach($espacios as $espacio)
+                            <option value="{{ $espacio->Id }}">{{ ucwords($espacio->Nombre) }}</option>
                         @endforeach
                     </select>
                 </div>

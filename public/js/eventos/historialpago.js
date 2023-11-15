@@ -263,8 +263,8 @@ $(document).ready(function() {
                         _token : csrfToken,
                         data: gcId
                     },
-                    dataType: 'json',
-                    success: function(data){
+                dataType: 'json',
+                success: function(data){
                         if(data.success){
                             data=data.data;
                             const fila = document.createElement('tr');
@@ -332,7 +332,7 @@ $(document).ready(function() {
     
             $.ajax({
                 type: 'POST',
-                    url: UltimoPago,
+                    url: UltimoRegistroPorGC,
                     data: {
                             _token : csrfToken,
                             data: gcId

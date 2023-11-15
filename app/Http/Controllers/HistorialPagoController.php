@@ -73,7 +73,7 @@ class HistorialPagoController extends Controller
     }
 
     // Acción que guarda el registro del pago
-    public function Guardar(Request $request){
+    public function GuardarPago(Request $request){
         $request = $request->data;
 
         $historialesDeGC = HistorialPago::where('GastoComunId','=', $request["gastoComunId"])
