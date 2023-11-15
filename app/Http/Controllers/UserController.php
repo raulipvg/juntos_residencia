@@ -42,7 +42,7 @@ class UserController extends Controller
         $request = $request->input('data');
            // Accede a los atributos del modelo
            $request['Username'] = strtolower($request['Username']);
-           $request['Password'] = $request['Password'];
+           //$request['Password'] = $request['Password'];
            $request['Nombre'] = strtolower($request['Nombre']);
            $request['Apellido'] = strtolower($request['Apellido']);
            $request['Correo']= strtolower($request['Correo']);
@@ -121,7 +121,7 @@ class UserController extends Controller
         $request = $request->input('data');
         // Accede a los atributos del modelo
         $request['Username'] = strtolower($request['Username']);
-        $request['Password'] = $request['Password'];
+        //$request['Password'] = $request['Password'];
         $request['Nombre'] = strtolower($request['Nombre']);
         $request['Apellido'] = strtolower($request['Apellido']);
         $request['Correo']= strtolower($request['Correo']);

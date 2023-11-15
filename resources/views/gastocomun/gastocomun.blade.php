@@ -77,7 +77,7 @@ border-top-right-radius: 20px !important;
                                 </select>
                             </div>
                         </th>
-                        <th id="titulo" rowspan="1" colspan="14" class="text-center text-uppercase fs-3 table-dark text-white rounded-top-1">{{ $gasto->Fecha->formatLocalized('%B %Y') }}</th>
+                        <th id="titulo" rowspan="1" colspan="6" class="text-center text-uppercase fs-3 table-dark text-white rounded-top-1">{{ $gasto->Fecha->formatLocalized('%B %Y') }}</th>
                     </tr>
                     <tr class="fw-bold fs-6 text-gray-800 px-7"> 
                         <th rowspan="1" colspan="1" class="border-bottom table-dark text-white p-1">
@@ -98,7 +98,7 @@ border-top-right-radius: 20px !important;
                                 <span class="text-end">{{ number_format($gasto->Total, 0, '', '.') }}</span>
                             </div>
                         </th>
-                        <th rowspan="1" colspan="6" class="border-bottom text-center fw-bolder table-light p-1">Cobros Individuales</th>
+                        <th rowspan="1" colspan="1" class="border-bottom text-center fw-bolder table-light p-1">Cobros Individuales</th>
                         <th rowspan="1" colspan="2" class="border-bottom text-end table-dark text-white p-1">Fecha Apertura: {{ $gasto->Fecha->format('d-m-Y')}}</th>
                     </tr>
                     <tr class="fw-bolder text-uppercase fw-bolder text-gray-700">
@@ -109,11 +109,6 @@ border-top-right-radius: 20px !important;
                         <th scope="col" class="text-end p-1">Fondo de Reserva</th>
                         <th class="table-active fs-5 text-end p-1" scope="col">Total GC</th>
                         <th scope="col" class="text-end p-1">Agua</th>
-                        <th scope="col" class="text-end p-1">Calefaccion</th>
-                        <th scope="col" class="text-end p-1">Cuota Especial</th>
-                        <th scope="col" class="text-end p-1">Quincho</th>
-                        <th scope="col" class="text-end p-1">Lavanderia</th>
-                        <th scope="col" class="text-end p-1">Multas</th>
                         <th scope="col" class="text-end p-1">Saldo Anterior</th>
                         <th class="table-active fs-5 text-end p-1" scope="col">TOTAL</th>
                     </tr>
@@ -126,6 +121,7 @@ border-top-right-radius: 20px !important;
                         $totalGC=0;
                         $saldoAnterior=0;
                         $TotalMes=0;
+                        $cobrosIndividuales=0
                     @endphp
                     @foreach ( $gastoscomunes as $detalle )
                         <tr>
@@ -153,37 +149,7 @@ border-top-right-radius: 20px !important;
                             <td class="p-1">
                                 <div class="d-flex justify-content-between align-items-center ps-md-7">
                                     <span class="text-start">$</span>
-                                    <span class="text-end">{{ number_format(34324, 0, '', '.') }}</span>
-                                </div>
-                            </td>
-                            <td class="p-1">
-                                <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                    <span class="text-start">$</span>
-                                    <span class="text-end">{{ number_format(23423, 0, '', '.') }}</span>
-                                </div>
-                            </td>
-                            <td class="p-1">
-                                <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                    <span class="text-start">$</span>
-                                    <span class="text-end">{{ number_format(23423, 0, '', '.') }}</span>
-                                </div>
-                            </td>
-                            <td class="p-1">
-                                <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                    <span class="text-start">$</span>
-                                    <span class="text-end">{{ number_format(23423, 0, '', '.') }}</span>
-                                </div>
-                            </td>
-                            <td class="p-1">
-                                <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                    <span class="text-start">$</span>
-                                    <span class="text-end">{{ number_format(23423, 0, '', '.') }}</span>
-                                </div>
-                            </td>
-                            <td class="p-1">
-                                <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                    <span class="text-start">$</span>
-                                    <span class="text-end">{{ number_format(23423, 0, '', '.') }}</span>
+                                    <span class="text-end">{{ number_format($detalle->CobroIndividual, 0, '', '.') }}</span>
                                 </div>
                             </td>
                             <td class="p-1">
@@ -205,7 +171,8 @@ border-top-right-radius: 20px !important;
                             $fondo = $fondo + $detalle->FondoReserva;
                             $totalGC = $totalGC+ $detalle->TotalGC;
                             $saldoAnterior= $saldoAnterior+ $detalle->SaldoMesAnterior;
-                            $TotalMes = $TotalMes+$detalle->TotalCobroMes; 
+                            $TotalMes = $TotalMes+$detalle->TotalCobroMes;
+                            $cobrosIndividuales = $cobrosIndividuales + $detalle->CobroIndividual;
                         @endphp          
                     @endforeach                    
             
@@ -235,37 +202,7 @@ border-top-right-radius: 20px !important;
                         <th colspan="1" class="border-bottom table-dark p-1">
                             <div class="d-flex justify-content-between align-items-center ps-md-7">
                                 <span class="text-start">$</span>
-                                <span class="text-end">{{ number_format(21321321, 0, '', '.') }}</span>
-                            </div>
-                        </th>
-                        <th colspan="1" class="border-bottom table-dark p-1">
-                            <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                <span class="text-start">$</span>
-                                <span class="text-end">{{ number_format(21321321, 0, '', '.') }}</span>
-                            </div>
-                        </th>
-                        <th colspan="1" class="border-bottom table-dark p-1">
-                            <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                <span class="text-start">$</span>
-                                <span class="text-end">{{ number_format(21321321, 0, '', '.') }}</span>
-                            </div>
-                        </th>
-                        <th colspan="1" class="border-bottom table-dark p-1">
-                            <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                <span class="text-start">$</span>
-                                <span class="text-end">{{ number_format(21321321, 0, '', '.') }}</span>
-                            </div>
-                        </th>
-                        <th colspan="1" class="border-bottom table-dark p-1">
-                            <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                <span class="text-start">$</span>
-                                <span class="text-end">{{ number_format(21321321, 0, '', '.') }}</span>
-                            </div>
-                        </th>
-                        <th colspan="1" class="border-bottom table-dark p-1">
-                            <div class="d-flex justify-content-between align-items-center ps-md-7">
-                                <span class="text-start">$</span>
-                                <span class="text-end">{{ number_format(21321321, 0, '', '.') }}</span>
+                                <span class="text-end">{{ number_format($cobrosIndividuales, 0, '', '.') }}</span>
                             </div>
                         </th>
                         <th colspan="1" class="border-bottom table-dark p-1">

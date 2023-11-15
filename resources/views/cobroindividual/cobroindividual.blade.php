@@ -9,8 +9,24 @@
 }
 .btn-plus{
     top: 4px;
-    left: 71px;
+    left: 77px;
     z-index: 50;
+}
+.btn-group-sm>.btn.btn-icon, .btn.btn-icon.btn-sm {
+    height: calc(1em + 1.1rem + 2px)!important;
+    width: calc(1em + 1.1rem + 2px)!important;
+}
+@media  ( min-width: 2371px) {
+  .top-xl {
+    position: relative;
+    top: -305px;
+  }
+}
+@media  ( min-width: 768px) and (max-width:2370px) {
+  .top-md {
+    position: relative;
+    top: -160px;
+  }
 }
 
 </style>
@@ -41,11 +57,11 @@
                                         <option data-info="{{$gastomes->EstadoId }}" value="{{ $gastomes->Id }}" @if ( $gastomes->Id == $gasto->Id ) selected @endif >{{ $gastomes->Fecha->format('m-Y') }} </option>
                                     @endforeach
                                 </select>
-                            </div> 
+            </div> 
         </div>
         <!--end::Page title-->
         <!--begin::Action group-->
-        <div class="d-flex align-items-center flex-wrap" style="width: 200px;" >
+        <div class="d-flex align-items-center flex-wrap" style="width: 200px;" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Comunidad" >
             <!--begin::Wrapper-->
             <select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
                         <option></option>
@@ -74,25 +90,27 @@
                             @foreach ($propiedades as $propiedad )
                             <!--begin::Item-->
                             <li class="nav-item position-relative me-0" role="presentation">
-                                <button type="button" class="btn-plus btn btn-sm agregar-cobro btn-icon  btn-color-danger btn-active-light btn-active-color-primary position-absolute">
+                                <button type="button" class="btn-plus btn btn-sm agregar-cobro btn-icon  btn-color-danger btn-active-light btn-active-color-primary position-absolute" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Cobro">
 									<i class="ki-outline ki-plus-square fs-2"></i>
 								</button>
-                                <!--begin::Nav link-->
-                                <a class="nav-link nav-link-border-solid ver-cobro btn btn-outline btn-flex btn-active-color-primary flex-column flex-stack p-1 page-bg"
-                                    data-info="{{$propiedad->Id}}" data-bs-toggle="pill" href="#kt_pos_food_content_1" style="width: 110px;height: 132px" aria-selected="true" role="tab">
-                                    <!--begin::Icon-->
-                                    <div class="nav-icon">
-                                        <i class="ki-duotone ki-home pt-6 pt-md-1 fs-4x"></i>
-                                    </div>
-                                    <!--end::Icon-->
-                                    <!--begin::Info-->
-                                    <div class="">
-                                        <span class="text-gray-800 fw-bold fs-4 d-block text-uppercase">{{$propiedad->Numero}}</span>
-                                        <span class="text-gray-400 fw-semibold fs-7 text-capitalize">{{$propiedad->Nombre}} {{$propiedad->Apellido}}</span>
-                                    </div>
-                                    <!--end::Info-->
-                                </a>
-                                <!--end::Nav link-->
+                                <div data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="bottom" title="Ver Cobros" >
+                                    <!--begin::Nav link-->
+                                    <a class="nav-link nav-link-border-solid ver-cobro btn btn-outline btn-flex btn-active-color-primary flex-column flex-stack p-1 page-bg"
+                                        data-info="{{$propiedad->Id}}" data-bs-toggle="pill" style="width: 110px;height: 132px" aria-selected="true" role="tab">
+                                        <!--begin::Icon-->
+                                        <div class="nav-icon">
+                                            <i class="ki-duotone ki-home pt-6 pt-md-1 fs-4x"></i>
+                                        </div>
+                                        <!--end::Icon-->
+                                        <!--begin::Info-->
+                                        <div class="">
+                                            <span class="text-gray-800 fw-bold fs-4 d-block text-uppercase">{{$propiedad->Numero}}</span>
+                                            <span class="text-gray-400 fw-semibold fs-7 text-capitalize">{{$propiedad->Nombre}} {{$propiedad->Apellido}}</span>
+                                        </div>
+                                        <!--end::Info-->
+                                    </a>
+                                    <!--end::Nav link-->
+                                </div>
                             </li>
                             <!--end::Item-->
                             @endforeach

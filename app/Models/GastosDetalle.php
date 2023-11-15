@@ -34,6 +34,7 @@ class GastosDetalle extends Model
 {
 	protected $table = 'GastosDetalle';
 	protected $primaryKey = 'Id';
+	public $incrementing = true;
 	public $timestamps = false;
 
 	protected $casts = [

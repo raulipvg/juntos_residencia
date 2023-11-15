@@ -27,8 +27,12 @@ $(document).ready(function() {
         if (dataInfo == 2){
             $(".agregar-cobro").remove()
         }else{
-            $(".nav-item.position-relative.me-0").append(btnAgregar)
+            $(".nav-item.position-relative.me-0").prepend(btnAgregar)
         }
+        $("#contenedor-2").empty();
+        $("#contenedor-3").empty();
+        $("#contenedor-3").removeClass("top-xl top-md");
+        $(".ver-cobro").removeClass("active");
         //console.log(dataInfo)
     });
 
@@ -86,12 +90,12 @@ $(document).ready(function() {
         e.stopPropagation();    
         //console.log("Agregar Gasto")
         let comunidadId = $("#ComunidadInput").val();
-        let propiedadId = $(this).next().attr("data-info");
-        console.log(comunidadId)
-        console.log(propiedadId)
+        let propiedadId = $(this).next().children().attr("data-info");
+        //console.log(comunidadId)
+        //console.log(propiedadId)
 
         
-            flag= false;
+            //flag= false;
             bloquear();
             $.ajax({
                 type: 'POST',
@@ -107,6 +111,7 @@ $(document).ready(function() {
                 },
                 success: function (data) {
                     //console.log(data);
+                    $("#contenedor-3").addClass("top-xl top-md")
                     $("#contenedor-2").html(data)
                     //("#contenedor-1").addClass("mb-prueba")
                     if(data.success){

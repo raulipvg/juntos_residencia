@@ -71,7 +71,7 @@
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
 
-    <script id="prueba" src="{{ asset('js/eventos/gastodetalle.js?id=7') }}"></script>
+    <script id="prueba" src="{{ asset('js/eventos/gastodetalle.js?id=9') }}"></script>
 </div>
 
 
