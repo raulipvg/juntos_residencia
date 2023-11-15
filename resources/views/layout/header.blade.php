@@ -64,7 +64,7 @@
                                     <div class="menu-item">
                                         <!--begin:Menu content-->
                                         <div class="menu-content">
-                                            <span class="menu-section fs-5 fw-bolder ps-1 py-1">Gestion</span>
+                                            <span class="menu-section fs-4 text-uppercase fw-bolder ps-1 py-1">Gestion</span>
                                         </div>
                                         <!--end:Menu content-->
                                     </div>
@@ -77,7 +77,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Gastos Mensuales</span>
+                                            <span class="menu-title text-uppercase fs-7">Gastos Mensuales</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -90,7 +90,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Cobros Individuales</span>
+                                            <span class="menu-title text-uppercase fs-7">Cobros Individuales</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -102,7 +102,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Reserva de Espacios</span>
+                                            <span class="menu-title text-uppercase fs-7">Reserva de Espacios</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -114,7 +114,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Gastos Comunes</span>
+                                            <span class="menu-title text-uppercase fs-7">Gastos Comunes</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -127,7 +127,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Historial de Pagos</span>
+                                            <span class="menu-title text-uppercase fs-7">Historial de Pagos</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -155,7 +155,7 @@
                                     <div class="menu-item">
                                         <!--begin:Menu content-->
                                         <div class="menu-content">
-                                            <span class="menu-section fs-5 fw-bolder ps-1 py-1">Mantenedores</span>
+                                            <span class="menu-section fs-4 text-uppercase fw-bolder ps-1 py-1">Mantenedores</span>
                                         </div>
                                         <!--end:Menu content-->
                                     </div>
@@ -168,7 +168,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Usuario</span>
+                                            <span class="menu-title text-uppercase fs-7">Usuario</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -181,7 +181,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Comunidad</span>
+                                            <span class="menu-title text-uppercase fs-7">Comunidad</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -193,7 +193,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Propiedad</span>
+                                            <span class="menu-title text-uppercase fs-7">Propiedad</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -205,7 +205,7 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Residente</span>
+                                            <span class="menu-title text-uppercase fs-7">Residente</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
