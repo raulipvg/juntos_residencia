@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CobroIndividual;
 use App\Models\Comunidad;
 use App\Models\GastoComun;
 use App\Models\GastoMe;
 use App\Models\HistorialPago;
 use App\Models\Propiedad;
+use App\Models\ReservaEspacio;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
@@ -94,9 +96,52 @@ class GastoMesController extends Controller
 
                 $gastoMes = new GastoMe();
 
+                DB::beginTransaction();
                 $gastoMes->validate($aux);
                 $gastoMes->fill($aux);
                 $gastoMes->save();
+
+                $propiedades = Propiedad::where('ComunidadId',$request)
+                                    ->where('Enabled',1)->get();
+                
+                $gastoMes2 = GastoMe::select('Id')
+                                    ->where('ComunidadId',$request)
+                                    ->orderBy('Fecha','desc')
+                                    ->first();
+
+                // FALTA VER LO DEL HISTORIAL DE PAGO Y SU DEUDA CON EL MES ANTERIOR                    
+                $gastoComunAnterior =  GastoComun::Select('Id')
+                                    ->where('GastoMesId',$gastoMes2->Id)
+                                    ->get();
+
+                $gastoComunAnterior2 = GastoComun::select('Id')
+                                    ->where('GastoMesId', function ($query) use ($request) {
+                                        $query->select('Id')
+                                            ->from('GastoMes')
+                                            ->where('ComunidadId', $request)
+                                            ->latest('Fecha')
+                                            ->limit(1);
+                                    })
+                                    ->get();
+
+                foreach($propiedades as $propiedad){
+                    
+                    
+                    $gastoComunxPropiedad = GastoComun::create([
+                        'PropiedadId'=> $propiedad->Id,
+                        'CobroGC'=> 0,
+                        'FondoReserva'=> 0,
+                        'TotalGC'=> 0,
+                        'TotalCobroMes'=> 0,
+                        'Fecha'=> null,
+                        'SaldoMesAnterior'=> 0,
+                        'GastoMesId'=> $gastoMes->Id,
+                        'EstadoGastoId' => 3,
+                        'CobroIndividual' => 0
+                    ]);
+                }
+                DB::commit();
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Modelo recibido y procesado']);
@@ -107,7 +152,7 @@ class GastoMesController extends Controller
             }   
             
         }catch(Exception $e){
-                
+            DB::rollback();
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()]);
@@ -137,17 +182,33 @@ class GastoMesController extends Controller
                     $fondoReserva = round($gastoMesEdit->FondoReserva * ($propiedad->Prorrateo/100));
                     
                     $totalGC = $cobroGC+$fondoReserva;
-                    ///*******///
-                    // FALTA AGREGAR LA SUMA DE LOS COBROS INDIVUALES DE LAS TABLAS DE COBRO INDIVUAL
-                    // Y RESERVA DE ESPACOP
-                    $cobroIndividual =0;
-                    $totalCobroMes =$totalGC+ $cobroIndividual;
-
-                    ///*******///
+                    
+                    //********/
                     //FALTA OBTENER EL SALDO MES ANTERIOR SEGUN HISTORIAL DE PAGO
                     $saldoMesAnterior = 0;
+                    //********/
 
-                    $gastoComun = GastoComun::create([
+                    $gastoComunEdit = GastoComun::where('PropiedadId', $propiedad->Id)
+                                                    ->where('GastoMesId', $gastoMesEdit->Id)
+                                                    ->first();
+
+                    $gastoEspacios = ReservaEspacio::where('GastoComunId', $gastoComunEdit->Id)
+                                                ->groupBy('GastoComunId') // Puedes agregar más columnas si es necesario
+                                                ->select('GastoComunId', DB::raw('SUM("Total") as suma_total'))
+                                                ->first();
+                    $cobroIndividual =0;              
+                    $cobroIndividual = $cobroIndividual +$gastoEspacios->suma_total;
+
+                    $cobrosIndividuales = CobroIndividual::where('GastoComunId', $gastoComunEdit->Id)
+                                                    ->groupBy('GastoComunId')
+                                                    ->select('GastoComunId',DB::raw('SUM("MontoTotal") as suma_total'))
+                                                    ->first();
+                    $cobroIndividual = $cobroIndividual+ $cobrosIndividuales->suma_total;
+
+
+                    $totalCobroMes =$totalGC+ $cobroIndividual;
+
+                    $gastoComunEdit->update([
                         'PropiedadId'=> $propiedad['Id'],
                         'CobroGC'=> $cobroGC,
                         'FondoReserva'=> $fondoReserva,
@@ -157,6 +218,7 @@ class GastoMesController extends Controller
                         'SaldoMesAnterior'=> $saldoMesAnterior,
                         'GastoMesId'=> $request['gastoMesId'],
                         'EstadoGastoId'=> 1,
+                        'CobroIndividual'=> $cobroIndividual
                     ]);
 
                     $historialPago = HistorialPago::Create([
@@ -165,7 +227,7 @@ class GastoMesController extends Controller
                         'FechaPago'=> $fechaActual,
                         'MontoAPagar'=> $totalCobroMes,
                         'MontoPagado'=> 0,
-                        'GastoComunId'=> $gastoComun->Id,
+                        'GastoComunId'=> $gastoComunEdit->Id,
                         'EstadoPagoId'=> 1
                     
                     ]);

@@ -51,7 +51,8 @@ class GastoComun extends Model
 		'Fecha' => 'datetime',
 		'SaldoMesAnterior' => 'int',
 		'GastoMesId' => 'int',
-		'EstadoGastoId' => 'int'
+		'EstadoGastoId' => 'int',
+		'CobroIndividual' => 'int'
 	];
 
 	protected $fillable = [
@@ -63,7 +64,8 @@ class GastoComun extends Model
 		'Fecha',
 		'SaldoMesAnterior',
 		'GastoMesId',
-		'EstadoGastoId'
+		'EstadoGastoId',
+		'CobroIndividual'
 	];
 
 	public function propiedad()
@@ -109,7 +111,7 @@ class GastoComun extends Model
             'FondoReserva' => 'required|numeric',
             'TotalGC' => 'required|numeric',
             'TotalCobroMes' => 'required|numeric',
-            'Fecha' => 'required|date',
+            'Fecha' => 'nullable|date',
             'SaldoMesAnterior' => 'required|numeric',
             'GastoMesId' => 'required|numeric',
             'EstadoGastoId' => 'required|numeric',

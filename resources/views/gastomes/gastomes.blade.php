@@ -15,21 +15,17 @@
     border-top-right-radius: 20px !important;
 }
 
-.col-md-6.mb-3.order-md-last {
-  align-self: flex-start;
-}
 @media  ( min-width: 768px) {
-  .mb-prueba {
+  .top-md {
     position: relative;
     top: -572px;
   }
-}
-@media  ( min-width: 768px) {
-  .mb-prueba-2{
+  .top-md-2 {
     position: relative;
     top: -665px;
   }
 }
+
 
 
 </style>
@@ -80,7 +76,7 @@
     <div class="container-fluid">
         <div class="row flex-md-row">
 
-            <div class="col-md-8 col-12  mb-3">
+            <div id="contenedor-1" class="col-md-8 col-12  mb-3">
                 <div id="botones-ctrl" class="card">                   
                     <div class="card-body p-2">
                         <div id="div-adm" class="d-flex flex-row justify-content-between align-items-center">
@@ -101,7 +97,7 @@
                                             </button>
                                         @else
                                             @if ($gasto->EstadoId == 1)
-                                                <button id="AccionMesInput" type="button" class="btn btn-sm btn-warning h-40px cerrar-me my-2 my-md-0" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Cerrar y Publicar Gasto Mensual">
+                                                <button id="AccionMesInput" type="button" class="btn btn-sm btn-warning h-40px cerrar-mes my-2 my-md-0" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Cerrar y Publicar Gasto Mensual">
                                                     CERRAR MES
                                                 </button>
                                             @elseif ($gasto->EstadoId == 2)
@@ -123,7 +119,7 @@
                             </div>
                             <div id="btn-nuevo" class="col ms-2 my-1 text-end">
                                 @if($gasto != null && $gasto->EstadoId == 1)
-                                    <button id="NuevoGasto" type="button" class="btn btn-sm btn-primary h-40px hover-scale" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Gasto">
+                                    <button id="NuevoGasto" type="button" class="btn btn-sm btn-nuevo-gasto btn-primary h-40px hover-scale" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Agregar Gasto">
                                     GASTO<i class="ki-outline ki-plus fs-2"></i>
                                     </button>
                                 @endif
@@ -134,13 +130,13 @@
                 </div>
             </div>
 
-            <div class="col-md-4 col-12 mb-3">
+            <div id="contenedor-2" class="col-md-4 col-12 mb-3">
                 <div id="agregar-gasto" class="">
 
                 </div>
             </div>
        
-            <div id="contenedor-1" class="col-md-8 col-12 mb-3 order-md-last">
+            <div id="contenedor-3" class="col-md-8 col-12 mb-3">
                 @if(count($gastosmeses) != 0 )
                 <div id="gasto-detalle" class="">
                     <div class="card mb-2">

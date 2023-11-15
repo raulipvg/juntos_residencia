@@ -41,8 +41,8 @@
                             },
                             stringLength: {
                                 min: 3,
-                                max: 20,
-                                message: 'Entre 3 y 20 caracteres'
+                                max: 50,
+                                message: 'Entre 3 y 50 caracteres'
                             },
                             regexp: {
                                 regexp: /^[a-zñáéíóú\s]+$/i,
@@ -54,8 +54,8 @@
                         validators: {
                             stringLength: {
                                 min: 0,
-                                max: 100,
-                                message: 'Entre 0 y 100 caracteres'
+                                max: 50,
+                                message: 'Entre 0 y 50 caracteres'
                             }
                         }
                     },
@@ -65,9 +65,9 @@
                                 message: 'Requerido'
                             },
                             stringLength: {
-                                min: 0,
+                                min: 1,
                                 max: 50,
-                                message: 'Entre 9 y 50 caracteres'
+                                message: 'Entre 1 y 50 caracteres'
                             }
                         }
                     },
@@ -221,8 +221,8 @@
                     // form.submit(); // Submit form
                     
                 }else{
-                    console.log("no")
-                    $("#contenedor-1").removeClass("mb-prueba").addClass("mb-prueba-2");
+                    //console.log("no")
+                    $("#contenedor-3").removeClass("top-md").addClass("top-md-2");
                 }
             });
             }

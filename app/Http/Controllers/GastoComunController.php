@@ -22,6 +22,7 @@ class GastoComunController extends Controller
                                     ->where('Enabled', 1)
                                     ->orderBy('Nombre','asc')
                                     ->get();
+
         //ULTIMO GASTO MES PARA UNA COMUNIDAD DETERMINADA
         $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha')
                         ->where('ComunidadId', $comunidadId)
@@ -34,7 +35,7 @@ class GastoComunController extends Controller
                                     'GastoComun.TotalGC','GastoComun.SaldoMesAnterior',
                                     'GastoComun.TotalCobroMes','Propiedad.Numero',
                                     'Propiedad.Prorrateo','Propiedad.Id',
-                                    'Persona.Nombre','Persona.Apellido')
+                                    'Persona.Nombre','Persona.Apellido', 'GastoComun.CobroIndividual')
                             ->where('GastoComun.GastoMesId', $gasto->Id)
                             ->join('Propiedad','Propiedad.Id','=','GastoComun.PropiedadId')
                             ->join('Compone','Compone.PropiedadId','=','Propiedad.Id')
