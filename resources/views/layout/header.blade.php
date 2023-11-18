@@ -98,7 +98,7 @@
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{route('Propiedad') }}">
+                                        <a class="menu-link" href="{{route('ReservaEspacio') }}">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -354,7 +354,7 @@
                                     <!--begin::Menu-->
                                     <div class="menu menu-sub menu-sub-dropdown menu-column w-250px w-lg-325px" data-kt-menu="true">
                                         <!--begin::Heading-->
-                                        <div class="d-flex flex-column flex-center bgi-no-repeat rounded-top px-9 py-10" style="background-image:url('assets/media/misc/menu-header-bg.jpg')">
+                                        <div class="d-flex flex-column flex-center bgi-no-repeat rounded-top px-9 py-10" style="">
                                             <!--begin::Title-->
                                             <h3 class="text-white fw-semibold mb-3">Quick Links</h3>
                                             <!--end::Title-->

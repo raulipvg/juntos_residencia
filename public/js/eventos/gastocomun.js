@@ -1,5 +1,18 @@
 $(document).ready(function() {
 
+    var loadingEl = document.createElement("div");
+
+    function bloquear(){
+        document.body.prepend(loadingEl);
+        loadingEl.classList.add("page-loader");
+        loadingEl.classList.add("flex-column");
+        loadingEl.classList.add("bg-dark");
+        loadingEl.classList.add("bg-opacity-25");
+        loadingEl.innerHTML = `<span class="spinner-border text-primary" role="status"></span>
+                               <span class="text-gray-800 fs-6 fw-semibold mt-5">Cargando...</span>`;
+
+    }
+
     $("#tabla-gasto-comun").on('select2:select', '#GastoMesIdInput', function(e){
         e.preventDefault();
         e.stopPropagation();
@@ -9,5 +22,70 @@ $(document).ready(function() {
         let GastoMesId = $(this).val(); 
     });
 
+    $("#tabla-gasto-comun tbody").on("click",'.ver-cobro-invididual', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        //console.log("ver cobro invidividual")
+
+        let tr = e.target.closest('tr');
+        let row = miTabla.row(tr);
+        //$(tr).addClass('miClaseNueva');
+
+        let data = {
+            gastoMesId: $("#GastoMesIdInput").val(),
+            propiedadId: $(tr).attr("data-info")
+        }
+        //console.log(data)
+        bloquear();
+        $.ajax({
+            type: 'POST',
+            url: VerCobro2,
+            data: {
+                _token: csrfToken,
+                data: data},
+            //content: "application/json; charset=utf-8",
+            dataType: "html",
+            beforeSend: function () {
+                KTApp.showPageLoading();
+            },
+            success: function (data) {
+                //console.log(data);
+               
+                //boton.removeAttr("data-kt-indicator");
+                //boton.children().eq(0).show();
+                //boton.addClass('active')
+                
+                row.child(data).show();
+                $(tr).next('tr').addClass("detalle-cobro");
+                
+            },
+            error: function () {
+                //alert('Error');
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            },
+            complete: function(e){
+                KTApp.hidePageLoading();
+                loadingEl.remove();
+            }
+        });
+    
+    });
+
+    $("#tabla-gasto-comun tbody").on("click",'.cerrar-cobro', function (e) {
+        e.preventDefault();
+
+        let tr = e.target.closest('tr');
+        let row = miTabla.row(tr);
+            $(tr).remove();
+        console.log(tr)
+    });
 
 });

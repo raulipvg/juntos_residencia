@@ -186,7 +186,7 @@
                     // form.submit(); // Submit form
                     
                 }else{
-                    console.log("no")
+                    //console.log("no")
                     $("#contenedor-1").removeClass("mb-prueba").addClass("mb-prueba-2");
                 }
             });

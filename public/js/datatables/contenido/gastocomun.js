@@ -262,8 +262,7 @@ let miTabla = $('#tabla-gasto-comun').DataTable({
     ],
     "order": [],
     "pageLength": 1000,
-    "columnDefs": [
-    ],
+    "columnDefs": [{ "orderable": false, "targets": "_all" }],
     "responsive": false,
     "initComplete": function() {
         $('.filtro').children().addClass('btn-group-sm')

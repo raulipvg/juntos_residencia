@@ -193,17 +193,22 @@ class GastoMesController extends Controller
                                                     ->first();
 
                     $gastoEspacios = ReservaEspacio::where('GastoComunId', $gastoComunEdit->Id)
+                                                ->where('ReservaEspacio.EstadoReservaId',2)
                                                 ->groupBy('GastoComunId') // Puedes agregar más columnas si es necesario
                                                 ->select('GastoComunId', DB::raw('SUM("Total") as suma_total'))
                                                 ->first();
-                    $cobroIndividual =0;              
-                    $cobroIndividual = $cobroIndividual +$gastoEspacios->suma_total;
+                    $cobroIndividual =0;
+                    if($gastoEspacios != null){           
+                        $cobroIndividual = $cobroIndividual +$gastoEspacios->suma_total;
+                    }   
 
                     $cobrosIndividuales = CobroIndividual::where('GastoComunId', $gastoComunEdit->Id)
                                                     ->groupBy('GastoComunId')
                                                     ->select('GastoComunId',DB::raw('SUM("MontoTotal") as suma_total'))
                                                     ->first();
-                    $cobroIndividual = $cobroIndividual+ $cobrosIndividuales->suma_total;
+                    if($cobrosIndividuales !=null){ 
+                        $cobroIndividual = $cobroIndividual+ $cobrosIndividuales->suma_total;
+                    }
 
 
                     $totalCobroMes =$totalGC+ $cobroIndividual;

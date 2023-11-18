@@ -7,6 +7,7 @@ use App\Models\Comunidad;
 use App\Models\GastoComun;
 use App\Models\GastoMe;
 use App\Models\Propiedad;
+use App\Models\ReservaEspacio;
 use App\Models\TipoCobro;
 use Exception;
 use Illuminate\Http\Request;
@@ -79,6 +80,37 @@ class CobroIndividualController extends Controller
 
         }catch(Exception $e){
                 
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
+    }
+
+    public function VerCobro2(Request $request){
+        $wea= "wea";
+        $request = $request->input('data');
+
+        $gastoMesId =12;
+        $propiedadId = 43;
+        try{            
+            $cobros = CobroIndividual::select('CobroIndividual.Nombre','CobroIndividual.Descripcion',
+                                        'CobroIndividual.MontoTotal','TipoCobro.Nombre as TipoCobro','CobroIndividual.Fecha')
+                                        ->join('TipoCobro','TipoCobro.Id','=','CobroIndividual.TipoCobroId')
+                                        ->join('GastoComun','GastoComun.Id','=','CobroIndividual.GastoComunId')
+                                        ->where('GastoComun.GastoMesId', $request['gastoMesId'])
+                                        ->where('GastoComun.PropiedadId', $request['propiedadId'])
+                                        ->get();    
+            $reservas = ReservaEspacio::select('EspacioComun.Nombre','EspacioComun.Descripcion',
+                                        'ReservaEspacio.Total','ReservaEspacio.FechaUso')
+                                        ->join('GastoComun','GastoComun.Id', '=','ReservaEspacio.GastoComunId')
+                                        ->join('EspacioComun','EspacioComun.Id','=','ReservaEspacio.EspacioComunId')
+                                        ->where('GastoComun.GastoMesId', $request['gastoMesId'])
+                                        ->where('ReservaEspacio.PropiedadId', $request['propiedadId'])
+                                        ->where('ReservaEspacio.EstadoReservaId', 2)
+                                        ->get();
+            return view('gastocomun._vercobroindividual', compact('cobros','reservas'));
+
+        }catch(Exception $e){             
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()]);

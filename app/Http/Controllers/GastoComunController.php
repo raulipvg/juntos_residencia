@@ -59,4 +59,38 @@ class GastoComunController extends Controller
             'gastosmeses'=> $gastosMeses,
         ]);
     }
+
+    public function VerDetalle(Request $request){
+         //FALTA SEGUN USER
+        $comunidadId= 12;
+         //setlocale(LC_TIME, 'es_ES.utf8');
+         //Para colocar el nombre del mes en español 
+         setlocale(LC_ALL, 'es');
+         //TODAS LAS COMUNIDADES HABILITADAS
+        $comunidades = Comunidad::select('Id','Nombre')
+                                     ->where('Enabled', 1)
+                                     ->orderBy('Nombre','asc')
+                                     ->get();
+        //ULTIMO GASTO MES PARA UNA COMUNIDAD DETERMINADA
+        $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha')
+                        ->where('ComunidadId', $comunidadId)
+                        ->where('EstadoId', 2)
+                        ->latest('Fecha')
+                        ->first();
+
+        //TODOS LOS GASTOS MES PARA UNA COMUNIDAD SELECT2
+        $gastosMeses = GastoMe::select('Id','Fecha')
+                            ->where('ComunidadId', $comunidadId)
+                            //->where('EstadoId', 2)
+                            ->latest('Fecha')
+                            ->get();
+
+        return view('gastocomun.verdetalle')->with([ 
+            'comunidades'=> $comunidades,
+            'comunidadId'=> $comunidadId,
+            'gastosmeses'=> $gastosMeses,
+            'gasto'=> $gasto,
+        ]);
+    }
+
 }

@@ -13,6 +13,9 @@
 border-top-left-radius: 20px!important;
 border-top-right-radius: 20px !important;
 }
+.ver-cobro-invididual {
+    cursor: pointer;
+}
 </style>
 @endpush
 
@@ -43,11 +46,11 @@ border-top-right-radius: 20px !important;
         <div class="d-flex align-items-center flex-wrap" style="width: 200px;" >
             <!--begin::Wrapper-->
             <select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
-                        <option></option>
-                        @foreach($comunidades as $comunidad)                          
-                        <option @if($comunidadId == $comunidad->Id) selected  @endif value="{{ $comunidad->Id }}">{{ Str::title($comunidad->Nombre)  }}</option>
-                        @endforeach
-                    </select>
+                <option></option>
+                    @foreach($comunidades as $comunidad)                          
+                    <option @if($comunidadId == $comunidad->Id) selected  @endif value="{{ $comunidad->Id }}">{{ Str::title($comunidad->Nombre)  }}</option>
+                    @endforeach
+            </select>
            
             <!--end::Wrapper-->
         </div>
@@ -98,7 +101,7 @@ border-top-right-radius: 20px !important;
                                 <span class="text-end">{{ number_format($gasto->Total, 0, '', '.') }}</span>
                             </div>
                         </th>
-                        <th rowspan="1" colspan="1" class="border-bottom text-center fw-bolder table-light p-1">Cobros Individuales</th>
+                        <th rowspan="1" colspan="1" class="border-bottom text-center fw-bolder table-dark p-1"></th>
                         <th rowspan="1" colspan="2" class="border-bottom text-end table-dark text-white p-1">Fecha Apertura: {{ $gasto->Fecha->format('d-m-Y')}}</th>
                     </tr>
                     <tr class="fw-bolder text-uppercase fw-bolder text-gray-700">
@@ -108,7 +111,7 @@ border-top-right-radius: 20px !important;
                         <th scope="col" class="text-end p-1">Cobro GC</th>
                         <th scope="col" class="text-end p-1">Fondo de Reserva</th>
                         <th class="table-active fs-5 text-end p-1" scope="col">Total GC</th>
-                        <th scope="col" class="text-end p-1">Agua</th>
+                        <th scope="col" class="text-end p-1">Cobro Individual</th>
                         <th scope="col" class="text-end p-1">Saldo Anterior</th>
                         <th class="table-active fs-5 text-end p-1" scope="col">TOTAL</th>
                     </tr>
@@ -124,7 +127,7 @@ border-top-right-radius: 20px !important;
                         $cobrosIndividuales=0
                     @endphp
                     @foreach ( $gastoscomunes as $detalle )
-                        <tr>
+                        <tr data-info = "{{$detalle->Id }}">
                             <td class="text-capitalize fw-bold table-active p-1">{{ $detalle->Nombre }} {{ $detalle->Apellido }}</td>
                             <td class="text-capitalize fw-bold  p-1">{{ $detalle->Numero }}</td>
                             <td class="p-1">{{ $detalle->Prorrateo }}%</td>
@@ -146,7 +149,7 @@ border-top-right-radius: 20px !important;
                                     <span class="text-end">{{ number_format($detalle->TotalGC, 0, '', '.') }}</span>
                                 </div>
                             </td>
-                            <td class="p-1">
+                            <td class="p-1 ver-cobro-invididual" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Detalle del Cobro">
                                 <div class="d-flex justify-content-between align-items-center ps-md-7">
                                     <span class="text-start">$</span>
                                     <span class="text-end">{{ number_format($detalle->CobroIndividual, 0, '', '.') }}</span>
@@ -233,7 +236,8 @@ border-top-right-radius: 20px !important;
 @endsection
 
 @push('Script')
-    <script> 
+    <script>
+        const VerCobro2 = "{{ route('VerCobro2') }}";
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
     

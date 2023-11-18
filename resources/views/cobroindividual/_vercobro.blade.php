@@ -16,7 +16,7 @@
                         <th scope="col">Tipo Cobro</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Descripcion</th>
-                        <th scope="col">MontoTotal</th>                        
+                        <th scope="col">Monto Total</th>                        
                         <th scope="col">Fecha</th>
                     </tr>
                 </thead>

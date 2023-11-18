@@ -128,6 +128,7 @@ Route::group(['prefix'=> '/gastodetalle', 'middleware' => 'auth'], function () {
 
 Route::group(['prefix'=> '/gastocomun', 'middleware'=> 'auth'], function () {
     Route::get('/', [GastoComunController::class,'VerGastosComunes'])->name('VerGastosComunes');
+    Route::get('/ver', [GastoComunController::class,'VerDetalle'])->name('VerDetalle');
 });
 
 Route::group(['prefix'=> '/cobroindividual', 'middleware'=> 'auth'], function (){
@@ -135,6 +136,7 @@ Route::group(['prefix'=> '/cobroindividual', 'middleware'=> 'auth'], function ()
     Route::post('/ver', [CobroIndividualController::class, 'VerCobro'])->name('VerCobro');
     Route::post('/agregar', [CobroIndividualController::class, 'AgregarCobro'])->name('AgregarCobro');
     Route::post('/guardar', [CobroIndividualController::class, 'GuardarCobro'])->name('GuardarCobro');
+    Route::post('/ver2', [CobroIndividualController::class, 'VerCobro2'])->name('VerCobro2');
 });
 
 
