@@ -453,7 +453,9 @@
 $(document).ready(function() {
 
 	$("#imprimir-gasto").click( function (e){
-		imprimirGastoComun();
+		setTimeout(function() {
+			imprimirGastoComun();
+		}, 1000);
 	});
 
 		function imprimirGastoComun() {
