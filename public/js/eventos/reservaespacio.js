@@ -197,7 +197,27 @@ $(document).ready(function() {
                             divPadre.html('<span class="badge badge-danger w-95px justify-content-center"> RECHAZADO </span>')
                         }
                     }else{             
-                        
+                        if(data.codigo == 1)
+                        Swal.fire({
+                            text: data.message,
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        })
+                        else{
+                            Swal.fire({
+                                text: "Error",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK",
+                                customClass: {
+                                    confirmButton: "btn btn-danger btn-cerrar"
+                                }
+                            })
+                        }
                     }
                 },
                 error: function (e) {

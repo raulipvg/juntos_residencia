@@ -98,7 +98,7 @@ class ReservaEspacioController extends Controller
             $propiedad = Propiedad::select('Id','Numero')
                                     ->where('Id', $request['propiedadId'])
                                     ->first();
-            if($deuda->MontoAPagar != 0) {
+            if($deuda!=null) {
                 $message = 'Propietario tiene deuda, no puede reservar espacio.';
                 return view('reservaespacio._ErrorDeuda', compact('message','propiedad'));
             }
@@ -117,7 +117,9 @@ class ReservaEspacioController extends Controller
     public function GuardarReserva(Request $request){
         $request = $request->input('data');
         $reservaPasada = ReservaEspacio::where('FechaUso', $request['FechaReserva'])
-                                        ->where('EspacioComunId', $request['EspacioReservaId']);
+                                        ->where('EspacioComunId', $request['EspacioReservaId'])
+                                        ->where('EstadoReservaId','=', 2)
+                                        ->first();
         if($reservaPasada != null){
             return response()->json([
                 'success' => false,
@@ -140,7 +142,7 @@ class ReservaEspacioController extends Controller
             $nuevaReserva->TipoCobroId = 1;
             $nuevaReserva->GastoComunId = $gastoComunAbiertoId->Id;
             $nuevaReserva->PropiedadId = $request['PropiedadId'];
-            $nuevaReserva->EstadoReservaId = 2;
+            $nuevaReserva->EstadoReservaId = 1;
             $nuevaReserva->EspacioComunId = $request['EspacioReservaId'];
 
 
@@ -195,6 +197,18 @@ class ReservaEspacioController extends Controller
         $request = $request->input('data');
         $reserva = ReservaEspacio::find($request['reservaId']);
 
+        $reservaAnterior = ReservaEspacio::where('FechaUso', $reserva->FechaUso)
+                                    ->where('EspacioComunId', $reserva->EspacioComunId)
+                                    ->where('EstadoReservaId','=', 2)
+                                    ->first();
+        if($reservaAnterior != null){
+            return [
+                'success'=> false,
+                'codigo' => 1,
+                'message'=> "Ya existe una solicitud aceptada para esta reserva en esta fecha"
+                ];
+        }
+
         try {
             $reserva->EstadoReservaId = $request['estado'];
             $reserva->save();
@@ -206,6 +220,7 @@ class ReservaEspacioController extends Controller
         catch (Exception $ex) {
             return [
                 'success'=> false,
+                'codigo' => 2,
                 'message'=> $ex->getMessage()
                 ];
         }
