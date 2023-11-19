@@ -193,6 +193,26 @@ class GastoMesController extends Controller
                                                     ->where('GastoMesId', $gastoMesEdit->Id)
                                                     ->first();
 
+                    ///BUSCO GASTO COMUN ANTERIOR PARA LA PROPIEDAD
+                    $gastoComunAnterior = GastoComun::select('Id','EstadoGastoId')
+                                                    ->where('PropiedadId',$propiedad->Id)
+                                                    ->where('EstadoGastoId', '!=',3)
+                                                    ->orderBy('Fecha','desc')
+                                                    ->first();
+                    /// SI EL ESTADO DEL GASTO ES IMPAGO
+                    if($gastoComunAnterior->EstadoGastoId == 1){
+                        $historialPago = HistorialPago::select('MontoAPagar')
+                                                    ->where('GastoComunId', $gastoComunAnterior->Id)
+                                                    ->orderBy('Id','desc')
+                                                    ->first();
+                        //LE COBRO EL MES ANTERIOR
+                        //FALTA AGREGARLE LA MULTA DE X %
+                        $saldoMesAnterior = $historialPago->MontoAPagar;
+                    }
+
+
+
+
                     $gastoEspacios = ReservaEspacio::where('GastoComunId', $gastoComunEdit->Id)
                                                 ->where('ReservaEspacio.EstadoReservaId',2)
                                                 ->groupBy('GastoComunId') // Puedes agregar más columnas si es necesario
@@ -212,7 +232,7 @@ class GastoMesController extends Controller
                     }
 
 
-                    $totalCobroMes =$totalGC+ $cobroIndividual;
+                    $totalCobroMes =$totalGC+ $cobroIndividual +$saldoMesAnterior;
 
                     $gastoComunEdit->update([
                         'PropiedadId'=> $propiedad['Id'],
