@@ -17,13 +17,17 @@
                 <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Historial de Pagos
                     <!--begin::Separator-->
                     <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
-                    <!--end::Separator-->
-                    <!--begin::Description-->
-                    <small class="text-muted fs-7 fw-semibold my-1 ms-1">#XRS-45670</small>
                     <!--end::Description-->
                 </h1>
                 <!--end::Title-->
             </div>
+            <div class="w-md-150px w-150px my-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
+                        <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
+                            @foreach ($gastosmeses as $gastomes )
+                            <option value="{{ $gastomes->Id }}">{{ $gastomes->Fecha->format('m-Y') }} </option>
+                            @endforeach
+                        </select>
+                    </div>
             <!--end::Page title-->
         </div>
         <!--end::Page title-->
@@ -49,19 +53,7 @@
     <!-- begin::Div de fecha -->
     <div class="container-xxl">
 
-        <div class="card mb-2 mx-5">
-            <div class="card-body p-2">
-                <div class="d-flex flex-row justify-content-between align-items-center">
-                    <div class="w-md-150px w-150px my-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
-                        <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
-                            @foreach ($gastosmeses as $gastomes )
-                            <option value="{{ $gastomes->Id }}">{{ $gastomes->Fecha->format('m-Y') }} </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
         <div id="historiales-pagos" class="mx-5">
             <div class="card">

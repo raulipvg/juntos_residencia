@@ -18,10 +18,7 @@
                 <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Home
                 <!--begin::Separator-->
                 <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
-                <!--end::Separator-->
-                <!--begin::Description-->
-                <small class="text-muted fs-7 fw-semibold my-1 ms-1">#Comunidad EL Teto</small>
-                <!--end::Description--></h1>
+                </h1>
                 <!--end::Title-->
             </div>
 			<div class="w-md-125px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
