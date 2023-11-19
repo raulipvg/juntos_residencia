@@ -429,7 +429,7 @@
 								</div>
 								<div class="d-flex justify-content-end p-1">
 									<div class="me-1">
-										<button type="button" class="btn btn-success"  onclick="imprimirGastoComun()">Imprimir</button>
+										<button id="imprimir-gasto" type="button" class="btn btn-success">Imprimir</button>
 									</div>
 								</div>							
 							</div>
@@ -451,6 +451,10 @@
 
     <script>
 $(document).ready(function() {
+
+	$("#imprimir-gasto").click( function (e){
+		imprimirGastoComun();
+	});
 
 		function imprimirGastoComun() {
             const divToPrint = document.getElementById('gasto-comun');
