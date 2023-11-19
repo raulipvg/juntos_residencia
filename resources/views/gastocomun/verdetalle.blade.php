@@ -450,6 +450,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 
     <script>
+$(document).ready(function() {
+
 		function imprimirGastoComun() {
             const divToPrint = document.getElementById('gasto-comun');
             
@@ -465,94 +467,95 @@
 
 		var ctx = document.getElementById('kt_chartjs_1');
 
-// Define colors
-var primaryColor = KTUtil.getCssVariableValue('--kt-primary');
-var dangerColor = KTUtil.getCssVariableValue('--kt-danger');
-var successColor = KTUtil.getCssVariableValue('--kt-success');
+		// Define colors
+		var primaryColor = KTUtil.getCssVariableValue('--kt-primary');
+		var dangerColor = KTUtil.getCssVariableValue('--kt-danger');
+		var successColor = KTUtil.getCssVariableValue('--kt-success');
 
-// Define fonts
-var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
+		// Define fonts
+		var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
 
-// Chart labels
-const labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic','Ene'];
+		// Chart labels
+		const labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic','Ene'];
 
 
-// Chart data
-const data = {
-  labels: labels,
-  datasets: [{
-    label: 'Gastos',
-    data: [65000, 59000, 80000, 81000, 56000, 55000, 40000, 80000, 81000, 56000, 55000, 40000, 34875],
-    backgroundColor: [
-		'rgba(0, 0, 0, 0.6)',// NEGRO
-		'rgba(255, 99, 132, 0.6)', //ROJO
-		'rgba(255, 159, 64, 0.6)', //NARANJA
-		'rgba(0, 204, 153, 0.6)',
-		'rgba(255, 205, 86, 0.6)', //AMARILLO
-		'rgba(75, 192, 192, 0.6)', // CALIPSO
-		'rgba(54, 162, 235, 0.6)', //CELESTE
-		'rgba(153, 102, 255, 0.6)', // LILA
-		'rgba(201, 203, 207, 0.6)', //GRIS
-		'rgba(0, 0, 255, 0.4)', //AZUL
-		'rgba(0, 128, 0, 0.4)',       // Verde oscuro
-		'rgba(128, 0, 128, 0.4)'
-    ],
-    borderColor: [
-		'rgb(0, 0, 0)', //NEGRO
-		'rgb(255, 99, 132)',
-		'rgb(255, 159, 64)',
-		'rgba(0, 204, 153)',
-		'rgb(255, 205, 86)',
-		'rgb(75, 192, 192)',
-		'rgb(54, 162, 235)',
-		'rgb(153, 102, 255)',
-		'rgb(201, 203, 207)',
-		'rgb(0, 0, 255, 0.7)',           // AZUL
-		'rgb(0, 128, 0, 0.7)',             // Verde oscuro
-		'rgba(128, 0, 128, 0.7)'
-    ],
-    borderWidth: 2
-  }]
-};
+		// Chart data
+		const data = {
+		labels: labels,
+		datasets: [{
+			label: 'Gastos',
+			data: [65000, 59000, 80000, 81000, 56000, 55000, 40000, 80000, 81000, 56000, 55000, 40000, 34875],
+			backgroundColor: [
+				'rgba(0, 0, 0, 0.6)',// NEGRO
+				'rgba(255, 99, 132, 0.6)', //ROJO
+				'rgba(255, 159, 64, 0.6)', //NARANJA
+				'rgba(0, 204, 153, 0.6)',
+				'rgba(255, 205, 86, 0.6)', //AMARILLO
+				'rgba(75, 192, 192, 0.6)', // CALIPSO
+				'rgba(54, 162, 235, 0.6)', //CELESTE
+				'rgba(153, 102, 255, 0.6)', // LILA
+				'rgba(201, 203, 207, 0.6)', //GRIS
+				'rgba(0, 0, 255, 0.4)', //AZUL
+				'rgba(0, 128, 0, 0.4)',       // Verde oscuro
+				'rgba(128, 0, 128, 0.4)'
+			],
+			borderColor: [
+				'rgb(0, 0, 0)', //NEGRO
+				'rgb(255, 99, 132)',
+				'rgb(255, 159, 64)',
+				'rgba(0, 204, 153)',
+				'rgb(255, 205, 86)',
+				'rgb(75, 192, 192)',
+				'rgb(54, 162, 235)',
+				'rgb(153, 102, 255)',
+				'rgb(201, 203, 207)',
+				'rgb(0, 0, 255, 0.7)',           // AZUL
+				'rgb(0, 128, 0, 0.7)',             // Verde oscuro
+				'rgba(128, 0, 128, 0.7)'
+			],
+			borderWidth: 2
+		}]
+		};
 
-// Chart config
-const config = {
-    type: 'bar',
-    data: data,
-    options: {
-        plugins: {
-            title: {
-                display: false,
-            },
-			legend: {
-                display: false, // Esto ocultará la leyenda del gráfico
-            }
-        },
-        responsive: true,
-        interaction: {
-            intersect: false,
-        },
-        scales: {
-            x: {
-                stacked: true,
-				grid: {
-                    display: false, // Oculta las líneas verticales (eje x)
-                },
-            },
-            y: {
-                stacked: true
-            }
-        }
-    },
-    defaults:{
-        global: {
-            defaultFont: fontFamily
-        }
-    }
-};
+		// Chart config
+		const config = {
+			type: 'bar',
+			data: data,
+			options: {
+				plugins: {
+					title: {
+						display: false,
+					},
+					legend: {
+						display: false, // Esto ocultará la leyenda del gráfico
+					}
+				},
+				responsive: true,
+				interaction: {
+					intersect: false,
+				},
+				scales: {
+					x: {
+						stacked: true,
+						grid: {
+							display: false, // Oculta las líneas verticales (eje x)
+						},
+					},
+					y: {
+						stacked: true
+					}
+				}
+			},
+			defaults:{
+				global: {
+					defaultFont: fontFamily
+				}
+			}
+		};
 
-// Init ChartJS -- for more info, please visit: https://www.chartjs.org/docs/latest/
-var myChart = new Chart(ctx, config);
+		// Init ChartJS -- for more info, please visit: https://www.chartjs.org/docs/latest/
+		var myChart = new Chart(ctx, config);
+});
 
 	</script>    
 @endpush
