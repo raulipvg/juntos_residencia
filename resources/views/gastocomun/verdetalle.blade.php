@@ -61,23 +61,26 @@
 										<!-- begin::Header-->
 										<div class="d-flex justify-content-between flex-column flex-sm-row mb-1 d-flex align-items-center">
 											<div class="flex-fill">
-												<h4 class="fw-bolder text-gray-800 fs-2qx">GASTOS COMUNES SEPTIEMBRE 2023</h4>
+											@php
+												\Carbon\Carbon::setLocale(LC_ALL,'es');
+											@endphp
+												<h4 class="fw-bolder text-gray-800 fs-2qx text-uppercase"  >GASTOS COMUNES {{ Carbon\Carbon::parse($gastoComun->Fecha)->format('F-Y') }}</h4>
 												<div class="d-flex flex-row gap-7 gap-md-10 fw-bold mb-2 ps-2">
 														<div class="flex-root d-flex flex-column">
 															<span class="text-muted">Folio N</span>
-															<span class="fs-5">#14534</span>
+															<span class="fs-5">#{{ $gastoComun->Folio }}</span>
 														</div>
 														<div class="flex-root d-flex flex-column">
 															<span class="text-muted">Mes de Cobro</span>
-															<span class="fs-5">Septiembre 2023</span>
+															<span class="fs-5">{{ Carbon\Carbon::parse($gastoComun->Fecha)->format('M-Y') }}</span>
 														</div>
 														<div class="flex-root d-flex flex-column">
 															<span class="text-muted">Desde</span>
-															<span class="fs-5">31-07-2023</span>
+															<span class="fs-5">{{ Carbon\Carbon::parse($gastoComun->Desde)->format('d-m-Y') }}</span>
 														</div>
 														<div class="flex-root d-flex flex-column">
 															<span class="text-muted">Hasta</span>
-															<span class="fs-5">31-08-2023</span>
+															<span class="fs-5">{{ Carbon\Carbon::parse($gastoComun->Hasta)->format('d-m-Y') }}</span>
 														</div>
 													</div>
 											</div>
@@ -85,10 +88,10 @@
 											<div class="text-sm-end">
 												<!--begin::Text-->
 												<div class="text-sm-end fw-semibold fs-6 text-muted border border-2 border-dashed p-2 rounded">
-													<div>Comunidad de Copropietarios del Edificio el Teto</div>
-                                                    <div>23.234.231-2</div>
-                                                    <div>Maipu #1223</div>
-													<div>Telefono +569 99665015</div>
+													<div>Comunidad de Copropietarios del {{ $comunidadGC->Tipo }} <div class="text-capitalize">{{ $comunidadGC->Nombre }}</div></div>
+                                                    <div>{{ $comunidadGC->RUT }}</div>
+                                                    <div>{{ $comunidadGC->Domicilio }}</div>
+													<div>Telefono {{ $comunidadGC->Telefono }}</div>
 												</div>
 												<!--end::Text-->
 											</div>
@@ -101,19 +104,19 @@
 													<div class="flex-root d-flex flex-column align-self-center">
 															<div class="d-flex flex-row flex-wrap justify-content-between">
 															<span class="text-muted">Copropietario: </span>
-															<span class="text-dark"> Joselito Vaca (22.342.343-0)</span>
+															<span class="text-dark text-capitalize "> {{ $copropietario->Nombre }} {{ $copropietario->Apellido }} ({{ $copropietario->RUT }})</span>
 														</div>
 														<div class="d-flex  flex-row flex-wrap justify-content-between">
                                                         	<span class="text-muted">Residente: </span>
-															<span class="text-dark"> Miguel de Cervantes (23.342.232-K)</span>
+															<span class="text-dark text-capitalize "> {{ $residente->Nombre }} {{ $residente->Apellido }} ({{ $residente->RUT }})</span>
 														</div>
 														<div class="d-flex flex-row flex-wrap justify-content-between">
 															<span class="text-muted">Unidad Copropiedad: </span>
-															<span class="text-dark"> Departamento 202-C</span>
+															<span class="text-dark text-capitalize "> {{ $propiedadGC->Tipo }} {{ $propiedadGC->Numero }}</span>
 														</div>
 														<div class="d-flex flex-row flex-wrap justify-content-between">
 															<span class="text-muted">Prorrateo: </span>
-															<span class="text-dark">1.23123 %</span>
+															<span class="text-dark">{{ $propiedadGC->Prorrateo }} %</span>
 														</div>
 													</div>
 													</div>
@@ -129,7 +132,7 @@
 																<div class="d-flex flex-column position-relative fs-1 fw-bold text-white">
 																	<div class="d-flex flex-row flex-wrap justify-content-center">
 																		<span class="me-2 text-center">TOTAL A PAGAR</span>
-																		<span  class="text-warning opacity-75-hover">$135.543</span>
+																		<span  class="text-warning opacity-75-hover">${{ number_format($gastoComun->TotalCobroMes, 0, '', '.') }}</span>
 																				
 																	</div>
 																	<div class="d-flex flex-row flex-wrap justify-content-center">
@@ -164,7 +167,7 @@
 																<tr >
 																	<td colspan="3" class="p-1">
 																		<div class="ms-5">
-																				<div class="fw-bold">Total Gasto Común: $ <span>6.342.323</span></div>
+																				<div class="fw-bold">Total Gasto Común: $ <span>{{number_format($gastoComun->TotalGC, 0, '', '.')}}</span></div>
 																		</div>																	
 																	</td>
 																</tr>
@@ -200,7 +203,7 @@
 																	</td>
 																	<td class="p-1">
 																		<div class="d-flex justify-content-between fw-bold">	
-																			$ <span>112.231</span>
+																			$ <span>{{ number_format($gastoComun->CobroGC, 0, '', '.') }}</span>
 																		</div>
 																	</td>
 																	<td class="p-1 text-end"></td>
@@ -215,7 +218,7 @@
 																	</td>
 																	<td class="p-1">
 																		<div class="d-flex justify-content-between fw-bold">
-																			$ <span>12.231</span>
+																			$ <span>{{ number_format($gastoComun->FondoReserva, 0, '', '.') }}</span>
 																		</div>	
 																	</td>
 																	<td class="p-1 text-end"></td>
@@ -231,26 +234,31 @@
 																	</td>
 																	<td class="p-1">
 																		<div class="d-flex justify-content-between fw-bold">
-																			$ <span>12.231</span>
+																			$ <span>{{ number_format($gastoComun->CobroIndividual, 0, '', '.') }}</span>
 																		</div>
 																	</td>
 																	<td class="p-1 text-end"></td>
 																</tr>
+																@foreach($cobrosIndividuales as $cobro)
 																<tr>
+																	
 																	<td class="p-1">
 																		<div class="d-flex align-items-center">
 																			<div class="ms-7">
-																				<div class="fs-7 ps-2 text-muted">Agua culia 45m3</div>
+																				<div class="fs-7 ps-2 text-muted text-capitalize ">{{ $cobro->Nombre }} | {{ $cobro->Descripcion }}</div>
 																			</div>
 																		</div>
 																	</td>
+																	
 																	<td class="p-1">
 																		<div class="d-flex justify-content-between fw-bold fs-7 text-muted">
-																			$ <span>12.231</span>
+																			$ <span>{{ number_format($cobro->MontoTotal, 0, '', '.') }}</span>
 																		</div>
 																	</td>
 																	<td class="p-1 text-end"></td>
 																</tr>
+																
+																@endforeach
 																<!--- END::COBROS INDIVIDUALES -->
 																
 																<!-- BEGIN::Reserva de Espacios -->
@@ -264,27 +272,30 @@
 																	</td>
 																	<td class="p-1">
 																		<div class="d-flex justify-content-between fw-bold">
-																		$ <span>12.231</span>
+																		$ <span>{{$totalReservas}}</span>
 																		</div>	
 																	
 																	</td>
 																	<td class="p-1 text-end"></td>
 																</tr>
+																@foreach($reservas as $reserva)
 																<tr>
 																	<td class="p-1">
 																		<div class="d-flex align-items-center">
 																			<div class="ms-7">
-																				<div class="fs-7 ps-2 text-muted">Quincho</div>
+																				<div class="fs-7 ps-2 text-muted text-capitalize ">{{ $reserva->Nombre }} ({{ Carbon\Carbon::parse($reserva->FechaUso)->format('d-m-Y') }})</div>
 																			</div>
 																		</div>
 																	</td>
 																	<td class="p-1">
 																		<div class="d-flex justify-content-between fw-bold fs-7 text-muted">
-																			$ <span>12.231</span>
+																			$ <span>{{ number_format($reserva->Total, 0, '', '.') }}</span>
 																		</div>
 																	</td>
 																	<td class="p-1 text-end"></td>
 																</tr>
+																@endforeach
+																
 																<!--- END::Reserva de Espacios --> 
 
 																<tr class="bg-gray-300">
@@ -299,7 +310,7 @@
 																	<td colspan="2" class="p-1 text-end text-uppercase text-dark">Total Gastos Atrasados</td>
 																	<td class="p-1 ps-5">
 																		<div class="d-flex justify-content-between">
-																			$ <span>0</span>
+																			$ <span>{{ $montoAdeudado }}</span>
 																		</div>
 																	</td>
 																</tr>
@@ -307,7 +318,7 @@
 																	<td colspan="2" class="p-3 pe-1 fs-3 text-dark fw-bold text-end text-uppercase">Total a Pagar</td>
 																	<td class="p-3 ps-5 pe-1">
 																		<div class="text-dark fs-3 fw-bolder d-flex justify-content-between">
-																			$ <span>264.000<span>
+																			$ <span>{{ number_format($gastoComun->TotalCobroMes, 0, '', '.') }}<span>
 																		</div>		
 																	</td>
 																</tr>
@@ -323,31 +334,31 @@
 															<div class="row mb-1">
 																<div class="col">
 																	<div class="fw-semibold text-gray-600 fs-7">Nombre:</div>
-																	<div class="fw-bold text-gray-800 fs-6">Comunidad el Teto</div>
+																	<div class="fw-bold text-gray-800 fs-6 text-capitalize">{{ $comunidadGC->Nombre }}</div>
 																</div>
 																<div class="col">
 																	<div class="fw-semibold text-gray-600 fs-7">Rut:</div>
-																	<div class="fw-bold text-gray-800 fs-6">12.322.321-2</div>
+																	<div class="fw-bold text-gray-800 fs-6">{{ $comunidadGC->RUT }}</div>
 																</div>
 															</div>
 															<div class="row mb-1">
 																<div class="col">
 																	<div class="fw-semibold text-gray-600 fs-7">Cuenta:</div>
-																	<div class="fw-bold text-gray-800 fs-6">112312312</div>
+																	<div class="fw-bold text-gray-800 fs-6">{{ $comunidadGC->NumeroCuenta }}</div>
 																</div>
 																<div class="col">
 																	<div class="fw-semibold text-gray-600 fs-7">Tipo:</div>
-																	<div class="fw-bold text-gray-800 fs-6">Cuenta Corriente</div>
+																	<div class="fw-bold text-gray-800 fs-6">{{ $comunidadGC->TipoCuenta }}</div>
 																</div>
 															</div>
 															<div class="row mb-1">
 																<div class="col">
 																	<div class="fw-semibold text-gray-600 fs-7">Banco:</div>
-																	<div class="fw-bold text-gray-800 fs-6">Banco el Teto</div>
+																	<div class="fw-bold text-gray-800 fs-6">{{ $comunidadGC->Banco }}</div>
 																</div>
 																<div class="col">
 																	<div class="fw-semibold text-gray-600 fs-7">Email:</div>
-																	<div class="fw-bold text-gray-800 fs-6">elteto@gmail.com</div>
+																	<div class="fw-bold text-gray-800 fs-6">{{ $comunidadGC->Correo }}</div>
 																</div>
 															</div>
 														</div>
@@ -365,36 +376,19 @@
 																		</tr>
 																	</thead>
 																	<tbody class="fw-semibold text-gray-600">
+																		@foreach($ultimosPagos as $pago)
 																		<tr>
-																			<td class="p-1">12312321</td>
-																			<td class="p-1">Transferencia</td>
-																			<td class="p-1">12-08-2023</td>
+																			<td class="p-1">{{ $pago->NroDoc }}</td>
+																			<td class="p-1">{{ $pago->TipoPago }}</td>
+																			<td class="p-1">{{ Carbon\Carbon::parse($pago->FechaPago)->format('d-m-Y') }}</td>
 																			<td class="p-1">
 																				<div class="d-flex justify-content-between fw-bold">
-																				$ <span>12.231</span>
+																				$ <span>{{ number_format($pago->MontoPagado, 0, '', '.') }}</span>
 																				</div>
 																			</td>
 																		</tr>
-																		<tr>
-																			<td class="p-1">12312321</td>
-																			<td class="p-1">Transferencia</td>
-																			<td class="p-1">12-08-2023</td>
-																			<td class="p-1">
-																				<div class="d-flex justify-content-between fw-bold">
-																				$ <span>12.231</span>
-																				</div>
-																			</td>
-																		</tr>
-																		<tr>
-																			<td class="p-1">12312321</td>
-																			<td class="p-1">Transferencia</td>
-																			<td class="p-1">12-08-2023</td>
-																			<td class="p-1">
-																				<div class="d-flex justify-content-between fw-bold">
-																				$ <span>12.231</span>
-																				</div>
-																			</td>
-																		</tr>
+																		@endforeach
+
 																	
 																	</tbody>
 																</table>
@@ -468,7 +462,7 @@ $(document).ready(function() {
 
 				setTimeout(function() {
 					newWin.print();
-					}, 1000);
+					}, 500);
 				});        
         }
 

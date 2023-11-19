@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CobroIndividual;
 use App\Models\Comunidad;
 use App\Models\GastoComun;
+use App\Models\Propiedad;
+use App\Models\Persona;
 use App\Models\GastoMe;
+use App\Models\HistorialPago;
+use App\Models\ReservaEspacio;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -62,7 +67,10 @@ class GastoComunController extends Controller
 
     public function VerDetalle(Request $request){
          //FALTA SEGUN USER
+        $propiedadId = 36;
         $comunidadId= 12;
+        $gastoMesId = 12;
+
          //setlocale(LC_TIME, 'es_ES.utf8');
          //Para colocar el nombre del mes en español 
          setlocale(LC_ALL, 'es');
@@ -72,24 +80,124 @@ class GastoComunController extends Controller
                                      ->orderBy('Nombre','asc')
                                      ->get();
         //ULTIMO GASTO MES PARA UNA COMUNIDAD DETERMINADA
-        $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha')
+        $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha','FechaFin')
                         ->where('ComunidadId', $comunidadId)
                         ->where('EstadoId', 2)
                         ->latest('Fecha')
                         ->first();
 
         //TODOS LOS GASTOS MES PARA UNA COMUNIDAD SELECT2
-        $gastosMeses = GastoMe::select('Id','Fecha')
+        $gastosMeses = GastoMe::select('Id','Fecha','FechaFin')
                             ->where('ComunidadId', $comunidadId)
                             //->where('EstadoId', 2)
                             ->latest('Fecha')
                             ->get();
 
+        // DATOS DE LA PROPIEDAD EN ESPECÍFICO: TIPO, NUMERO, PRORRATEO
+        $propiedadGC = Propiedad::select('TipoPropiedad.Nombre as Tipo','Propiedad.Numero as Numero','Propiedad.Prorrateo as Prorrateo')
+                                ->join('TipoPropiedad', 'Propiedad.TipoPropiedad', '=', 'TipoPropiedad.Id')
+                                ->where('Propiedad.Id', $propiedadId)
+                                ->first();
+
+        // DATOS DE LA COMUNIDAD EN ESPECÍFICO: NOMBRE, RUT, NRO CUENTA, TIPO CUENTA, BANCO, EMAIL, TELEFONO, DOMICILIO, TIPO
+        $comunidadGC = Comunidad::select('Comunidad.Id','Comunidad.Nombre','RUT','Correo','TipoCuenta','NumeroCuenta','Banco','TipoComunidad.Nombre as Tipo','Telefono','Domicilio')
+                                ->join('TipoComunidad', 'Comunidad.TipoComunidadId', '=', 'TipoComunidad.Id')
+                                ->where('Comunidad.Id', $comunidadId)
+                                ->where('Enabled',1)
+                                ->first();
+        
+        // DATOS DEL COPROPIETARIO DE LA PROPIEDAD
+        $copropietario = Persona::select('Nombre','Apellido','RUT')
+                                ->join('Compone', 'Persona.Id','Compone.PersonaId')
+                                ->where('Compone.PropiedadId', $propiedadId)
+                                ->where('Compone.Enabled', 1)
+                                ->where('Compone.RolComponeCoReId', 1)
+                                ->first();
+        
+        // DATOS DEL RESIDENTE de la propiedad
+        $residente = Persona::select('Nombre','Apellido','RUT')
+                            ->join('Compone', 'Persona.Id','Compone.PersonaId')
+                            ->where('Compone.PropiedadId', $propiedadId)
+                            ->where('Compone.Enabled', 1)
+                            ->where('Compone.RolComponeCoReId', 2)
+                            ->first();
+
+        // GASTO COMUN DEL MES CONSULTADO DE LA COMUNIDAD
+        $gastoComun = GastoComun::select('GastoMes.Total as TotalGC',
+                                        'GastoMes.Fecha as Desde', 
+                                        'GastoMes.FechaFin as Hasta',
+                                        'GastoComun.Id as Folio',
+                                        'GastoComun.CobroGC',
+                                        'GastoComun.FondoReserva',
+                                        'GastoComun.CobroIndividual',
+                                        'GastoComun.TotalCobroMes',
+                                        'GastoComun.FondoReserva',
+                                        'GastoComun.Fecha'
+                                    )
+                                    ->join('GastoMes','GastoComun.GastoMesId','=','GastoMes.Id')
+                                    ->where('GastoMesId',$gastoMesId)
+                                    ->where('PropiedadId',$propiedadId)
+                                    ->first();
+        // MONTO ATRASADO
+        $montoAdeudado = HistorialPago::select('MontoAPagar')
+                                ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
+                                ->where('GastoComun.GastoMesId',$gastoMesId-1)
+                                ->where('GastoComun.PropiedadId',$propiedadId)
+                                ->orderBy('FechaPago','desc')
+                                ->get()
+                                ->first();
+
+        if($montoAdeudado == null) $montoAdeudado = 0;
+        else $montoAdeudado = $montoAdeudado->MontoAPagar;
+
+        //ÚLTIMOS PAGOS
+        $ultimosPagos = HistorialPago::select('NroDoc','TipoPago.Nombre as TipoPago','FechaPago','MontoPagado')
+        ->join('TipoPago','HistorialPago.TipoPagoId','=','TipoPago.Id')
+        ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
+        ->where('GastoComun.PropiedadId', $propiedadId)
+        ->where('GastoComun.GastoMesId', $gastoMesId)
+        ->limit(4)
+        ->get();
+        
+        //COBROS INDIVIDUALES
+        $cobrosIndividuales = CobroIndividual::select('CobroIndividual.Nombre','CobroIndividual.Descripcion','CobroIndividual.MontoTotal')
+                                            ->join('GastoComun','GastoComun.Id','=','CobroIndividual.GastoComunId')
+                                            ->where('GastoComun.GastoMesId', $gastoMesId)
+                                            ->where('GastoComun.PropiedadId', $propiedadId )
+                                            ->get();
+
+        //RESERVAS DE ESPACIOS
+        $reservas = ReservaEspacio::select('ReservaEspacio.FechaUso',
+                                        'EspacioComun.Nombre as Nombre',
+                                        'ReservaEspacio.Total as Total')
+                                    ->join('EspacioComun','EspacioComunId','=','EspacioComun.Id')
+                                    ->join('GastoComun','ReservaEspacio.GastoComunId','=','GastoComun.Id')
+                                    ->where('GastoComun.GastoMesId',$gastoMesId)
+                                    ->where('GastoComun.PropiedadId', $propiedadId)
+                                    ->get();
+        
+        //SUMA DEL TOTAL DE LAS RESERVAS
+        $totalReservas = ReservaEspacio::join('EspacioComun', 'EspacioComunId', '=', 'EspacioComun.Id')
+                                    ->join('GastoComun', 'ReservaEspacio.GastoComunId', '=', 'GastoComun.Id')
+                                    ->where('GastoComun.GastoMesId', $gastoMesId)
+                                    ->where('GastoComun.PropiedadId', $propiedadId)
+                                    ->sum('ReservaEspacio.Total');
+
         return view('gastocomun.verdetalle')->with([ 
+            'comunidadId' => $comunidadId,
             'comunidades'=> $comunidades,
-            'comunidadId'=> $comunidadId,
+            'comunidadGC'=> $comunidadGC,
+            'propiedadGC'=> $propiedadGC,
             'gastosmeses'=> $gastosMeses,
             'gasto'=> $gasto,
+            'copropietario' => $copropietario,
+            'residente' => $residente,
+            'gastoComun' => $gastoComun,
+            'montoAdeudado' => $montoAdeudado,
+            'cobrosIndividuales' => $cobrosIndividuales,
+            'reservas' => $reservas,
+            'totalReservas' => $totalReservas,
+            'ultimosPagos' => $ultimosPagos
         ]);
     }
 

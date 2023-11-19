@@ -29,6 +29,7 @@ use Illuminate\Validation\ValidationException;
  * @property int $Total
  * @property int $EstadoId
  * @property int $ComunidadId
+ * @property Carbon $FechaFin
  * 
  * @property EstadoGastoMe $estado_gasto_me
  * @property Comunidad $comunidad
@@ -58,7 +59,8 @@ class GastoMe extends Model
 		'FondoReserva' => 'int',
 		'Total' => 'int',
 		'EstadoId' => 'int',
-		'ComunidadId' => 'int'
+		'ComunidadId' => 'int',
+		'FechaFin' => 'datetime'
 	];
 
 	protected $fillable = [
@@ -75,7 +77,13 @@ class GastoMe extends Model
 		'FondoReserva',
 		'Total',
 		'EstadoId',
-		'ComunidadId'
+		'ComunidadId',
+		'FechaFin'
+	];
+
+	protected $dates = [
+		'Fecha',
+		'FechaFin'
 	];
 
 	public function estado_gasto_me()
@@ -121,6 +129,7 @@ class GastoMe extends Model
             'Total' => 'required|numeric',
             'EstadoId' => 'required|numeric',
             'ComunidadId' => 'required|numeric',
+			'FechaFin' => 'date',
         ];
 
         $validator = Validator::make($data, $rules);

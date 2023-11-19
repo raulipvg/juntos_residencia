@@ -27,6 +27,8 @@ use Illuminate\Validation\Rule;
  * @property Carbon $FechaRegistro
  * @property int $Enabled
  * @property int $TipoComunidadId
+ * @property string $Domicilio
+ * @property string $Telefono
  * 
  * @property TipoComunidad $tipo_comunidad
  * @property Collection|EspacioComun[] $espacio_comuns
@@ -61,7 +63,9 @@ class Comunidad extends Model
 		'CantPropiedades',
 		'FechaRegistro',
 		'Enabled',
-		'TipoComunidadId'
+		'TipoComunidadId',
+		'Domicilio',
+		'Telefono'
 	];
 
 	public function tipo_comunidad()
