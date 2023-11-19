@@ -149,8 +149,13 @@ class HistorialPagoController extends Controller
                         'success' => false,
                         'message' => 'El monto pagado no puede ser mayor al monto por pagar']);
                 }
+                else if( (int)$request['MontoPago'] == $historialesDeGC[0]['MontoAPagar'] ){
+                    $estado = 3;
+                }else{
+                    $estado = 2;
+                }
 
-                $estado = 3;
+                
             }
             try{
 
