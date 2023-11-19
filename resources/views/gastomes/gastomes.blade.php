@@ -45,9 +45,7 @@
                 <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
                 <!--end::Separator-->
                 <!--begin::Description-->
-                <small class="text-muted fs-7 fw-semibold my-1 ms-1">
-                    #XRS-45670
-                </small>
+                
                 <!--end::Description--></h1>
                 <!--end::Title-->
             </div>

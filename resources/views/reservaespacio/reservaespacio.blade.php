@@ -43,22 +43,19 @@
                 <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Reservar Espacio Común
                 <!--begin::Separator-->
                 <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
-                <!--end::Separator-->
-                <!--begin::Description-->
-                <small class="text-muted fs-7 fw-semibold my-1 ms-1">#Comunidad el Teto</small>
-                <!--end::Description--></h1>
+                </h1>
                 <!--end::Title-->
             </div>
             <!--end::Page title-->
-            <div class="w-md-125px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
+            <div class="w-md-125px me-2" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
                 <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
                     @foreach ($gastosmeses as $gastomes )
                         <option data-info="{{$gastomes->EstadoId }}" value="{{ $gastomes->Id }}" @if ( $gastomes->Id == $gasto->Id ) selected @endif >{{ $gastomes->Fecha->format('m-Y') }} </option>
                     @endforeach
                 </select>
             </div>
-            <div id="Solicitudes" class="m-l-2">
-                <button id="VerSolicitudes" name="VerSolicitudes" type="button" class="btn btn-sm btn-primary" style="height: 42.56px;" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver solicitudes">
+            <div id="Solicitudes">
+                <button id="VerSolicitudes" name="VerSolicitudes" type="button" class="btn btn-sm btn-primary ps-2 pe-1" style="height: 42.56px;" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver solicitudes">
                     VER SOLICITUDES  <i class="ki-outline ki-eye fs-2"></i>
                 </button>
             </div>
