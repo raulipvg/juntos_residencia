@@ -46,7 +46,7 @@ $(document).ready(function() {
         let gastoMesId = $("#GastoMesIdInput").val();
         //console.log(comunidadId)
         //console.log(propiedadId)
-            bloquear();
+        bloquear();
             $.ajax({
                 type: 'POST',
                 url: VerCobro,

@@ -17,52 +17,98 @@ use Carbon\CarbonInterface;
 class GastoComunController extends Controller
 {
     public function VerGastosComunes(Request $request){
-        //FALTA SEGUN USER
+        $flag= false;//FALTA SEGUN USER
         $comunidadId= 12;
-        //setlocale(LC_TIME, 'es_ES.utf8');
+        $request = $request->input("data");
         //Para colocar el nombre del mes en español 
         setlocale(LC_ALL, 'es');
-        //TODAS LAS COMUNIDADES HABILITADAS
-        $comunidades = Comunidad::select('Id','Nombre')
-                                    ->where('Enabled', 1)
-                                    ->orderBy('Nombre','asc')
-                                    ->get();
 
-        //ULTIMO GASTO MES PARA UNA COMUNIDAD DETERMINADA
-        $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha')
-                        ->where('ComunidadId', $comunidadId)
-                        ->where('EstadoId', 2)
-                        ->latest('Fecha')
-                        ->first();
+        if(isset($request['ComunidadId']) &&  isset($request['GastoMesId'])){
+            $flag=true;
+            $comunidadId =$request['ComunidadId'];
 
-        //GASTOS MENSUALES DE TODOS LOS PROPIETARIOS SEGUN UN GASTO DE MES DETERMINADO               
-        $gastosComunes = GastoComun::select('GastoComun.CobroGC','GastoComun.FondoReserva',
-                                    'GastoComun.TotalGC','GastoComun.SaldoMesAnterior',
-                                    'GastoComun.TotalCobroMes','Propiedad.Numero',
-                                    'Propiedad.Prorrateo','Propiedad.Id',
-                                    'Persona.Nombre','Persona.Apellido', 'GastoComun.CobroIndividual')
-                            ->where('GastoComun.GastoMesId', $gasto->Id)
-                            ->join('Propiedad','Propiedad.Id','=','GastoComun.PropiedadId')
-                            ->join('Compone','Compone.PropiedadId','=','Propiedad.Id')
-                            ->where('Compone.Enabled', 1)
-                            ->where('Compone.RolComponeCoReId', 1)
-                            ->join('Persona','Persona.Id','=','Compone.PersonaId')
-                            ->get();
+             //ULTIMO GASTO MES PARA UNA COMUNIDAD DETERMINADA
+             $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha')
+                                ->where('Id', $request['GastoMesId'])
+                                //->where('EstadoId', 2)
+                                //->latest('Fecha')
+                                ->first();
 
-        //TODOS LOS GASTOS MES PARA UNA COMUNIDAD SELECT2
-        $gastosMeses = GastoMe::select('Id','Fecha')
-                            ->where('ComunidadId', $comunidadId)
-                            //->where('EstadoId', 2)
-                            ->latest('Fecha')
-                            ->get();
+            //GASTOS MENSUALES DE TODOS LOS PROPIETARIOS SEGUN UN GASTO DE MES DETERMINADO               
+            $gastoscomunes = GastoComun::select('GastoComun.CobroGC','GastoComun.FondoReserva',
+                                                'GastoComun.TotalGC','GastoComun.SaldoMesAnterior',
+                                                'GastoComun.TotalCobroMes','Propiedad.Numero',
+                                                'Propiedad.Prorrateo','Propiedad.Id',
+                                                'Persona.Nombre','Persona.Apellido', 'GastoComun.CobroIndividual')
+                                        ->where('GastoComun.GastoMesId', $gasto->Id)
+                                        ->join('Propiedad','Propiedad.Id','=','GastoComun.PropiedadId')
+                                        ->join('Compone','Compone.PropiedadId','=','Propiedad.Id')
+                                        ->where('Compone.Enabled', 1)
+                                        ->where('Compone.RolComponeCoReId', 1)
+                                        ->join('Persona','Persona.Id','=','Compone.PersonaId')
+                                        ->get();
 
-        return view('gastocomun.gastocomun')->with([
-            'comunidades'=> $comunidades,
-            'comunidadId'=> $comunidadId, 
-            'gasto'=> $gasto,
-            'gastoscomunes' => $gastosComunes,
-            'gastosmeses'=> $gastosMeses,
-        ]);
+            
+
+        }else{
+            $flag=false;
+             //TODAS LAS COMUNIDADES HABILITADAS
+            $comunidades = Comunidad::select('Id','Nombre')
+                                ->where('Enabled', 1)
+                                ->orderBy('Nombre','asc')
+                                ->get();
+
+            //ULTIMO GASTO MES PARA UNA COMUNIDAD DETERMINADA
+            $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha')
+                                ->where('ComunidadId', $comunidadId)
+                                ->where('EstadoId', 2)
+                                ->latest('Fecha')
+                                ->first();
+
+            //GASTOS MENSUALES DE TODOS LOS PROPIETARIOS SEGUN UN GASTO DE MES DETERMINADO               
+            $gastosComunes = GastoComun::select('GastoComun.CobroGC','GastoComun.FondoReserva',
+                    'GastoComun.TotalGC','GastoComun.SaldoMesAnterior',
+                    'GastoComun.TotalCobroMes','Propiedad.Numero',
+                    'Propiedad.Prorrateo','Propiedad.Id',
+                    'Persona.Nombre','Persona.Apellido', 'GastoComun.CobroIndividual')
+                                ->where('GastoComun.GastoMesId', $gasto->Id)
+                                ->join('Propiedad','Propiedad.Id','=','GastoComun.PropiedadId')
+                                ->join('Compone','Compone.PropiedadId','=','Propiedad.Id')
+                                ->where('Compone.Enabled', 1)
+                                ->where('Compone.RolComponeCoReId', 1)
+                                ->join('Persona','Persona.Id','=','Compone.PersonaId')
+                                ->get();
+
+            //TODOS LOS GASTOS MES PARA UNA COMUNIDAD SELECT2
+            $gastosMeses = GastoMe::select('Id','Fecha')
+                                ->where('ComunidadId', $comunidadId)
+                                ->where('EstadoId', 2)
+                                ->latest('Fecha')
+                                ->get();
+
+        }
+        
+        
+        
+         // SI ES POR LLAMADA AJAX SELECT2
+         if($flag){            
+            return view('gastocomun._vergastocomun', 
+                    compact('gasto','gastoscomunes')
+                );
+
+        // SI ES UNA LLAMADA AL INDEX SIN PARAMETROS    
+        }else{
+            return view('gastocomun.gastocomun')->with([
+                'comunidades'=> $comunidades,
+                'comunidadId'=> $comunidadId, 
+                'gasto'=> $gasto,
+                'gastoscomunes' => $gastosComunes,
+                'gastosmeses'=> $gastosMeses,
+            ]);
+        }
+       
+
+        
     }
 
     public function VerDetalle(Request $request){

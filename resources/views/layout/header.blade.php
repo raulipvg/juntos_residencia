@@ -77,12 +77,22 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title text-uppercase fs-7">Gastos Mensuales</span>
+                                            <span class="menu-title text-uppercase fs-7">Ingresar Gastos Mensuales</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
                                     @endif
                                     <!--end:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{route('VerGastosComunes') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title text-uppercase fs-7">Planilla Gastos Comunes</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
@@ -108,16 +118,7 @@
                                     </div>
                                     <!--end:Menu item-->
                                     
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{route('VerGastosComunes') }}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title text-uppercase fs-7">Gastos Comunes</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
+                                    
                                     <!--end:Menu item-->
 
                                     <!--begin:Menu item-->

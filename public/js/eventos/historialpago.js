@@ -4,6 +4,19 @@ $(document).ready(function() {
     const blockUI = new KTBlockUI(target);
     const form = document.getElementById('formulario-pago');
     $("#AlertaError").hide();
+
+    var loadingEl = document.createElement("div");
+
+    function bloquear(){
+        document.body.prepend(loadingEl);
+        loadingEl.classList.add("page-loader");
+        loadingEl.classList.add("flex-column");
+        loadingEl.classList.add("bg-dark");
+        loadingEl.classList.add("bg-opacity-25");
+        loadingEl.innerHTML = `<span class="spinner-border text-primary" role="status"></span>
+                               <span class="text-gray-800 fs-6 fw-semibold mt-5">Cargando...</span>`;
+
+    }
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
             form,
@@ -125,7 +138,7 @@ $(document).ready(function() {
         e.stopPropagation();
 
         let idMes = $(this).val();
-
+        bloquear();
         $.ajax({
             type: 'GET',
             url: Index,
@@ -134,11 +147,15 @@ $(document).ready(function() {
                 data: { ComunidadId,idMes } 
             },
             dataType: 'HTML',
+            beforeSend: function() {
+                KTApp.showPageLoading();
+            },
             success: function(data){
                 $("#historiales-pagos").empty();
                 $("#historiales-pagos").html(data)
             },
             complete: function(){
+                KTApp.hidePageLoading();
                 agregarEvNuevoP();
             }
         })
@@ -178,6 +195,7 @@ $(document).ready(function() {
                         // Disable button to avoid multiple click
                     submitButton.disabled = true;
                     blockUI.block();
+                    bloquear();
                     $.ajax({
                         type: 'POST',
                         url: GuardarPago,
@@ -186,6 +204,9 @@ $(document).ready(function() {
                             data: keyValueObject
                         },
                         dataType: 'json',
+                        beforeSend: function() {
+                            KTApp.showPageLoading();
+                        },
                         success: function(data){
                             blockUI.release()
                             submitButton.disabled = false;
@@ -220,7 +241,11 @@ $(document).ready(function() {
                         then: function(e){
                             modal.modal("toggle");
                             
-                        }
+                        },
+                        complete: function(){
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                        } 
                     })
                 }
             })
@@ -247,15 +272,15 @@ $(document).ready(function() {
             const fila = this.closest('tr');
             const celdas = fila.getElementsByTagName('td');
     
-            $('#PropiedadInput').val(celdas[1].textContent);
-            $('#CopropietarioInput').val(celdas[2].textContent);
-            $('#MontoTotalInput').val(celdas[3].textContent);
+            $('#PropiedadInput').val(celdas[1].textContent.trim());
+            $('#CopropietarioInput').val(celdas[2].textContent.trim());
+            $('#MontoTotalInput').val(celdas[3].textContent.trim());
     
             $('#EstadoPagoInput').val(Number($(this).attr("state"))).trigger("change").prop('disabled',true);
             
     
             let gcId = Number($(this).attr("info"));                            // Obtiene el id del gasto común
-    
+            bloquear();
             $.ajax({
                 type: 'POST',
                 url: VerHistorial,
@@ -264,6 +289,9 @@ $(document).ready(function() {
                         data: gcId
                     },
                 dataType: 'json',
+                beforeSend: function() {
+                    KTApp.showPageLoading();
+                },
                 success: function(data){
                         if(data.success){
                             data=data.data;
@@ -311,7 +339,11 @@ $(document).ready(function() {
                                 confirmButton: "btn btn-danger btn-cerrar",
                             },
                         });
-                    }
+                    },
+                    complete: function(){
+                        KTApp.hidePageLoading();
+                        loadingEl.remove();
+                    } 
             })
         })
 
@@ -325,11 +357,11 @@ $(document).ready(function() {
     
             let gcId = Number($(this).attr("info"));                                    //obtiene el Id del gasto común
             $('#gastoComunIdInput').val(Number($(this).attr("info")))
-            $('.form-select').val("").trigger("change").prop("disabled",false);
+            $('#TipoPagoInput').val("").trigger("change").prop("disabled",false);
             validator.resetForm();
             $("#AlertaError").hide();
             $("#AlertaError").empty();
-    
+            bloquear();
             $.ajax({
                 type: 'POST',
                     url: UltimoRegistroPorGC,
@@ -338,9 +370,16 @@ $(document).ready(function() {
                             data: gcId
                     },
                     dataType: 'json',
+                    beforeSend: function() {
+                        KTApp.showPageLoading();
+                    },
                     success: function(data){
                         $('#MontoPagarInput').val(data.data.MontoAPagar);
-                    }
+                    },
+                    complete: function(){
+                        KTApp.hidePageLoading();
+                        loadingEl.remove();
+                    }  
             })
     
             $('#MontoPagoInput').val("");

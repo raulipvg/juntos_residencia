@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compone;
+use App\Models\Comunidad;
 use App\Models\EstadoPago;
 use App\Models\GastoComun;
 use App\Models\GastoMe;
@@ -18,7 +19,7 @@ class HistorialPagoController extends Controller
     // Acción que trae las tuplas de pagos
     public function Index(Request $request){
         $request = $request->data;
-
+        
         
         if($request==null){
             $comunidadId = 12;                 // recibe el id de la comunidad, el mes y año del período, id de gasto comun
@@ -28,11 +29,19 @@ class HistorialPagoController extends Controller
                                 ->orderBy('Fecha','desc')
                                 ->get();
             $gastosComunesMes = $gastosMeses->first();
+
+            //TODAS LAS COMUNIDADES HABILITADAS
+            $comunidades = Comunidad::select('Id','Nombre')
+                                    ->where('Enabled', 1)
+                                    ->orderBy('Nombre','asc')
+                                    ->get();
         }
         else{
             $comunidadId = $request['ComunidadId'];
             $gastosComunesMes['Id'] = $request["idMes"];
+            
         }
+
         $historialesPagos = HistorialPago::select('GastoComunId','EstadoPagoId','EstadoPago.Nombre')
                             ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
                             ->join('GastoMes','GastoComun.GastoMesId','=','GastoMes.Id')
@@ -40,13 +49,17 @@ class HistorialPagoController extends Controller
                             ->where('GastoMes.ComunidadId', $comunidadId)
                             ->orderBy('HistorialPago.FechaPago')
                             ->get();
+
         $gastosComunes = GastoComun::where("GastoMesId", "=", $gastosComunesMes['Id'])
                             ->get();
         $tiposPagos = TipoPago::select("Id","Nombre")->get();
         $estados = EstadoPago::select("Id","Nombre")->get();
+
         if($request == null) {
             try{
                 return view("historialpago.historialpago")->with([
+                    'comunidades'=> $comunidades,
+                    'comunidadId'=> $comunidadId, 
                     'gastosmeses' => $gastosMeses,
                     'GastosComunes'=> $gastosComunes,
                     'HistorialesPagos' => $historialesPagos,

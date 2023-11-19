@@ -1,4 +1,4 @@
-var miTabla = $('#tabla-gasto-comun').DataTable({
+var miTabla = $('#tabla-pagos').DataTable({
     "language": {
         "processing": "Procesando...",
         "lengthMenu": "Mostrar _MENU_ registros",
@@ -222,15 +222,15 @@ var miTabla = $('#tabla-gasto-comun').DataTable({
         {
             extend: 'excel',
             className: '',
-            filename: 'gasto comun '+$("#titulo").text(),
-            title: 'Gasto comun '+$("#titulo").text(),            
+            filename: 'Historial de Pago',
+            title: 'Historial de Pago',           
         },
         {
             extend: 'pdf',
             className: '',
             orientation: 'landscape',
-            filename: 'gasto comun '+$("#titulo").text(),
-            title: 'Gasto comun '+$("#titulo").text(),
+            filename:'Historial de Pago',
+            title: 'Historial de Pago',
             pageSize: 'LETTER',
             customize: function (doc) {
                 doc.defaultStyle ={
@@ -240,27 +240,11 @@ var miTabla = $('#tabla-gasto-comun').DataTable({
                 doc.styles.title.fontSize = 14;
                 doc.styles.tableHeader.fontSize = 12; //2, 3, 4, etc
                 //doc.content[1].table.widths = ['25%','25%','25%','25%'];
-                doc.pageMargins = [5,5,5,5]
-
-                // Agregar filas thead al documento PDF
-                doc.content[1].table.headerRows = 3;
-                 
-                // Agregar filas tfoot al documento PDF
-                doc.content[1].table.footerRows = 3;
-
-                doc.content[1].table.body.forEach(function(row) {
-                    row.forEach(function(cell, index) {
-                        if (index >2  &&  cell.text.indexOf('$') !== -1) {
-                            cell.text = cell.text.replace(/\s/g, '')
-                            cell.alignment = 'right';
-                        }
-                    });
-                });
-                
+                doc.pageMargins = [5,5,5,5]                
             }
         }
     ],
-    "order": [],
+    "order": [ [1, 'asc'] ],
     "pageLength": 1000,
     "columnDefs": [{ "orderable": false, "targets": "_all" }],
     "responsive": false,

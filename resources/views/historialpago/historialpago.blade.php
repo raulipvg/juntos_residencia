@@ -30,12 +30,11 @@
         <!--begin::Action group-->
         <div class="d-flex align-items-center flex-wrap" style="width: 200px;">
             <!--begin::Wrapper-->
-            <select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
-                <option value="0" selected>TODAS</option>
-                <option value="1">Comunidad 1</option>
-                <option value="2">Comunidad 2</option>
-                <option value="3">Comunidad 3</option>
-                <option value="4">Comunidad 4</option>
+            <select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
+                <option></option>
+                    @foreach($comunidades as $comunidad)                          
+                    <option @if($comunidadId == $comunidad->Id) selected  @endif value="{{ $comunidad->Id }}">{{ Str::title($comunidad->Nombre)  }}</option>
+                    @endforeach
             </select>
 
             <!--end::Wrapper-->
@@ -48,81 +47,91 @@
 <!--begin::Content-->
 <div class="d-flex flex-column flex-column-fluid">
     <!-- begin::Div de fecha -->
-    <div class="d-flex flex-column flex-column-fluid">
-        <div class="card mx-5 mb-2">
+    <div class="container-xxl">
+
+        <div class="card mb-2 mx-5">
             <div class="card-body p-2">
                 <div class="d-flex flex-row justify-content-between align-items-center">
-                <div class="w-md-200px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
-                    <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
-                    @foreach ($gastosmeses as $gastomes )
-                        <option value="{{ $gastomes->Id }}">{{ $gastomes->Fecha->format('m-Y') }} </option>
-                        @endforeach
-                        <option value="3"> 09-23 </option>
-                    </select>
-                </div>
-
+                    <div class="w-md-150px w-150px my-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
+                        <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
+                            @foreach ($gastosmeses as $gastomes )
+                            <option value="{{ $gastomes->Id }}">{{ $gastomes->Fecha->format('m-Y') }} </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="historiales-pagos" class="mx-5">
-        <div class="card-body">
-                <table id="tabla-pagos" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
-                    <thead>
-                        <tr class="fw-bolder text-uppercase">
-                            <th scope="col">#</th>
-                            <th scope="col">Propiedad</th>
-                            <th scope="col">Propietario</th>
-                            <th scope="col">Monto a pagar</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        @foreach($GastosComunes as $gastoComun)
-                            <tr class="center-2 text-uppercase">
-                                <td>{{ $gastoComun->Id }}</td>
-                                <td>{{ $gastoComun->propiedad->Numero }}</td>
-                                @php
-                                    $personaFiltrada = $gastoComun->propiedad->compones->filter(function($compone) {
-                                        return $compone->Enabled == 1 && $compone->RolComponeCoReId == 1;
-                                    })->first()->persona;
-                                @endphp
-                                <td>{{$personaFiltrada->Nombre}} {{$personaFiltrada->Apellido}}</td>
-                                <td>$ {{ number_format($gastoComun->TotalCobroMes, 0, '', '.')  }}</td>
-                                @php
-                                    $estadoPagoActual = $HistorialesPagos->filter(function($historial) use ($gastoComun){
-                                        return $historial->GastoComunId == $gastoComun->Id;
-                                    })->last();
-                                @endphp
-                                <td>
-                                @if($estadoPagoActual->EstadoPagoId == 1) 
-                                    <span class="badge badge-danger w-95px justify-content-center"> 
-                                @elseif($estadoPagoActual->EstadoPagoId == 2) 
-                                    <span class="badge badge-warning w-95px justify-content-center">
-                                @else 
-                                    <span class="badge badge-success w-95px justify-content-center">
-                                @endif
-                                {{ $estadoPagoActual->Nombre }}</span>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-success h-40px VerRegistro" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Registro" info="{{ $gastoComun->Id }}" state="{{$estadoPagoActual->EstadoPagoId}}">Ver</i>
-                                    </button>
-                                    @if($estadoPagoActual->EstadoPagoId < 3)
-                                    <button type="button" class="btn btn-sm btn-primary h-40px NuevoPago" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Pago" info="{{ $gastoComun->Id }}" > <i class="ki-outline ki-plus fs-2" ></i>
-                                    </button>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
 
+        <div id="historiales-pagos" class="mx-5">
+            <div class="card">
+                <div class="card-body">
+                    <table id="tabla-pagos" class="table table-row-dashed table-hover align-middle table rounded gy-2 gs-md-3 nowrap">
+                        <thead>
+                            <tr class="fw-bolder text-uppercase">
+                                <th scope="col">#</th>
+                                <th scope="col" class=" table-active">Propiedad</th>
+                                <th scope="col">Propietario</th>
+                                <th scope="col">Monto a pagar</th>
+                                <th scope="col" class="text-center">Estado</th>
+                                <th scope="col" class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            @foreach($GastosComunes as $gastoComun)
+                                <tr class="center-2 text-uppercase">
+                                    <td class="p-0">
+                                        {{ $gastoComun->Id }}
+                                    </td>
+                                    <td class="text-capitalize fw-bold p-0 table-active ps-2">
+                                        {{ $gastoComun->propiedad->Numero }}
+                                    </td>
+                                    @php
+                                        $personaFiltrada = $gastoComun->propiedad->compones->filter(function($compone) {
+                                            return $compone->Enabled == 1 && $compone->RolComponeCoReId == 1;
+                                        })->first()->persona;
+                                    @endphp
+                                    <td class="text-capitalize fw-bold p-0 ps-3">
+                                        {{$personaFiltrada->Nombre}} {{$personaFiltrada->Apellido}}
+                                    </td>
+                                    <td class="p-0 ps-4 text-gray-600 fw-bold">
+                                        $ {{ number_format($gastoComun->TotalCobroMes, 0, '', '.')  }}
+                                    </td>
+                                        @php
+                                            $estadoPagoActual = $HistorialesPagos->filter(function($historial) use ($gastoComun){
+                                                return $historial->GastoComunId == $gastoComun->Id;
+                                            })->last();
+                                        @endphp
+                                    <td class="p-0 text-center">
+                                        @if($estadoPagoActual->EstadoPagoId == 1) 
+                                            <span class="badge badge-light-danger w-95px h-25px justify-content-center"> 
+                                        @elseif($estadoPagoActual->EstadoPagoId == 2) 
+                                            <span class="badge badge-light-warning w-95px h-25px justify-content-center">
+                                        @else 
+                                            <span class="badge badge-light-success w-95px h-25px justify-content-center">
+                                        @endif
+                                        {{ $estadoPagoActual->Nombre }}</span>
+                                    </td>
+                                    <td class="p-0 text-center">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-sm btn-success VerRegistro" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Registro" info="{{ $gastoComun->Id }}" state="{{$estadoPagoActual->EstadoPagoId}}">Ver</button>
+                                            @if($estadoPagoActual->EstadoPagoId < 3)
+                                                <button type="button" class="btn btn-sm btn-primary  NuevoPago" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Pago" info="{{ $gastoComun->Id }}" > <i class="ki-outline ki-plus fs-2" ></i></button>
+                                            @endif    
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
     </div>
     <!--end::Content-->
+</div>
 <!--begin::Modal pago -->
     <div class="modal fade" tabindex="-1" id="modal-nuevo-pago" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog mt-20">
@@ -298,6 +307,8 @@
         
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
+    <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/historial.js') }}"></script>
 
     <script src="{{ asset('js/eventos/historialpago.js') }}"></script>
 

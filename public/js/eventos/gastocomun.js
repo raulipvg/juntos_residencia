@@ -13,13 +13,51 @@ $(document).ready(function() {
 
     }
 
-    $("#tabla-gasto-comun").on('select2:select', '#GastoMesIdInput', function(e){
+    $("#GastoMesIdInput").on('select2:select', function(e){
         e.preventDefault();
         e.stopPropagation();
-        console.log('select2')
-
+        //console.log('select2')
+        bloquear();
         let ComunidadId = $("#ComunidadInput").val();
         let GastoMesId = $(this).val(); 
+
+        //console.log(GastoMesId)
+        $.ajax({
+            type: 'GET',
+            url: VerGastosComunes,
+            data: { 
+                    _token: csrfToken,    
+                    data: { ComunidadId,GastoMesId } 
+                },
+            dataType: "HTML",
+            //content: "application/json; charset=utf-8",
+            beforeSend: function() {
+                KTApp.showPageLoading();
+            },
+            success: function (data) {
+                //console.log(data);
+                miTabla.destroy();
+                $("#contenedor-1").html(data);
+                             
+            },
+            error: function (e) {
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            },
+            complete: function(){
+                KTApp.hidePageLoading();
+                loadingEl.remove();
+            }
+            
+        });
+
     });
 
     $("#tabla-gasto-comun tbody").on("click",'.ver-cobro-invididual', function (e) {
