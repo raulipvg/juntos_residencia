@@ -453,9 +453,7 @@
 $(document).ready(function() {
 
 	$("#imprimir-gasto").click( function (e){
-		setTimeout(function() {
 			imprimirGastoComun();
-		}, 1000);
 	});
 
 		function imprimirGastoComun() {
@@ -467,8 +465,11 @@ $(document).ready(function() {
                 newWin.document.write('<img src="' + canvas.toDataURL() + '" style="width:100%;"/>');
                 newWin.document.write('</body></html>');
                 newWin.document.close();
-                newWin.print();
-            });
+
+				setTimeout(function() {
+					newWin.print();
+					}, 1000);
+				});        
         }
 
 		var ctx = document.getElementById('kt_chartjs_1');
