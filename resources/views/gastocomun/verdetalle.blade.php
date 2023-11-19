@@ -62,10 +62,8 @@
 										<!-- begin::Header-->
 										<div class="d-flex justify-content-between flex-column flex-sm-row mb-1 d-flex align-items-center">
 											<div class="flex-fill">
-											@php
-												\Carbon\Carbon::setLocale(LC_ALL,'es');
-											@endphp
-												<h4 class="fw-bolder text-gray-800 fs-2qx text-uppercase"  >GASTOS COMUNES {{ Carbon\Carbon::parse($gastoComun->Fecha)->format('F-Y') }}</h4>
+											
+												<h4 class="fw-bolder text-gray-800 fs-2qx text-uppercase"  >GASTOS COMUNES {{ $gastoComun->Fecha->formatLocalized('%B %Y') }}</h4>
 												<div class="d-flex flex-row gap-7 gap-md-10 fw-bold mb-2 ps-2">
 														<div class="flex-root d-flex flex-column">
 															<span class="text-muted">Folio N</span>
@@ -90,7 +88,19 @@
 												<!--begin::Text-->
 												<div class="text-sm-end fw-semibold fs-6 text-muted border border-2 border-dashed p-2 rounded">
 													<div>Comunidad de Copropietarios del {{ $comunidadGC->Tipo }} <div class="text-capitalize">{{ $comunidadGC->Nombre }}</div></div>
-                                                    <div>{{ $comunidadGC->RUT }}</div>
+                                                    @php
+														use Illuminate\Support\Str;
+															function darFormatoRut($rut){
+																$rutSinFormato = $rut;
+																$rutSinGuion = str_replace('-', '', $rutSinFormato);
+																$numero = substr($rutSinGuion, 0, -1);
+																$dv = substr($rutSinGuion, -1);
+																$numeroFormateado = number_format($numero, 0, '', '.');
+																$rutFormateado = $numeroFormateado . '-' . $dv;	
+																return $rutFormateado;
+															}																															
+													@endphp
+													<div>@php $resultado = darFormatoRut($comunidadGC->RUT);echo $resultado @endphp</div>
                                                     <div>{{ $comunidadGC->Domicilio }}</div>
 													<div>Telefono {{ $comunidadGC->Telefono }}</div>
 												</div>
@@ -105,11 +115,11 @@
 													<div class="flex-root d-flex flex-column align-self-center">
 															<div class="d-flex flex-row flex-wrap justify-content-between">
 															<span class="text-muted">Copropietario: </span>
-															<span class="text-dark text-capitalize "> {{ $copropietario->Nombre }} {{ $copropietario->Apellido }} ({{ $copropietario->RUT }})</span>
+															<span class="text-dark text-capitalize "> {{ $copropietario->Nombre }} {{ $copropietario->Apellido }} (@php $resultado = darFormatoRut($copropietario->RUT);echo $resultado @endphp)</span>
 														</div>
 														<div class="d-flex  flex-row flex-wrap justify-content-between">
                                                         	<span class="text-muted">Residente: </span>
-															<span class="text-dark text-capitalize "> {{ $residente->Nombre }} {{ $residente->Apellido }} ({{ $residente->RUT }})</span>
+															<span class="text-dark text-capitalize "> {{ $residente->Nombre }} {{ $residente->Apellido }} (@php $resultado = darFormatoRut($residente->RUT);echo $resultado @endphp)</span>
 														</div>
 														<div class="d-flex flex-row flex-wrap justify-content-between">
 															<span class="text-muted">Unidad Copropiedad: </span>
@@ -138,7 +148,7 @@
 																	</div>
 																	<div class="d-flex flex-row flex-wrap justify-content-center">
 																		<span class="me-2 text-center">VENCIMIENTO</span>
-																		<span  class="text-warning opacity-75-hover">30/09/2023</span>
+																		<span  class="text-warning opacity-75-hover">{{ \Carbon\Carbon::parse($gastoComun->Hasta)->addDays(10)->format('d/m/Y') }}</span>
 																	</div>
 
 																			
@@ -303,12 +313,12 @@
 																	<td colspan="2" class="p-1 text-end text-uppercase text-dark">Total Gastos del Mes</td>
 																	<td class="p-1 ps-5 ">
 																		<div class="d-flex justify-content-between fw-bold">
-																			$ <span>264.000</span>
+																			$ <span>{{ number_format($gastoComun->TotalCobroMes, 0, '', '.') }}</span>
 																		</div>
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="2" class="p-1 text-end text-uppercase text-dark">Total Gastos Atrasados</td>
+																	<td colspan="2" class="p-1 text-end text-uppercase text-dark">SALDO ANTERIOR</td>
 																	<td class="p-1 ps-5">
 																		<div class="d-flex justify-content-between">
 																			$ <span>{{ $montoAdeudado }}</span>

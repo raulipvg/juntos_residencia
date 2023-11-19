@@ -100,6 +100,7 @@ class HistorialPagoController extends Controller
                         'success' => false,
                         'message' => 'El monto pagado no puede ser menor o igual a 0']);
                 }
+                DB::beginTransaction();
 
                 $historialModificar->update([
                     'NroDoc'=> $request['NumDoc'],
@@ -109,11 +110,22 @@ class HistorialPagoController extends Controller
                     'MontoPagado'=> $request['MontoPago'],
                     'EstadoPagoId'=> $estado,
                 ]);
+                if($estado= 3){
+                    
+                    $gastocomunEdit = GastoComun::find($request["gastoComunId"]);
+                    $gastocomunEdit->update([
+                        "EstadoGastoId"=> 2 
+                    ]);
+
+                }
+
+                DB::commit();
                 return response()->json([
                     'success' => true,
                     'message' => 'Modelo recibido y procesado']);
             }
             catch(\Exception $ex){
+                DB::rollBack();
                 return response()->json([
                     'success' => false,
                     'message' => $ex->getMessage()]);
@@ -141,6 +153,8 @@ class HistorialPagoController extends Controller
                 $estado = 3;
             }
             try{
+
+                DB::beginTransaction();
                 $nuevoHistorial = HistorialPago::create([
                     'NroDoc'=> $request['NumDoc'],
                     'TipoPagoId'=> $request['TipoPago'],
@@ -151,12 +165,22 @@ class HistorialPagoController extends Controller
                     'EstadoPagoId'=> $estado
                 ]);
 
+                if($estado= 3){
+                    
+                    $gastocomunEdit = GastoComun::find($request["gastoComunId"]);
+                    $gastocomunEdit->update([
+                        "EstadoGastoId"=> 2 
+                    ]);
+
+                }
+                DB::commit();
 
                 return response()->json([
                     'success' => true,
                     'message' => 'Modelo recibido y procesado']);
             }
             catch(\Exception $ex){
+                DB::rollBack();
                 return response()->json([
                     'success' => false,
                     'message' => $ex->getMessage()]);

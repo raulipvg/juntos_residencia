@@ -93,6 +93,9 @@ class ReservaEspacioController extends Controller
             ->orderBy('HistorialPago.FechaPago','desc')
             ->first();
         
+       
+
+        
         
         try {
             $propiedad = Propiedad::select('Id','Numero')

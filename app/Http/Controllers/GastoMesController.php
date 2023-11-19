@@ -172,7 +172,7 @@ class GastoMesController extends Controller
                 $fechaActual = Carbon::now();
                 $gastoMesEdit->update([
                     'EstadoId'=> 2,
-                    'FechaFIn'=> $fechaActual
+                    'FechaFin'=> $fechaActual
                 ]);
                 $propiedades = Propiedad::Select('Id','Prorrateo')
                                     ->where('ComunidadId', $request['ComunidadId'])
@@ -230,7 +230,7 @@ class GastoMesController extends Controller
                     $historialPago = HistorialPago::Create([
                         'NroDoc'=> null,
                         'TipoPagoId'=> null,
-                        'FechaPago'=> $fechaActual,
+                        'FechaPago'=> null,
                         'MontoAPagar'=> $totalCobroMes,
                         'MontoPagado'=> 0,
                         'GastoComunId'=> $gastoComunEdit->Id,

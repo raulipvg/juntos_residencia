@@ -69,7 +69,7 @@ class GastoComunController extends Controller
          //FALTA SEGUN USER
         $propiedadId = 36;
         $comunidadId= 12;
-        $gastoMesId = 12;
+        $gastoMesId = 15;
 
          //setlocale(LC_TIME, 'es_ES.utf8');
          //Para colocar el nombre del mes en español 
@@ -79,6 +79,7 @@ class GastoComunController extends Controller
                                      ->where('Enabled', 1)
                                      ->orderBy('Nombre','asc')
                                      ->get();
+
         //ULTIMO GASTO MES PARA UNA COMUNIDAD DETERMINADA
         $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha','FechaFin')
                         ->where('ComunidadId', $comunidadId)
@@ -152,12 +153,13 @@ class GastoComunController extends Controller
 
         //ÚLTIMOS PAGOS
         $ultimosPagos = HistorialPago::select('NroDoc','TipoPago.Nombre as TipoPago','FechaPago','MontoPagado')
-        ->join('TipoPago','HistorialPago.TipoPagoId','=','TipoPago.Id')
-        ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
-        ->where('GastoComun.PropiedadId', $propiedadId)
-        ->where('GastoComun.GastoMesId', $gastoMesId)
-        ->limit(4)
-        ->get();
+                                        ->join('TipoPago','HistorialPago.TipoPagoId','=','TipoPago.Id')
+                                        ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
+                                        ->where('GastoComun.PropiedadId', $propiedadId)
+                                        ->where('GastoComun.GastoMesId', $gastoMesId)
+                                        ->where('HistorialPago.FechaPago','<',$gastoComun->Hasta)
+                                        ->limit(4)
+                                        ->get();
         
         //COBROS INDIVIDUALES
         $cobrosIndividuales = CobroIndividual::select('CobroIndividual.Nombre','CobroIndividual.Descripcion','CobroIndividual.MontoTotal')
@@ -172,6 +174,7 @@ class GastoComunController extends Controller
                                         'ReservaEspacio.Total as Total')
                                     ->join('EspacioComun','EspacioComunId','=','EspacioComun.Id')
                                     ->join('GastoComun','ReservaEspacio.GastoComunId','=','GastoComun.Id')
+                                    ->where('ReservaEspacio.EstadoReservaId', 2)
                                     ->where('GastoComun.GastoMesId',$gastoMesId)
                                     ->where('GastoComun.PropiedadId', $propiedadId)
                                     ->get();
@@ -179,6 +182,7 @@ class GastoComunController extends Controller
         //SUMA DEL TOTAL DE LAS RESERVAS
         $totalReservas = ReservaEspacio::join('EspacioComun', 'EspacioComunId', '=', 'EspacioComun.Id')
                                     ->join('GastoComun', 'ReservaEspacio.GastoComunId', '=', 'GastoComun.Id')
+                                    ->where('ReservaEspacio.EstadoReservaId', 2)
                                     ->where('GastoComun.GastoMesId', $gastoMesId)
                                     ->where('GastoComun.PropiedadId', $propiedadId)
                                     ->sum('ReservaEspacio.Total');
