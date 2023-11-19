@@ -52,6 +52,7 @@
     
     <!--begin::Container-->
     <div  class="container-xxl">
+    	
 							<!-- begin::Invoice 3-->
 							<div class="card mb-6">
 								<!-- begin::Body-->
@@ -189,7 +190,7 @@
 																	<td class="p-1"></td>
 																	<td class="p-1 ps-5 ">
 																		<div class="d-flex justify-content-between text-end text-dark">
-																			$ <span>240.000</span>
+																			$ <span>{{ number_format($gastoComun->TotalCobroMes, 0, '', '.') }}</span>
 																		</div>																
 																	</td>
 																</tr>
@@ -272,7 +273,7 @@
 																	</td>
 																	<td class="p-1">
 																		<div class="d-flex justify-content-between fw-bold">
-																		$ <span>{{$totalReservas}}</span>
+																		$ <span>{{ number_format($totalReservas, 0, '', '.') }}</span>
 																		</div>	
 																	
 																	</td>
@@ -428,7 +429,7 @@
 								</div>							
 							</div>
 							<!-- end::Invoice 3-->
-						</div>
+	
 						<!--end::Container-->
 
     

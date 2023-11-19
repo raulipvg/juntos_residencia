@@ -75,7 +75,7 @@ class CobroIndividual extends Model
 
         $rules = [
             'Nombre' => 'required|string|max:50',
-            'Descripcion' => 'required|string|max:50',
+            'Descripcion' => 'nullable|string|max:50',
             'Cantidad' => 'required|numeric',
             'MontoTotal' => 'required|numeric',
             'TipoCobroId' => 'required|numeric',

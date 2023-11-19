@@ -22,7 +22,7 @@
                     </select>
                 </div>
                 <div class="col-12 fv-row">
-                    <label for="NombreInput" class="form-label">Nombre</label>
+                    <label for="NombreInput" class="form-label">Descripción</label>
                     <input type="text" class="form-control" placeholder="Ingrese la descripción" id="NombreInput" name="Nombre" />
                 </div>
             </div>

@@ -171,7 +171,8 @@ class GastoMesController extends Controller
                 DB::beginTransaction();
                 $fechaActual = Carbon::now();
                 $gastoMesEdit->update([
-                    'EstadoId'=> 2
+                    'EstadoId'=> 2,
+                    'FechaFIn'=> $fechaActual
                 ]);
                 $propiedades = Propiedad::Select('Id','Prorrateo')
                                     ->where('ComunidadId', $request['ComunidadId'])

@@ -143,7 +143,7 @@ class GastoComunController extends Controller
                                 ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
                                 ->where('GastoComun.GastoMesId',$gastoMesId-1)
                                 ->where('GastoComun.PropiedadId',$propiedadId)
-                                ->orderBy('FechaPago','desc')
+                                ->orderBy('FechaPago','desc') 
                                 ->get()
                                 ->first();
 
