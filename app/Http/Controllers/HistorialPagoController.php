@@ -110,7 +110,7 @@ class HistorialPagoController extends Controller
                     'MontoPagado'=> $request['MontoPago'],
                     'EstadoPagoId'=> $estado,
                 ]);
-                if($estado= 3){
+                if($estado== 3){
                     
                     $gastocomunEdit = GastoComun::find($request["gastoComunId"]);
                     $gastocomunEdit->update([
@@ -165,7 +165,7 @@ class HistorialPagoController extends Controller
                     'EstadoPagoId'=> $estado
                 ]);
 
-                if($estado= 3){
+                if($estado== 3){
                     
                     $gastocomunEdit = GastoComun::find($request["gastoComunId"]);
                     $gastocomunEdit->update([
