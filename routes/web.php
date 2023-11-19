@@ -153,4 +153,6 @@ Route::group(['prefix'=> '/reservaespacio', 'middleware'=> 'auth'], function () 
     Route::post('/vereserva', [ReservaEspacioController::class, 'VerReserva'])->name('VerReserva');
     Route::post('/agregareserva', [ReservaEspacioController::class, 'AgregarReserva'])->name('AgregarReserva');
     Route::post('/guardareserva', [ReservaEspacioController::class, 'GuardarReserva'])->name('GuardarReserva');
+    Route::post('/versolicitudes', [ReservaEspacioController::class, 'VerSolicitudes'])->name('VerSolicitudes');
+    Route::post('/cambiaestado', [ReservaEspacioController::class, 'CambiarEstado'])->name('CambiarEstado');
 });

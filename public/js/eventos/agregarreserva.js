@@ -182,3 +182,7 @@
             }
     });
 
+    $("#cerrar-cobro-2").on('click', function(e) {
+        //console.log("rpeuba")
+        $("#contenedor-3").removeClass("top-xl top-md")
+    });

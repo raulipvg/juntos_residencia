@@ -34,7 +34,7 @@ class HistorialPagoController extends Controller
             $gastosComunesMes['Id'] = $request["idMes"];
         }
         $historialesPagos = HistorialPago::select('GastoComunId','EstadoPagoId','EstadoPago.Nombre')
-                            ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComunId')
+                            ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
                             ->join('GastoMes','GastoComun.GastoMesId','=','GastoMes.Id')
                             ->join('EstadoPago', 'HistorialPago.EstadoPagoId', '=', 'EstadoPago.Id')
                             ->where('GastoMes.ComunidadId', $comunidadId)
@@ -89,7 +89,7 @@ class HistorialPagoController extends Controller
             try{
                 $historialModificar = HistorialPago::find($historialesDeGC[0]['Id']);
 
-                if($historialModificar['MontoAPagar'] <= $request['MontoPago']){
+                if($historialModificar['MontoAPagar'] < $request['MontoPago']){
                     return response()->json([
                         'success' => false,
                         'message' => 'El monto pagado no puede ser mayor al monto por pagar']);
