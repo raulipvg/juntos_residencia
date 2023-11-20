@@ -388,4 +388,19 @@ $(document).ready(function() {
         })
     
     }
+
+    console.log($('#ComunidadInput').val())
+    $('#ComunidadInput').select2()
+    // Evento de select2 de comunidad
+    $('#ComunidadInput').on('select2:select', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        c= $("#ComunidadInput").val();
+
+        var redirectUrl = Index + "/" + '?&c=' + c;
+        console.log(redirectUrl)
+        window.location.href = redirectUrl;
+
+    })
+
 })

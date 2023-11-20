@@ -15,7 +15,36 @@ use Illuminate\Support\Facades\DB;
 
 class ComponeController extends Controller
 {
-    public function Index(){
+    public function Index(Request $request){
+
+        if($request->input('c') != null){
+            $comunidadId = $request->input('c');
+            $componen = Compone::join('Propiedad','Compone.PropiedadId','=','Propiedad.Id')
+                                ->where('Propiedad.ComunidadId', $comunidadId)
+                                ->get();
+            $personas = Compone::select('Persona.Id', 'Persona.RUT', 'Persona.Nombre', 'Persona.Apellido', 'Persona.Sexo', 'Persona.Telefono', 'Persona.Email', 'Persona.Enabled')
+                                ->join('Propiedad','Compone.PropiedadId', '=', 'Propiedad.Id')
+                                ->join('Persona', 'Compone.PersonaId', '=', 'Persona.Id')
+                                ->where('Propiedad.ComunidadId',$comunidadId)
+                                ->distinct()
+                                ->get();
+            $rolesComponeCoRe = RolComponeCoRe::select('Id','Nombre')->get();
+            $nacionalidades = Nacionalidad::select('Id','Nombre')->get();
+            $propiedades = Propiedad::select('Id','Numero')->get();
+            $comunidades = Comunidad::select('Id','Nombre')->get();
+            return view("residente.residente")->with([
+                'Componen' => $componen,
+                'Personas'=> $personas,
+                'RolesComponenCoRe'=> $rolesComponeCoRe,
+                'Nacionalidades'=> $nacionalidades,
+                'Comunidades' => $comunidades,
+                'Propiedades' => $propiedades,
+                'comunidadId' => $comunidadId
+            ]);
+        }
+        else{
+            $comunidadId = 12; //este sería por rol de usuario
+        }
         $componen = Compone::all();
         $personas = Persona::select('Id', 'RUT', 'Nombre', 'Apellido', 'Sexo', 'Telefono', 'Email', 'Enabled')->get();
         $rolesComponeCoRe = RolComponeCoRe::select('Id','Nombre')->get();
@@ -28,7 +57,8 @@ class ComponeController extends Controller
             'RolesComponenCoRe'=> $rolesComponeCoRe,
             'Nacionalidades'=> $nacionalidades,
             'Comunidades' => $comunidades,
-            'Propiedades' => $propiedades
+            'Propiedades' => $propiedades,
+            'comunidadId' => $comunidadId
         ]);
     }
 

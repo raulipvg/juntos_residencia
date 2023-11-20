@@ -35,19 +35,13 @@
         <!--begin::Action group-->
         <div class="d-flex align-items-center flex-wrap">
             <!--begin::Wrapper-->
-            <div class="flex-shrink-0 me-2">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light active fw-semibold fs-7 px-4 me-1" data-bs-toggle="tab" href="#">Day</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-semibold fs-7 px-4 me-1" data-bs-toggle="tab" href="">Week</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-semibold fs-7 px-4" data-bs-toggle="tab" href="#">Year</a>
-                    </li>
-                </ul>
-            </div>
+            <select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
+                        <option></option>
+                        @foreach($Comunidades as $comunidad)                          
+                        <option @if($comunidadId == $comunidad->Id) selected  @endif value="{{ $comunidad->Id }}">{{ Str::title($comunidad->Nombre)  }}</option>
+                        @endforeach
+                    </select>
+           
             <!--end::Wrapper-->
         </div>
         <!--end::Action group-->

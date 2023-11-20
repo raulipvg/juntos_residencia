@@ -173,6 +173,7 @@
 
 @push('Script')
     <script>
+        const ReservaEspacio = "{{ route('ReservaEspacio') }}"
         const VerReserva = "{{ route('VerReserva') }}"; 
         const AgregarReserva = "{{ route('AgregarReserva') }}";
         const GuardarReserva = "{{ route('GuardarReserva') }}";

@@ -329,4 +329,16 @@ $(document).ready(function() {
         if(!flag){flag=true;}       
     });
 
+
+    // Evento de select2 de comunidad
+    $('#ComunidadInput').on('select2:select', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        c= $("#ComunidadInput").val();
+
+        var redirectUrl = Index + "/" + '?&c=' + c;
+        window.location.href = redirectUrl;
+
+    })
+
 });

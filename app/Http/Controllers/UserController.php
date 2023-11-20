@@ -22,7 +22,8 @@ class UserController extends Controller
     //
     public function Index(){
         $usuarios = Usuario::with('acceso_comunidades')->get();
-
+        $comunidadId = 12;
+        //Falta las comunidades que el usuario puede dar acceso
         
         $roles = Rol::select('Id', 'Nombre')->get();
         $estado = EstadoUsuario::select('Id', 'Nombre')->get();
@@ -32,7 +33,8 @@ class UserController extends Controller
             'Usuarios' => $usuarios,
             'Roles' => $roles,
             'Estados' => $estado,
-            'Comunidades' => $comunidades
+            'Comunidades' => $comunidades,
+            'comunidadId' => $comunidadId
         ]);
     }
 

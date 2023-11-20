@@ -16,6 +16,10 @@ $(document).ready(function() {
                         '<i class="ki-outline ki-plus-square fs-2"></i>'+
                     '</button>';
     
+    if($("#GastoMesIdInput").val() === undefined || $("#GastoMesIdInput").val() === null || $("#GastoMesIdInput").val().length === 0){
+        $(".agregar-cobro").remove()
+    }
+
     //EVENTO SELECT2 PARA CAPTURAR EL ESTADO DEL GASTO MES
     $('#GastoMesIdInput').on('select2:select', function(e) {
         e.preventDefault();
@@ -139,6 +143,18 @@ $(document).ready(function() {
         
     
     });
+
+    // Evento de select2 de comunidad
+    $('#ComunidadInput').on('select2:select', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        c= $("#ComunidadInput").val();
+        console.log(c)
+
+        var redirectUrl = CobroIndividual + "/" + '?&c=' + c;
+        window.location.href = redirectUrl;
+
+    })
 
 
 });

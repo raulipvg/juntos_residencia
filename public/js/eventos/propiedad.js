@@ -125,7 +125,7 @@ $(document).ready(function () {
         },
     });
     function actualizarValidSelect2() {
-        $(".form-select").each(function () {
+        $(".form-select").not('#ComunidadInput1').each(function () {
             var valid = $(this).hasClass("is-valid");
             var invalid = $(this).hasClass("is-invalid");
 
@@ -282,8 +282,8 @@ $(document).ready(function () {
         //Inicializacion
         $("#modal-titulo").empty().html("Editar Propiedad");
         $("input").val("").prop("disabled", false);
-        $(".form-select").val("").trigger("change").prop("disabled", false);
-
+        $(".form-select").not('#ComunidadInput1').val("").trigger("change").prop("disabled", false);
+        console.log('here')
         $("#AddSubmit").hide();
         $("#EditSubmit").show();
         $("#IdInput").prop("disabled", false);
@@ -460,7 +460,7 @@ $(document).ready(function () {
         //console.log("wena");
         $("#modal-titulo").empty().html("Ver Propiedad");
         $("input").val("");
-        $(".form-select").val("").trigger("change");
+        $(".form-select").not('#ComunidadInput1').val("").trigger("change");
         $("#AddSubmit").hide();
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled", false);
@@ -740,7 +740,7 @@ $(document).ready(function () {
         $("#modal-titulo-residente-registrar").empty().html("Registrar Residente de la " +nombreComundiad+" - " +NombrePropiedad);
         
         $("input").val('').prop("disabled",false);
-        $('.form-select').val("").trigger("change").prop("disabled",false);
+        $('.form-select').not('#ComunidadInput1').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit-residente").show();
         $("#IdInput-espacio").prop("disabled",true);
@@ -914,7 +914,7 @@ $(document).ready(function () {
     });
 
     $("#tabla-espacios tbody").on('click','.estado-residente', function(e) {
-        console.log("cambio-estado")
+        //console.log("cambio-estado")
         componeId = $(this).attr("data-info");
 
         var btn = $(this);
@@ -969,5 +969,17 @@ $(document).ready(function () {
             },
         });
     });
+    $('#ComunidadInpu1').select2();
+    // Evento de select2 de comunidad
+    $('#ComunidadInput1').on('select2:select', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        c= $("#ComunidadInput1").val();
+
+        var redirectUrl = Index + "/" + '?&c=' + c;
+        console.log(redirectUrl)
+        window.location.href = redirectUrl;
+
+    })
 
 });

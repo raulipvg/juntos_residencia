@@ -18,6 +18,49 @@ class HistorialPagoController extends Controller
 {
     // Acción que trae las tuplas de pagos
     public function Index(Request $request){
+        
+        if($request->input('c') != null){
+            $comunidadId = $request->input('c');
+            $gastosMeses = GastoMe::select('Id','Fecha')
+                                ->where('ComunidadId', $comunidadId)
+                                ->where('EstadoId','2')
+                                ->orderBy('Fecha','desc')
+                                ->get();
+            $comunidades = Comunidad::select('Id','Nombre')
+                                    ->where('Enabled', 1)
+                                    ->orderBy('Nombre','asc')
+                                    ->get();
+            $historialesPagos = HistorialPago::select('GastoComunId','EstadoPagoId','EstadoPago.Nombre')
+                            ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
+                            ->join('GastoMes','GastoComun.GastoMesId','=','GastoMes.Id')
+                            ->join('EstadoPago', 'HistorialPago.EstadoPagoId', '=', 'EstadoPago.Id')
+                            ->where('GastoMes.ComunidadId', $comunidadId)
+                            ->orderBy('HistorialPago.FechaPago')
+                            ->get();
+            $gastosComunesMes = $gastosMeses->first();
+            $tiposPagos = TipoPago::select("Id","Nombre")->get();
+            $estados = EstadoPago::select("Id","Nombre")->get();
+            if(isset($gastosComunesMes)){
+                $gastosComunes = GastoComun::where("GastoMesId", "=", $gastosComunesMes['Id'])->get();
+            }else{
+                $gastosComunes = null;
+            }
+            try{
+                return view("historialpago.historialpago")->with([
+                    'comunidades'=> $comunidades,
+                    'comunidadId'=> $comunidadId, 
+                    'gastosmeses' => $gastosMeses,
+                    'GastosComunes'=> $gastosComunes,
+                    'HistorialesPagos' => $historialesPagos,
+                    'TiposPagos' => $tiposPagos,
+                    'Estados' => $estados
+                ]);
+            }catch(\Exception $ex){
+                return $ex;
+            }
+
+        }
+        
         $request = $request->data;
         
         

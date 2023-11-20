@@ -19,25 +19,36 @@ use function Laravel\Prompts\select;
 class GastoMesController extends Controller
 {
     public function Index(Request $request){
-        $request = $request->input("data");
-        $flag = false;
-        if(isset($request['ComunidadId']) &&  isset($request['GastoMesId'])){
-            $comunidadId =  $request['ComunidadId'];
-            $gastoMesBuscarId = $request['GastoMesId'];
 
-            $gasto = GastoMe::with('gastos_detalles')
-                            ->where('Id', $gastoMesBuscarId)
-                            ->first();
-            $flag=true;
-        }else{
-            //FALTA SEGUN USER
-            $comunidadId= 12;
-             //EL GASTO DE MES PARA UNA COMUNIDAD Y FECHA ESTABLECIDA
+        if( $request->input('c') != null ){             //c contiene el id de la comunidad
+            $comunidadId = $request->input('c');
             $gasto =  GastoMe::with('gastos_detalles')
                             ->where('ComunidadId', $comunidadId)
                             ->latest('Fecha')
                             ->first();
             $flag=false;
+        }else {
+
+            $request = $request->input("data");
+            $flag = false;
+            if(isset($request['ComunidadId']) &&  isset($request['GastoMesId'])){
+                $comunidadId =  $request['ComunidadId'];
+                $gastoMesBuscarId = $request['GastoMesId'];
+
+                $gasto = GastoMe::with('gastos_detalles')
+                                ->where('Id', $gastoMesBuscarId)
+                                ->first();
+                $flag=true;
+            }else{
+                //FALTA SEGUN USER
+                $comunidadId= 12;
+                //EL GASTO DE MES PARA UNA COMUNIDAD Y FECHA ESTABLECIDA
+                $gasto =  GastoMe::with('gastos_detalles')
+                                ->where('ComunidadId', $comunidadId)
+                                ->latest('Fecha')
+                                ->first();
+                $flag=false;
+            }
         }
         //TODAS LAS COMUNIDADES HABILITADAS
         $comunidades = Comunidad::select('Id','Nombre')

@@ -42,9 +42,11 @@ border-top-right-radius: 20px !important;
             </div>
             <div class="w-md-125px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
                                     <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
+                                        @if(isset($gasto))
                                         @foreach ($gastosmeses as $gastomes )
                                             <option value="{{ $gastomes->Id }}" @if ( $gastomes->Id == $gasto->Id ) selected @endif >{{ $gastomes->Fecha->format('m-Y') }} </option>
                                         @endforeach
+                                        @endif
                                     </select>
                                 </div>
             <!--end::Page title-->
@@ -82,29 +84,30 @@ border-top-right-radius: 20px !important;
                             <th rowspan="2" colspan="3"  class="align-middle border-bottom ps-0">
                                 
                             </th>
-                            <th id="titulo" rowspan="1" colspan="6" class="text-center text-uppercase fs-3 table-dark text-white rounded-top-1">{{ $gasto->Fecha->formatLocalized('%B %Y') }}</th>
+
+                            <th id="titulo" rowspan="1" colspan="6" class="text-center text-uppercase fs-3 table-dark text-white rounded-top-1">@if(isset($gasto)) {{ $gasto->Fecha->formatLocalized('%B %Y') }} @endif</th>
                         </tr>
                         <tr class="fw-bold fs-6 text-gray-800 px-7"> 
                             <th rowspan="1" colspan="1" class="border-bottom table-dark text-white p-1">
                                 <div class="d-flex justify-content-between align-items-center ps-md-7">
                                     <span class="text-start">$</span>
-                                    <span class="text-end">{{ number_format($gasto->TotalMes, 0, '', '.') }}</span>
+                                    <span class="text-end">@if(isset($gasto)){{ number_format($gasto->TotalMes, 0, '', '.') }} @else {{0}} @endif</span>
                                 </div>
                             </th>
                             <th rowspan="1" colspan="1" class="border-bottom table-dark text-white p-1">
                                 <div class="d-flex justify-content-between align-items-center ps-md-7">
                                     <span class="text-start">$</span>
-                                    <span class="text-end">{{ number_format($gasto->FondoReserva, 0, '', '.') }}</span>
+                                    <span class="text-end">@if(isset($gasto)){{ number_format($gasto->FondoReserva, 0, '', '.') }}@else {{0}} @endif</span>
                                 </div> 
                             </th>
                             <th rowspan="1" colspan="1" class="border-bottom table-dark text-white p-1">
                                 <div class="d-flex justify-content-between align-items-center ps-md-7">
                                     <span class="text-start">$</span>
-                                    <span class="text-end">{{ number_format($gasto->Total, 0, '', '.') }}</span>
+                                    <span class="text-end">@if(isset($gasto)){{ number_format($gasto->Total, 0, '', '.') }}@else {{0}} @endif</span>
                                 </div>
                             </th>
                             <th rowspan="1" colspan="1" class="border-bottom text-center fw-bolder table-dark p-1"></th>
-                            <th rowspan="1" colspan="2" class="border-bottom text-end table-dark text-white p-1">Fecha Apertura: {{ $gasto->Fecha->format('d-m-Y')}}</th>
+                            <th rowspan="1" colspan="2" class="border-bottom text-end table-dark text-white p-1">@if(isset($gasto))Fecha Apertura: {{ $gasto->Fecha->format('d-m-Y')}}@endif</th>
                         </tr>
                         <tr class="fw-bolder text-uppercase fw-bolder text-gray-700">
                             <th class="table-active fs-5 p-1" scope="col">Nombre</th>
@@ -128,6 +131,7 @@ border-top-right-radius: 20px !important;
                             $TotalMes=0;
                             $cobrosIndividuales=0
                         @endphp
+                        @if(isset($gastoscomunes))
                         @foreach ( $gastoscomunes as $detalle )
                             <tr data-info = "{{$detalle->Id }}">
                                 <td class="text-capitalize fw-bold table-active p-1">{{ $detalle->Nombre }} {{ $detalle->Apellido }}</td>
@@ -179,7 +183,8 @@ border-top-right-radius: 20px !important;
                                 $TotalMes = $TotalMes+$detalle->TotalCobroMes;
                                 $cobrosIndividuales = $cobrosIndividuales + $detalle->CobroIndividual;
                             @endphp          
-                        @endforeach                    
+                        @endforeach
+                        @endif             
                 
                     </tbody>
                     <tfoot>

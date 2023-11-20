@@ -70,7 +70,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            @if(isset($GastosComunes))
                             @foreach($GastosComunes as $gastoComun)
                                 <tr class="center-2 text-uppercase">
                                     <td class="p-0">
@@ -115,6 +115,7 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -169,9 +170,11 @@
                             <div class="form-floating fv-row">
                                 <select id="TipoPagoInput" name="TipoPago" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
+                                    @if(isset($TiposPagos))
                                     @foreach($TiposPagos as $tipopago)
                                         <option value="{{ $tipopago->Id }}">{{ $tipopago->Nombre }}</option>
                                     @endforeach
+                                    @endif
                                 </select>
                                 <label for="TipoPagoInput" class="form-label">Medio de pago</label>
                             </div>
@@ -252,10 +255,11 @@
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
                                 <select id="EstadoPagoInput" name="EstadoPago" class="form-select text-uppercase" data-control="select2" data-placeholder="Seleccione" data-hide-search="true" disabled >                                    <option></option>
+                                    @if(isset($Estados))
                                     @foreach($Estados as $estado)
                                         <option value="{{ $estado->Id }}">{{ $estado->Nombre }}</option>
                                     @endforeach
-                                    
+                                    @endif
                                 </select>
                                 <label for="EstadoPagoInput" class="form-label">Estado del pago</label>
                             </div>

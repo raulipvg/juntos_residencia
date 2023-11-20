@@ -18,7 +18,11 @@ class CobroIndividualController extends Controller
     public function Index(Request $request){
         $variable = 'Soy una variable pulenta 2';
         //FALTA SEGUN USER
-        $comunidadId= 12;
+        if($request->input('c') != null){
+            $comunidadId = $request->input('c');
+        }else{
+            $comunidadId= 12;
+        }
         //TODAS LAS COMUNIDADES HABILITADAS
         $comunidades = Comunidad::select('Id','Nombre')
                                 ->where('Enabled', 1)

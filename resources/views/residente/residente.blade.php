@@ -44,22 +44,15 @@ $today = date('Y-m-d');
         </div>
         <!--end::Page title-->
         <!--begin::Action group-->
-        <div class="d-flex align-items-center flex-wrap">
+        <div class="d-flex align-items-center flex-wrap" style="width: 200px;" >
             <!--begin::Wrapper-->
-            <div class="flex-shrink-0 me-2">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light active fw-semibold fs-7 px-4
-    me-1" data-bs-toggle="tab" href="#">Day</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-semibold fs-7 px-4 me-1" data-bs-toggle="tab" href="">Week</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-semibold fs-7 px-4" data-bs-toggle="tab" href="#">Year</a>
-                    </li>
-                </ul>
-            </div>
+            <select id="ComunidadInput1" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
+                <option></option>
+                @foreach($Comunidades as $comunidad)                          
+                    <option @if($comunidadId == $comunidad->Id) selected  @endif value="{{ $comunidad->Id }}">{{ Str::title($comunidad->Nombre)  }}</option>
+                @endforeach
+            </select>
+           
             <!--end::Wrapper-->
         </div>
         <!--end::Action group-->
@@ -486,6 +479,7 @@ $today = date('Y-m-d');
     const EditarHojaVida = "{{ route('EditarHojaVida') }}";
     const CambiarEstadoHojaVida = "{{ route('CambiarEstadoHojaVida') }}";
 
+    const Index = "{{ route('Residente') }}"
     const VerCompone = "{{ route('VerCompone') }}"
     const GuardarCompone = "{{ route('GuardarCompone') }}"
     const CambioEstadoCompone = "{{ route('CambioEstadoCompone') }}"

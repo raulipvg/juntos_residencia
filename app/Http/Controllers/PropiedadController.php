@@ -12,16 +12,29 @@ use Illuminate\Support\Facades\DB;
 
 class PropiedadController extends Controller
 {
-    public function Index()
+    public function Index(Request $request)
     {
-        $propiedades = Propiedad::all();
-        $comunidades = Comunidad::select('Id', 'Nombre')->get();
+        //falta por usuario
+        
+        if($request->input('c') != null){
+            $comunidadId = $request->input('c');
+            
+
+        }else{
+            $comunidadId = 12;            
+        }
+        $propiedades = Propiedad::where('ComunidadId',$comunidadId)->get();
+
+        $comunidades = Comunidad::select('Id', 'Nombre')
+                                ->where('Enabled',1)
+                                ->get();
         $tipopropiedad = TipoPropiedad::select('Id', 'Nombre')->get();
 
         return View('propiedad.propiedades')->with([
             'Propiedad' => $propiedades,
             'Comunidad' => $comunidades,
-            'TipoPropiedad' => $tipopropiedad
+            'TipoPropiedad' => $tipopropiedad,
+            'comunidadId' => $comunidadId
         ]);
     }
 

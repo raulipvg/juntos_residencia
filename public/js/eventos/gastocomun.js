@@ -143,7 +143,16 @@ $(document).ready(function() {
         //window.location.href = redirectUrl;    
     });
 
+    // Evento de select2 de comunidad
+    $('#ComunidadInput').on('select2:select', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        c= $("#ComunidadInput").val();
+        console.log(c)
+
+        var redirectUrl = VerGastosComunes + "/" + '?&c=' + c;
+        window.location.href = redirectUrl;
+
+    })
+
 });
-
-
-

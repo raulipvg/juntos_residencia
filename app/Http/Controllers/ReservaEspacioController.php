@@ -15,8 +15,15 @@ use Illuminate\Support\Carbon;
 
 class ReservaEspacioController extends Controller
 {
-    public function Index(){
-        $comunidadId = 12;
+    public function Index(Request $request){
+        
+        //FALTA SEGUN USER
+        if($request->input('c') != null){
+            $comunidadId = $request->input('c');
+        }else{
+            $comunidadId= 12;
+        }
+
         $comunidades = Comunidad::select('Id','Nombre')
                             ->where('Enabled', 1)
                             ->orderBy('Nombre','asc')

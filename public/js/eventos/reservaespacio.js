@@ -18,6 +18,11 @@ $(document).ready(function() {
     const btnVerSoli =  '<button id="VerSolicitudes" name="VerSolicitudes" type="button" class="btn btn-sm btn-primary" style="height: 42.56px;" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver solicitudes">'+
                             'VER SOLICITUDES  <i class="ki-outline ki-eye fs-2"></i>'+
                         '</button>'
+
+    if($("#GastoMesIdInput").val() === undefined || $("#GastoMesIdInput").val() === null || $("#GastoMesIdInput").val().length === 0){
+        $(".agregar-reserva").remove()
+    }
+
     //EVENTO SELECT2 PARA CAPTURAR EL ESTADO DEL GASTO MES
     $('#GastoMesIdInput').on('select2:select', function(e) {
         e.preventDefault();
@@ -238,5 +243,17 @@ $(document).ready(function() {
             });
         })
     }
+
+     // Evento de select2 de comunidad
+     $('#ComunidadInput').on('select2:select', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        c= $("#ComunidadInput").val();
+        console.log(c)
+
+        var redirectUrl = ReservaEspacio + "/" + '?&c=' + c;
+        window.location.href = redirectUrl;
+
+    })
 
 });

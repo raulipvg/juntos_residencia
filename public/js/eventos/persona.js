@@ -113,7 +113,7 @@ $(document).ready(function() {
 
     function actualizarValidSelect2(){
 
-        $('.form-select').each( function () {
+        $('.form-select').not('#ComunidadInput1').each( function () {
             var valid = $(this).hasClass("is-valid");
             var invalid =$(this).hasClass("is-invalid");
 
@@ -140,7 +140,7 @@ $(document).ready(function() {
         e.stopPropagation();
         $("#modal-titulo").empty().html("Registrar Residente");
         $("input").val('').prop("disabled",false);
-        $('.form-select').val("").trigger("change").prop("disabled",false);
+        $('.form-select').not('#ComunidadInput1').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit").show();
         $("#EditSubmit").hide();
@@ -251,7 +251,7 @@ $(document).ready(function() {
         //Inicializacion
         $("#modal-titulo").empty().html("Editar Residente");
         $("input").val('').prop("disabled",false);
-        $('.form-select').val("").trigger("change").prop("disabled",false);
+        $('.form-select').not('#ComunidadInput1').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit").hide();
         $("#EditSubmit").show();
@@ -422,7 +422,7 @@ $(document).ready(function() {
         //console.log("wena");
         $("#modal-titulo").empty().html("Ver Residente");
         $("input").val('');
-        $('.form-select').val("").trigger("change");
+        $('.form-select').not('#ComunidadInput1').val("").trigger("change");
 
         $("#AddSubmit").hide();
         $("#EditSubmit").hide();
@@ -574,5 +574,17 @@ $(document).ready(function() {
         });
 
     });
+
+    // Evento de select2 de comunidad
+    $('#ComunidadInput1').on('select2:select', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        c= $("#ComunidadInput1").val();
+
+        var redirectUrl = Index + "/" + '?&c=' + c;
+        console.log(redirectUrl)
+        window.location.href = redirectUrl;
+
+    })
 
 });

@@ -135,6 +135,7 @@
 
 @push('Script')
     <script>
+        const CobroIndividual = "{{ route('CobroIndividual') }}"
         const VerCobro = "{{ route('VerCobro') }}"; 
         const AgregarCobro = "{{ route('AgregarCobro') }}";
         const GuardarCobro = "{{ route('GuardarCobro') }}";
