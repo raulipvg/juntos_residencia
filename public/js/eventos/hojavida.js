@@ -63,7 +63,7 @@ $(document).ready(function() {
 
     function actualizarValidSelect2(){
 
-        $('.form-select').each( function () {
+        $('.form-select').not('#ComunidadInput1').each( function () {
             var valid = $(this).hasClass("is-valid");
             var invalid =$(this).hasClass("is-invalid");
             if(valid){
@@ -212,7 +212,7 @@ $(document).ready(function() {
         $("#modal-titulo-acceso-registrar").empty().html(comunidadNombre+" - Registrar Hoja de Vida");
         
         $("input").val('').prop("disabled",false);
-        $('.form-select').val("").trigger("change").prop("disabled",false);
+        $('.form-select').not('#ComunidadInput1').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit-espacio").show();
         $("#EditSubmit-espacio").hide();
@@ -325,7 +325,7 @@ $(document).ready(function() {
         //Inicializacion
         $("#modal-titulo-acceso-registrar").empty().html(comunidadNombre+" - Editar Hoja de Vida");
         $("input").val('').prop("disabled",false);
-        $('.form-select').val("").trigger("change").prop("disabled",false);
+        $('.form-select').not('#ComunidadInput1').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmit-espacio").hide();
         $("#EditSubmit-espacio").show();
@@ -500,7 +500,7 @@ $(document).ready(function() {
         //console.log("wena");
         $("#modal-titulo-acceso-registrar").empty().html(comunidadNombre+" - Ver Hoja de Vida");
         $("input").val('');
-        $('.form-select').val("").trigger("change");
+        $('.form-select').not('#ComunidadInput1').val("").trigger("change");
         $("#AddSubmit-espacio").hide();
         $("#EditSubmit-espacio").hide();
         $("#IdInput-espacio").prop("disabled",false);

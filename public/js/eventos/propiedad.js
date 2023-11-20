@@ -172,7 +172,7 @@ $(document).ready(function () {
         e.stopPropagation();
         $("#modal-titulo").empty().html("Registrar Propiedad");
         $("input").val("").prop("disabled", false);
-        $(".form-select").val("").trigger("change").prop("disabled", false);
+        $(".form-select").not('#ComunidadInput1').val("").trigger("change").prop("disabled", false);
 
         $("#AddSubmit").show();
         $("#EditSubmit").hide();
