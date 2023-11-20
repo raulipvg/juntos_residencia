@@ -182,30 +182,19 @@ class GastoComunController extends Controller
                                         'GastoComun.CobroIndividual',
                                         'GastoComun.TotalCobroMes',
                                         'GastoComun.FondoReserva',
-                                        'GastoComun.Fecha'
+                                        'GastoComun.Fecha',
+                                        'GastoComun.SaldoMesAnterior',
                                     )
                                     ->join('GastoMes','GastoComun.GastoMesId','=','GastoMes.Id')
                                     ->where('GastoMesId',$gastoMesId)
                                     ->where('PropiedadId',$propiedadId)
-                                    ->first();
-        // MONTO ATRASADO
-        $montoAdeudado = HistorialPago::select('MontoAPagar')
-                                ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
-                                ->where('GastoComun.GastoMesId',$gastoMesId-1)
-                                ->where('GastoComun.PropiedadId',$propiedadId)
-                                ->orderBy('FechaPago','desc') 
-                                ->get()
-                                ->first();
-
-        if($montoAdeudado == null) $montoAdeudado = 0;
-        else $montoAdeudado = $montoAdeudado->MontoAPagar;
+                                    ->first();   
 
         //ÚLTIMOS PAGOS
         $ultimosPagos = HistorialPago::select('NroDoc','TipoPago.Nombre as TipoPago','FechaPago','MontoPagado')
                                         ->join('TipoPago','HistorialPago.TipoPagoId','=','TipoPago.Id')
                                         ->join('GastoComun','HistorialPago.GastoComunId','=','GastoComun.Id')
                                         ->where('GastoComun.PropiedadId', $propiedadId)
-                                        ->where('GastoComun.GastoMesId', $gastoMesId)
                                         ->where('HistorialPago.FechaPago','<',$gastoComun->Hasta)
                                         ->limit(4)
                                         ->get();
@@ -236,6 +225,14 @@ class GastoComunController extends Controller
                                     ->where('GastoComun.PropiedadId', $propiedadId)
                                     ->sum('ReservaEspacio.Total');
 
+        $gastosComunesChart = GastoComun::select('TotalCobroMes','SaldoMesAnterior','Fecha')
+                                    ->where('PropiedadId',$propiedadId)
+                                    ->where('EstadoGastoId','!=',3)
+                                    ->limit(13)
+                                    ->orderBy('Fecha','asc')
+                                    ->get();
+        
+
         return view('gastocomun.verdetalle')->with([ 
             'comunidadId' => $comunidadId,
             'comunidades'=> $comunidades,
@@ -246,11 +243,11 @@ class GastoComunController extends Controller
             'copropietario' => $copropietario,
             'residente' => $residente,
             'gastoComun' => $gastoComun,
-            'montoAdeudado' => $montoAdeudado,
             'cobrosIndividuales' => $cobrosIndividuales,
             'reservas' => $reservas,
             'totalReservas' => $totalReservas,
-            'ultimosPagos' => $ultimosPagos
+            'ultimosPagos' => $ultimosPagos,
+            'gastosComunesChart' => $gastosComunesChart
         ]);
     }
 

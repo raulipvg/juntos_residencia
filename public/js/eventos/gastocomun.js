@@ -122,9 +122,9 @@ $(document).ready(function() {
         e.preventDefault();
 
         let tr = e.target.closest('tr');
-        let row = miTabla.row(tr);
+        //let row = miTabla.row(tr);
             $(tr).remove();
-            console.log(tr)
+            //console.log(tr)
     });
 
 

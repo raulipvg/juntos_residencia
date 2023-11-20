@@ -60,7 +60,7 @@
 										<div class="d-flex justify-content-between flex-column flex-sm-row mb-1 d-flex align-items-center">
 											<div class="flex-fill">
 											
-												<h4 class="fw-bolder text-gray-800 fs-2qx text-uppercase"  >GASTOS COMUNES {{ $gastoComun->Fecha->formatLocalized('%B %Y') }}</h4>
+												<h4 class="fw-bolder text-gray-800 fs-2qx text-uppercase">GASTOS COMUNES {{ $gastoComun->Fecha->formatLocalized('%B %Y') }}</h4>
 												<div class="d-flex flex-row gap-7 gap-md-10 fw-bold mb-2 ps-2">
 														<div class="flex-root d-flex flex-column">
 															<span class="text-muted">Folio N</span>
@@ -84,20 +84,9 @@
 											<div class="text-sm-end">
 												<!--begin::Text-->
 												<div class="text-sm-end fw-semibold fs-6 text-muted border border-2 border-dashed p-2 rounded">
-													<div>Comunidad de Copropietarios del {{ $comunidadGC->Tipo }} <div class="text-capitalize">{{ $comunidadGC->Nombre }}</div></div>
-                                                    @php
-														use Illuminate\Support\Str;
-															function darFormatoRut($rut){
-																$rutSinFormato = $rut;
-																$rutSinGuion = str_replace('-', '', $rutSinFormato);
-																$numero = substr($rutSinGuion, 0, -1);
-																$dv = substr($rutSinGuion, -1);
-																$numeroFormateado = number_format($numero, 0, '', '.');
-																$rutFormateado = $numeroFormateado . '-' . $dv;	
-																return $rutFormateado;
-															}																															
-													@endphp
-													<div>@php $resultado = darFormatoRut($comunidadGC->RUT);echo $resultado @endphp</div>
+													<div>Comunidad de Copropietarios del {{ucwords($comunidadGC->Tipo) }} <div>{{ ucwords($comunidadGC->Nombre) }}</div></div>
+                                                    
+													<div>{{$comunidadGC->RUT}}</div>
                                                     <div>{{ $comunidadGC->Domicilio }}</div>
 													<div>Telefono {{ $comunidadGC->Telefono }}</div>
 												</div>
@@ -112,15 +101,17 @@
 													<div class="flex-root d-flex flex-column align-self-center">
 															<div class="d-flex flex-row flex-wrap justify-content-between">
 															<span class="text-muted">Copropietario: </span>
-															<span class="text-dark text-capitalize "> {{ $copropietario->Nombre }} {{ $copropietario->Apellido }} (@php $resultado = darFormatoRut($copropietario->RUT);echo $resultado @endphp)</span>
+															<span class="text-dark">{{ ucwords($copropietario->Nombre) }} {{ ucwords($copropietario->Apellido) }} ({{$copropietario->RUT}})</span>
 														</div>
 														<div class="d-flex  flex-row flex-wrap justify-content-between">
                                                         	<span class="text-muted">Residente: </span>
-															<span class="text-dark text-capitalize "> {{ $residente->Nombre }} {{ $residente->Apellido }} (@php $resultado = darFormatoRut($residente->RUT);echo $resultado @endphp)</span>
+															@if ($residente != null)
+															<span class="text-dark"> {{ ucwords($residente->Nombre) }} {{ ucwords($residente->Apellido) }} ({{$residente->RUT}})</span>
+															@endif
 														</div>
 														<div class="d-flex flex-row flex-wrap justify-content-between">
 															<span class="text-muted">Unidad Copropiedad: </span>
-															<span class="text-dark text-capitalize "> {{ $propiedadGC->Tipo }} {{ $propiedadGC->Numero }}</span>
+															<span class="text-dark"> {{ ucwords($propiedadGC->Tipo) }} {{ strtoupper($propiedadGC->Numero) }}</span>
 														</div>
 														<div class="d-flex flex-row flex-wrap justify-content-between">
 															<span class="text-muted">Prorrateo: </span>
@@ -197,7 +188,10 @@
 																	<td class="p-1"></td>
 																	<td class="p-1 ps-5 ">
 																		<div class="d-flex justify-content-between text-end text-dark">
-																			$ <span>{{ number_format($gastoComun->TotalCobroMes, 0, '', '.') }}</span>
+																			@php
+																				$TGM= $gastoComun->TotalCobroMes - $gastoComun->SaldoMesAnterior;
+																			@endphp
+																			$ <span>{{ number_format($TGM, 0, '', '.') }}</span>
 																		</div>																
 																	</td>
 																</tr>
@@ -240,9 +234,15 @@
 																			</div>
 																		</div>
 																	</td>
+																	@php
+																		$totalCobrosIndividuales=0;
+																		foreach($cobrosIndividuales as $cobro){
+																			$totalCobrosIndividuales = $totalCobrosIndividuales +$cobro->MontoTotal;
+																		}
+																	@endphp
 																	<td class="p-1">
 																		<div class="d-flex justify-content-between fw-bold">
-																			$ <span>{{ number_format($gastoComun->CobroIndividual, 0, '', '.') }}</span>
+																			$ <span>{{ number_format($totalCobrosIndividuales, 0, '', '.') }}</span>
 																		</div>
 																	</td>
 																	<td class="p-1 text-end"></td>
@@ -310,7 +310,7 @@
 																	<td colspan="2" class="p-1 text-end text-uppercase text-dark">Total Gastos del Mes</td>
 																	<td class="p-1 ps-5 ">
 																		<div class="d-flex justify-content-between fw-bold">
-																			$ <span>{{ number_format($gastoComun->TotalCobroMes, 0, '', '.') }}</span>
+																			$ <span>{{ number_format($TGM, 0, '', '.') }}</span>
 																		</div>
 																	</td>
 																</tr>
@@ -318,7 +318,7 @@
 																	<td colspan="2" class="p-1 text-end text-uppercase text-dark">SALDO ANTERIOR</td>
 																	<td class="p-1 ps-5">
 																		<div class="d-flex justify-content-between">
-																			$ <span>{{ $montoAdeudado }}</span>
+																			$ <span>{{ number_format($gastoComun->SaldoMesAnterior, 0, '', '.') }}</span>
 																		</div>
 																	</td>
 																</tr>
@@ -345,7 +345,7 @@
 																	<div class="fw-bold text-gray-800 fs-6 text-capitalize">{{ $comunidadGC->Nombre }}</div>
 																</div>
 																<div class="col">
-																	<div class="fw-semibold text-gray-600 fs-7">Rut:</div>
+																	<div class="fw-semibold text-gray-600 fs-7">Rut:</div>																	
 																	<div class="fw-bold text-gray-800 fs-6">{{ $comunidadGC->RUT }}</div>
 																</div>
 															</div>
@@ -450,24 +450,31 @@
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
-
+	
     <script>
+		
 $(document).ready(function() {
+
+	
+
+
 
 	$("#imprimir-gasto").click( function (e){
 			imprimirGastoComun();
+		
+			//imprimirGastoComun();
 	});
 
 		function imprimirGastoComun() {
             const divToPrint = document.getElementById('gasto-comun');
             
-            html2canvas(divToPrint, { scale: 4 }).then(canvas => {
+            html2canvas(divToPrint, { scale: 3}).then(canvas => {
                 var newWin = window.open('', '_blank');
                 newWin.document.write('<html><head><title>GC_Deptartamento 202-C</title></head><body>');
                 newWin.document.write('<img src="' + canvas.toDataURL() + '" style="width:100%;"/>');
                 newWin.document.write('</body></html>');
                 newWin.document.close();
-
+				
 				setTimeout(function() {
 					newWin.print();
 					}, 500);
@@ -483,9 +490,29 @@ $(document).ready(function() {
 
 		// Define fonts
 		var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
+		
+		var gastosComunesChart =  @json($gastosComunesChart);
+		//console.log(gastosComunesChart)
+		let labels = [];
+		let data2 = [];
 
+		for(let clave in gastosComunesChart){
+			if(gastosComunesChart.hasOwnProperty(clave)){
+				var fecha = gastosComunesChart[clave].Fecha;
+				var fechaObj = new Date(fecha);
+				let mesesAbreviados = [
+					'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+					];
+				let mesAbreviado = mesesAbreviados[fechaObj.getMonth()];
+				labels.push(mesAbreviado)
+				data2.push(gastosComunesChart[clave].TotalCobroMes - gastosComunesChart[clave].SaldoMesAnterior )
+			}
+		}
+		//console.log(labels)
+		//console.log(data2)
 		// Chart labels
-		const labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic','Ene'];
+		//const labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic','Ene'];
 
 
 		// Chart data
@@ -493,7 +520,7 @@ $(document).ready(function() {
 		labels: labels,
 		datasets: [{
 			label: 'Gastos',
-			data: [65000, 59000, 80000, 81000, 56000, 55000, 40000, 80000, 81000, 56000, 55000, 40000, 34875],
+			data:data2,
 			backgroundColor: [
 				'rgba(0, 0, 0, 0.6)',// NEGRO
 				'rgba(255, 99, 132, 0.6)', //ROJO
