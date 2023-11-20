@@ -87,9 +87,7 @@ class GastoComunController extends Controller
                                 ->get();
 
         }
-        
-        
-        
+          
          // SI ES POR LLAMADA AJAX SELECT2
          if($flag){            
             return view('gastocomun._vergastocomun', 
@@ -113,9 +111,14 @@ class GastoComunController extends Controller
 
     public function VerDetalle(Request $request){
          //FALTA SEGUN USER
-        $propiedadId = 36;
-        $comunidadId= 12;
-        $gastoMesId = 15;
+         //$request = $request->input("data");
+        $g = $request->input('g');
+        $p = $request->input('p');
+        $c = $request->input('c');
+
+        $propiedadId = $p;
+        $comunidadId= $c;
+        $gastoMesId = $g;
 
          //setlocale(LC_TIME, 'es_ES.utf8');
          //Para colocar el nombre del mes en español 

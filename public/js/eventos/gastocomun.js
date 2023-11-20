@@ -60,7 +60,8 @@ $(document).ready(function() {
 
     });
 
-    $("#tabla-gasto-comun tbody").on("click",'.ver-cobro-invididual', function (e) {
+    $(document).on("click", "#tabla-gasto-comun tbody .ver-cobro-invididual", function (e) {
+
         e.preventDefault();
         e.stopPropagation();
         //console.log("ver cobro invidividual")
@@ -123,7 +124,26 @@ $(document).ready(function() {
         let tr = e.target.closest('tr');
         let row = miTabla.row(tr);
             $(tr).remove();
-        console.log(tr)
+            console.log(tr)
+    });
+
+
+    $(document).on("click", "#tabla-gasto-comun tbody .ver-detalle", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("ver DETALLE")
+
+        let tr = e.target.closest('tr');
+        g= $("#GastoMesIdInput").val();
+        p= $(tr).attr("data-info");
+        c= $("#ComunidadInput").val();
+
+        var redirectUrl = VerDetalle+"/" + '?g=' + g + '&p=' + p + '&c=' + c;
+        window.open(redirectUrl, '_blank');
+        //window.location.href = redirectUrl;    
     });
 
 });
+
+
+

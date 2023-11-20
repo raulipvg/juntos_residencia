@@ -53,7 +53,7 @@
                         @foreach ( $gastoscomunes as $detalle )
                             <tr data-info = "{{$detalle->Id }}">
                                 <td class="text-capitalize fw-bold table-active p-1">{{ $detalle->Nombre }} {{ $detalle->Apellido }}</td>
-                                <td class="text-capitalize fw-bold  p-1">{{ $detalle->Numero }}</td>
+                                <td class="text-capitalize fw-bold  p-1 ver-detalle">{{ $detalle->Numero }}</td>
                                 <td class="p-1">{{ $detalle->Prorrateo }}%</td>
                                 <td class="p-1">
                                     <div class="d-flex justify-content-between align-items-center ps-md-7">
@@ -147,6 +147,6 @@
                         </tr>
                     </tfoot>
                 </table>
-                <script src="{{ asset('js/datatables/contenido/gastocomun.js?id=1') }}"></script>
+                <script src="{{ asset('js/datatables/contenido/gastocomun.js?id=2') }}"></script>
 
                 

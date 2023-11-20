@@ -16,6 +16,9 @@ border-top-right-radius: 20px !important;
 .ver-cobro-invididual {
     cursor: pointer;
 }
+.ver-detalle {
+    cursor: pointer;
+}
 </style>
 @endpush
 
@@ -128,7 +131,7 @@ border-top-right-radius: 20px !important;
                         @foreach ( $gastoscomunes as $detalle )
                             <tr data-info = "{{$detalle->Id }}">
                                 <td class="text-capitalize fw-bold table-active p-1">{{ $detalle->Nombre }} {{ $detalle->Apellido }}</td>
-                                <td class="text-capitalize fw-bold  p-1">{{ $detalle->Numero }}</td>
+                                <td class="text-capitalize fw-bold  p-1 ver-detalle">{{ $detalle->Numero }}</td>
                                 <td class="p-1">{{ $detalle->Prorrateo }}%</td>
                                 <td class="p-1">
                                     <div class="d-flex justify-content-between align-items-center ps-md-7">
@@ -239,6 +242,7 @@ border-top-right-radius: 20px !important;
     <script>
         const VerGastosComunes = "{{ route('VerGastosComunes') }}"
         const VerCobro2 = "{{ route('VerCobro2') }}";
+        const VerDetalle = "{{ route('VerDetalle')}}";
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
     

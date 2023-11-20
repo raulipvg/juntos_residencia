@@ -47,6 +47,14 @@
                     </table>
                 
         </div>
+        <script>
+             $("#tabla-gasto-comun tbody").on("click",'.cerrar-cobro', function (e) {
+                e.preventDefault();
+                let tr = e.target.closest('tr');
+                //let row = miTabla.row(tr);
+                $(tr).remove();
+            });
+        </script>
 
 
 
