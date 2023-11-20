@@ -109,7 +109,7 @@
                                         <div class="btn-group btn-group-sm" role="group">
                                             <button type="button" class="btn btn-sm btn-success VerRegistro" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Registro" info="{{ $gastoComun->Id }}" state="{{$estadoPagoActual->EstadoPagoId}}">Ver</button>
                                             @if($estadoPagoActual->EstadoPagoId < 3)
-                                                <button type="button" class="btn btn-sm btn-primary  NuevoPago" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Pago" info="{{ $gastoComun->Id }}" > <i class="ki-outline ki-plus fs-2" ></i></button>
+                                                <button type="button" class="btn btn-sm btn-warning  NuevoPago" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Pago" info="{{ $gastoComun->Id }}" > <i class="ki-outline ki-plus fs-2" ></i></button>
                                             @endif    
                                         </div>
                                     </td>

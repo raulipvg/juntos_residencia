@@ -20,7 +20,7 @@
             <!--begin::Aside-->
             <div id="kt_aside" class="aside overflow-visible pb-5 pt-5 pt-lg-0" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'80px', '300px': '100px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_mobile_toggle">
                 <!--begin::Brand-->
-                <div class="aside-logo py-8" id="kt_aside_logo">
+                <div class="aside-logo pt-6" id="kt_aside_logo">
                     <!--begin::Logo-->
                     <a href="{{route('Home') }}" class="d-flex align-items-center">
                         <img alt="JuntosResidencia Logo" src="{{ asset('img/JRlogo.svg')}}" class="h-140px h-lg-150px logo"  />
@@ -230,14 +230,14 @@
                 <div class="aside-footer flex-column-auto" id="kt_aside_footer">
                     <!--begin::Menu-->
                     <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btm-sm btn-icon btn-custom btn-active-color-primary" data-kt-menu-trigger="click" data-kt-menu-overflow="true" data-kt-menu-placement="top-start" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Quick actions">
+                        <button type="button" class="btn btm-sm btn-icon btn-custom btn-active-color-primary" data-kt-menu-trigger="click" data-kt-menu-overflow="true" data-kt-menu-placement="top-start" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Sesion">
                             <i class="ki-outline ki-notification-status fs-1"></i>
                         </button>
                         <!--begin::Menu 2-->
                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions</div>
+                                <div class="menu-content fs-6 text-dark fw-bold px-3 py-4 text-capitalize">{{ auth()->user()->Nombre}} {{ auth()->user()->Apellido}}</div>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu separator-->
@@ -245,46 +245,7 @@
                             <!--end::Menu separator-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="#" class="menu-link px-3">New Ticket</a>
-                            </div>
-                            <!--end::Menu item-->
-                            <!--begin::Menu item-->
-                            <div class="menu-item px-3">
-                                <a href="#" class="menu-link px-3">New Customer</a>
-                            </div>
-                            <!--end::Menu item-->
-                            <!--begin::Menu item-->
-                            <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
-                                <!--begin::Menu item-->
-                                <a href="#" class="menu-link px-3">
-                                    <span class="menu-title">New Group</span>
-                                    <span class="menu-arrow"></span>
-                                </a>
-                                <!--end::Menu item-->
-                                <!--begin::Menu sub-->
-                                <div class="menu-sub menu-sub-dropdown w-175px py-4">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">Admin Group</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">Staff Group</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">Member Group</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                </div>
-                                <!--end::Menu sub-->
-                            </div>
-                            <!--end::Menu item-->
-                            <!--begin::Menu item-->
-                            <div class="menu-item px-3">
-                                <a href="#" class="menu-link px-3">New Contact</a>
+                                <a href="#" class="menu-link px-3">Perfil</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu separator-->
@@ -337,9 +298,7 @@
                                 <!--begin::Activities-->
                                 <div class="d-flex align-items-center ms-1 ms-lg-3">
                                     <!--begin::Drawer toggle-->
-                                    <div class="" id="">
-                                        <h2 class="text-capitalize">{{ auth()->user()->Nombre}} {{ auth()->user()->Apellido}}</h2 >
-                                    </div>
+                                    
                                     <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_activities_toggle">
                                         <i class="ki-outline ki-notification-bing fs-1"></i>
                                     </div>
