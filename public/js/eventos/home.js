@@ -227,4 +227,29 @@ $(document).ready(function() {
         var myChart = new Chart(ctx, config);
     }
 
+
+    // Evento de select2 de comunidad
+    $('#ComunidadInput').on('select2:select', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        c = $("#ComunidadInput").val();
+ 
+        var redirectUrl = Home + "/" + '?&c=' + c;
+        window.location.href = redirectUrl;
+ 
+    })
+
+    // Evento de select2 de gastomes
+    $('#GastoMesIdInput').on('select2:select', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        c = $("#ComunidadInput").val();
+        g = $("#GastoMesIdInput").val();
+
+        console.log(c+", "+g)
+ 
+        var redirectUrl = Home + "/" + '?&c=' + c + "&g=" + g;
+        window.location.href = redirectUrl;
+ 
+    })
 });

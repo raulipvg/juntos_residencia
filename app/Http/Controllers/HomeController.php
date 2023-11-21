@@ -8,6 +8,7 @@ use App\Models\GastoMe;
 use App\Models\Compone;
 use App\Models\HistorialPago;
 use App\Models\GastosDetalle;
+use App\Models\GastoComun;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,18 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function Index(Request $request){
-        if($request->input('c') != null && $request->input('g') != null){
-            $comunidadId = $request->input('c');
-            $gastoMesId = $request->input('g');
+        $comunidadId = $request->input('c');
+        $gastoMesId = $request->input('g');
+        if(isset($comunidadId)){
+            $gastosMeses = GastoMe::select('Id','Fecha','FechaFin','EstadoId')
+                                    ->where('ComunidadId', $comunidadId)
+                                    //->where('EstadoId', 2)
+                                    ->latest('Fecha')
+                                    ->get();
+            if(!isset($gastoMesId)){
+                
+                $gastoMesId = $gastosMeses->first()->Id;
+            }
         }
         else{
             $comunidadId = 12;               //FALTA SEGUN USER
@@ -27,8 +37,8 @@ class HomeController extends Controller
                                     //->where('EstadoId', 2)
                                     ->latest('Fecha')
                                     ->get();
-            //$gastoMesId = $gastosMeses->first()->Id;
-            $gastoMesId =17;
+            $gastoMesId = $gastosMeses->first()->Id;
+            //$gastoMesId =17;
         }
         setlocale(LC_ALL, 'es');         
         //TODAS LAS COMUNIDADES HABILITADAS
@@ -89,9 +99,95 @@ class HomeController extends Controller
                                     ->groupBy('EstadoPago.Nombre')
                                     ->get();
 
+        $pagosCompletados = HistorialPago::select(DB::raw('COUNT("HistorialPago"."EstadoPagoId")'), 'EstadoPago.Nombre')
+                                        ->join('EstadoPago', 'HistorialPago.EstadoPagoId', 'EstadoPago.Id')
+                                        ->join('GastoComun', 'GastoComun.Id', '=', 'HistorialPago.GastoComunId')
+                                        ->join('GastoMes', 'GastoMes.Id', '=', 'GastoComun.GastoMesId')
+                                        ->leftJoin(DB::raw('(SELECT "GastoComunId", MAX("FechaPago") as "MaxFechaPago" FROM "HistorialPago" GROUP BY "GastoComunId") "hp"'), function ($join) {
+                                            $join->on('GastoComun.Id', '=', 'hp.GastoComunId');
+                                        })
+                                        ->where('GastoMes.ComunidadId', $comunidadId)
+                                        ->where('HistorialPago.EstadoPagoId',3)
+                                        ->whereYear('hp.MaxFechaPago', $fechaActual->Fecha)
+                                        ->whereMonth('hp.MaxFechaPago', $fechaActual->Fecha)
+                                        ->groupBy('EstadoPago.Nombre')
+                                        ->first();
+/*
+        $pagosAbonados = HistorialPago::select('HistorialPago.Id', 'EstadoPago.Nombre')
+                                        ->join('EstadoPago', 'HistorialPago.EstadoPagoId', 'EstadoPago.Id')
+                                        ->join('GastoComun', 'GastoComun.Id', '=', 'HistorialPago.GastoComunId')
+                                        ->join('GastoMes', 'GastoMes.Id', '=', 'GastoComun.GastoMesId')
+                                        ->leftJoin(DB::raw('(SELECT "GastoComunId", MAX("FechaPago") as "MaxFechaPago" FROM "HistorialPago" GROUP BY "GastoComunId") "hp"'), function ($join) {
+                                            $join->on('GastoComun.Id', '=', 'hp.GastoComunId');
+                                        })
+                                        ->where('GastoMes.ComunidadId', $comunidadId)
+                                        ->whereRaw('"HistorialPago"."MontoPagado" < "HistorialPago"."MontoAPagar"')
+                                        ->whereYear('hp.MaxFechaPago', $fechaActual->Fecha)
+                                        ->whereMonth('hp.MaxFechaPago', $fechaActual->Fecha)
+                                        //->groupBy('EstadoPago.Nombre')
+                                        ->get();
 
+        $pagosFacturados = HistorialPago::select("EstadoPagoId")
+                                        ->join('EstadoPago', 'HistorialPago.EstadoPagoId', 'EstadoPago.Id')
+                                        ->join('GastoComun', 'GastoComun.Id', '=', 'HistorialPago.GastoComunId')
+                                        ->join('GastoMes', 'GastoMes.Id', '=', 'GastoComun.GastoMesId')
+                                        ->where('GastoMes.ComunidadId', $comunidadId)
+                                        ->where('HistorialPago.EstadoPagoId',1)
+                                        ->where('FechaPago',null)
+                                        ->groupBy('EstadoPago.Nombre')
+                                        ->count();
+                                    
+        $cantidadPersonasPorEstado = HistorialPago::select(DB::raw('COUNT("HistorialPago"."EstadoPagoId")'), 'EstadoPago.Nombre')
+                                    ->join('EstadoPago', 'HistorialPago.EstadoPagoId', 'EstadoPago.Id')
+                                    ->join('GastoComun', 'GastoComun.Id', '=', 'HistorialPago.GastoComunId')
+                                    ->join('GastoMes', 'GastoMes.Id', '=', 'GastoComun.GastoMesId')
+                                    ->leftJoin(DB::raw('(SELECT "GastoComunId", MAX("FechaPago") as "MaxFechaPago" FROM "HistorialPago" GROUP BY "GastoComunId") "hp"'), function ($join) {
+                                        $join->on('GastoComun.Id', '=', 'hp.GastoComunId');
+                                    })
+                                    ->where('GastoMes.ComunidadId', $comunidadId)
+                                    ->whereYear('hp.MaxFechaPago', $fechaActual->Fecha)
+                                    ->whereMonth('hp.MaxFechaPago', $fechaActual->Fecha)
+                                    ->groupBy('EstadoPago.Nombre')
+                                    ->get();
+*/
+        //propiedades con dueño
+        $propiedadesOcupadas = Compone::select('Compone.Id')
+                                        ->join('Propiedad','Compone.PropiedadId','Propiedad.Id')
+                                        ->where('Propiedad.ComunidadId',$comunidadId)
+                                        ->where('RolComponeCoReId',1)
+                                        ->where('Compone.Enabled',1)
+                                        ->get();
 
+        $fondoReserva = GastoMe::select('FondoReserva')
+                                        ->where('GastoMes.Id',$gastoMesId)
+                                        ->get();
         
+        $morosidad = GastoComun::select('GastoComun.SaldoMesAnterior','Persona.Nombre','Persona.Apellido','Propiedad.Numero')
+                                ->join('Propiedad','GastoComun.PropiedadId','=','Propiedad.Id')
+                                ->join('Compone','Propiedad.Id','=','Compone.PropiedadId')
+                                ->join('Persona','Persona.Id','=','Compone.PersonaId')
+                                ->where('Compone.RolComponeCoReId',1)
+                                ->where('Compone.Enabled',1)
+                                ->where('GastoComun.GastoMesId', $gastoMesId)
+                                ->where('GastoComun.SaldoMesAnterior','<>',0)
+                                ->get();
+
+        $evolucionIngresos = HistorialPago::select(DB::raw('SUM("HistorialPago"."MontoPagado") as TotalMontoPagado'), 'GastoMes.Fecha')
+                                ->join('GastoComun', 'GastoComun.Id', '=', 'HistorialPago.GastoComunId')
+                                ->join('GastoMes', 'GastoMes.Id', '=', 'GastoComun.GastoMesId')
+                                ->where('GastoMes.ComunidadId', $comunidadId)
+                                ->where('GastoMes.Id', '<=', $gastoMesId)
+                                ->groupBy('GastoMes.Id', 'GastoMes.Fecha')
+                                ->limit(12)
+                                ->get();
+                            
+
+        $evolucionEgresos = GastoMe::select('TotalMes','Fecha')
+                                ->where('GastoMes.ComunidadId', $comunidadId)
+                                ->where('GastoMes.Id','<=', $gastoMesId)
+                                ->limit(12)
+                                ->get();
+
         return View('home.home')->with([
             'comunidades'=> $comunidades,
             'comunidadId'=> $comunidadId,
@@ -105,6 +201,11 @@ class HomeController extends Controller
             'gastosmeses'=> $gastosMeses,
             'gasto' => $gastoMesId,
             'fecha'=> $fechaActual,
+            'propiedadesOcupadas' => $propiedadesOcupadas,
+            'fondoReserva' => $fondoReserva,
+            'morosidad' => $morosidad,
+            'evolucionIngresos' => $evolucionIngresos,
+            'evolucionEgresos' => $evolucionEgresos
         ]);
     }
 }

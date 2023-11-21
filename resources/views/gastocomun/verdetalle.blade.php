@@ -23,8 +23,10 @@
             </div>
 			<div class="w-md-125px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
                 <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
-                    @foreach ($gastosmeses as $gastomes )
-                        <option data-info="{{$gastomes->EstadoId }}" value="{{ $gastomes->Id }}" @if ( $gastomes->Id == $gasto->Id ) selected @endif >{{ $gastomes->Fecha->format('m-Y') }} </option>
+				@foreach ($gastosmeses as $gastomes )
+						@if($gastomes->EstadoId == 2)
+                        <option data-info="{{ $gastomes->EstadoId }}" value="{{ $gastomes->Id }}" @if ($gastomes->Id == $gasto->Id) selected @endif>{{ $gastomes->Fecha->format('m-Y') }} </option>
+						@endif
                     @endforeach
                 </select>
             </div> 
@@ -32,10 +34,12 @@
         <!--end::Page title-->
         <!--begin::Action group-->
         <div class="d-flex align-items-center flex-wrap" style="width: 200px;" >
-			<select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
+			<select id="ComunidadInput" name="Comunidad" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" disabled >
                 <option></option>
-                @foreach($comunidades as $comunidad)                          
+                @foreach($comunidades as $comunidad)
+					@if($comunidad->Id == $comunidadId)
                 	<option @if($comunidadId == $comunidad->Id) selected  @endif value="{{ $comunidad->Id }}">{{ Str::title($comunidad->Nombre)  }}</option>
+					@endif
                 @endforeach
             </select>
         </div>
@@ -448,6 +452,8 @@
 @push('Script')
     <script>
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+		const propiedadId  = '{{ $propiedadId }}'
+		const VerDetalle = '{{ route("VerDetalle") }}'
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 	
@@ -594,4 +600,5 @@ $(document).ready(function() {
 });
 
 	</script>    
+	<script src="{{ asset('js/eventos/verdetalle.js?id=1') }}"></script>
 @endpush

@@ -177,14 +177,14 @@ class GastoComunController extends Controller
                                      ->get();
 
         //ULTIMO GASTO MES PARA UNA COMUNIDAD DETERMINADA
-        $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha','FechaFin')
+        $gasto =  GastoMe::select('Id','TotalMes','FondoReserva','Total','Fecha','FechaFin','EstadoId')
                         ->where('ComunidadId', $comunidadId)
                         ->where('EstadoId', 2)
                         ->latest('Fecha')
                         ->first();
 
         //TODOS LOS GASTOS MES PARA UNA COMUNIDAD SELECT2
-        $gastosMeses = GastoMe::select('Id','Fecha','FechaFin')
+        $gastosMeses = GastoMe::select('Id','Fecha','FechaFin','EstadoId')
                             ->where('ComunidadId', $comunidadId)
                             //->where('EstadoId', 2)
                             ->latest('Fecha')
@@ -294,7 +294,8 @@ class GastoComunController extends Controller
             'reservas' => $reservas,
             'totalReservas' => $totalReservas,
             'ultimosPagos' => $ultimosPagos,
-            'gastosComunesChart' => $gastosComunesChart
+            'gastosComunesChart' => $gastosComunesChart,
+            'propiedadId' => $propiedadId
         ]);
     }
 
