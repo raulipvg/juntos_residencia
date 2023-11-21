@@ -18,9 +18,9 @@
         <!--begin::Page-->
         <div class="page d-flex flex-row flex-column-fluid">
             <!--begin::Aside-->
-            <div id="kt_aside" class="aside overflow-visible pb-5 pt-5 pt-lg-0" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'80px', '300px': '100px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_mobile_toggle">
+            <div id="kt_aside" class="aside overflow-visible pt-lg-0" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'80px', '300px': '100px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_mobile_toggle">
                 <!--begin::Brand-->
-                <div class="aside-logo pt-6" id="kt_aside_logo">
+                <div class="aside-logo pt-4" id="kt_aside_logo">
                     <!--begin::Logo-->
                     <a href="{{route('Home') }}" class="d-flex align-items-center">
                         <img alt="JuntosResidencia Logo" src="{{ asset('img/JRlogo.svg')}}" class="h-140px h-lg-150px logo"  />
@@ -35,109 +35,104 @@
                         <!--begin::Menu-->
                         <div class="menu menu-column menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500 fw-semibold" id="#kt_aside_menu" data-kt-menu="true">
                             <!--begin:Menu item-->
-                            <div class="menu-item here show py-2">
+                            <div class="menu-item here show ">
                                 <!--begin:Menu link-->
-                                <a class="menu-link menu-center" href="{{route('Home') }}">
+                                <a class="menu-link " href="{{route('Home') }}">
                                     <span class="menu-icon me-0">
-                                        <i class="ki-outline ki-home-2 fs-2x"></i>
+                                        <i class="ki-outline ki-home-2 fs-2qx"></i>
                                     </span>
                                     <span class="menu-title">Inicio</span>
                                 </a>
                                 <!--end:Menu link-->
-                              
+                                
                             </div>
                             <!--end:Menu item-->
 
+                           @if(auth()->user()->RolId == 1)
                             <!--begin:Menu item-->
-                            <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item py-2">
-                                <!--begin:Menu link-->
-                                <span class="menu-link menu-center">
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{route('GastoMes') }}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Ingresar Gastos Mensuales">
                                     <span class="menu-icon me-0">
-                                        <i class="ki-outline ki-notification-status fs-2x"></i>
+                                    <i class="ki-duotone ki-finance-calculator fs-2qx">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                        <span class="path6"></span>
+                                        <span class="path7"></span>
+                                    </i>
                                     </span>
-                                    <span class="menu-title">Gestion</span>
-                                </span>
-                                <!--end:Menu link-->
-                                <!--begin:Menu sub-->
-                                <div class="menu-sub menu-sub-dropdown menu-sub-indention px-2 py-4 w-250px mh-75 overflow-auto">
-                                    <!--begin:Menu item-->
-                                    <div class="menu-item">
-                                        <!--begin:Menu content-->
-                                        <div class="menu-content">
-                                            <span class="menu-section fs-4 text-uppercase fw-bolder ps-1 py-1">Gestion</span>
-                                        </div>
-                                        <!--end:Menu content-->
-                                    </div>
-                                    <!--end:Menu item-->
-                                    <!--begin:Menu item-->
-                                    @if(auth()->user()->RolId == 1)
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{route('GastoMes') }}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title text-uppercase fs-7">Ingresar Gastos Mensuales</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
-                                    @endif
-                                    <!--end:Menu item-->
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{route('VerGastosComunes') }}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title text-uppercase fs-7">Planilla Gastos Comunes</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
-                                    <!--begin:Menu item-->
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{route('CobroIndividual') }}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title text-uppercase fs-7">Cobros Individuales</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
-                                    <!--end:Menu item-->
-                                    <!--begin:Menu item-->
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{route('ReservaEspacio') }}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title text-uppercase fs-7">Reserva de Espacios</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
-                                    <!--end:Menu item-->
-                                    
-                                    
-                                    <!--end:Menu item-->
-
-                                    <!--begin:Menu item-->
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{route('HistorialPago') }}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title text-uppercase fs-7">Historial de Pagos</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
-                                    <!--end:Menu item-->
-                                    
-                                    
+                                      <span class="menu-title text-center">Gastos</span>
+                                    </a>
                                 </div>
-                                <!--end:Menu sub-->
-                            </div>
+                            <!--end:Menu item-->
+                            @endif
+
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{route('VerGastosComunes') }}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Planilla Gastos Comunes">
+                                    <span class="menu-icon me-0">
+                                    <i class="ki-duotone ki-tablet-text-down fs-2qx">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                    </i>
+                                    </span>
+                                      <span class="menu-title text-center">Planilla</span>
+                                    </a>
+                                </div>
+                            <!--end:Menu item-->
+
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{route('CobroIndividual') }}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Cobros Individuales">
+                                    <span class="menu-icon me-0">
+                                    <i class="ki-duotone ki-bill fs-2qx">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                        <span class="path6"></span>
+                                    </i>
+                                </span>
+                                      <span class="menu-title text-center">Cobros</span>
+                                    </a>
+                                </div>
+                            <!--end:Menu item-->
+
+                           <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{route('ReservaEspacio') }}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Reserva Espacios Comunes">
+                                    <span class="menu-icon me-0">
+                                    <i class="ki-duotone ki-calendar-add fs-2qx">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                        <span class="path6"></span>
+                                    </i>
+                                </span>
+                                      <span class="menu-title text-center">Espacios</span>
+                                    </a>
+                                </div>
+                            <!--end:Menu item-->
+
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{route('HistorialPago') }}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Historial de Pago">
+                                    <span class="menu-icon me-0">
+                                        <i class="ki-duotone ki-folder fs-2qx">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </span>
+                                      <span class="menu-title text-center">Historial</span>
+                                    </a>
+                                </div>
                             <!--end:Menu item-->
 
                             <!--begin:Menu item-->
@@ -145,7 +140,7 @@
                                 <!--begin:Menu link-->
                                 <span class="menu-link menu-center">
                                     <span class="menu-icon me-0">
-                                        <i class="ki-outline ki-wrench fs-2x"></i>
+                                        <i class="ki-outline ki-wrench fs-2hx"></i>
                                     </span>
                                     <span class="menu-title">Admin</span>
                                 </span>
@@ -156,7 +151,7 @@
                                     <div class="menu-item">
                                         <!--begin:Menu content-->
                                         <div class="menu-content">
-                                            <span class="menu-section fs-4 text-uppercase fw-bolder ps-1 py-1">Mantenedores</span>
+                                            <span class="menu-section fs-3 text-uppercase fw-bolder ps-1 py-1">Mantenedores</span>
                                         </div>
                                         <!--end:Menu content-->
                                     </div>
@@ -210,11 +205,7 @@
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
-
-                                    
-                                    
-                                    
-                                    
+   
                                 </div>
                                 <!--end:Menu sub-->
                             </div>
@@ -231,7 +222,12 @@
                     <!--begin::Menu-->
                     <div class="d-flex justify-content-center">
                         <button type="button" class="btn btm-sm btn-icon btn-custom btn-active-color-primary" data-kt-menu-trigger="click" data-kt-menu-overflow="true" data-kt-menu-placement="top-start" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Sesion">
-                            <i class="ki-outline ki-notification-status fs-1"></i>
+                            <i class="ki-duotone ki-profile-circle fs-2x">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                            </i>
+                            <span class="menu-title text-center">Perfil</span>
                         </button>
                         <!--begin::Menu 2-->
                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
