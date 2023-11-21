@@ -67,7 +67,7 @@
 <div class="d-flex flex-column flex-column-fluid">
     <div class="row m-3">
         <div class="col-xl-2 col-md-3 col-6 mb-2">
-            <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-100" style="background-color: #6a6a6a8a;">
+            <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-100" style="background-color: #404040;">
             <div class="card-header pt-2 px-5">
                 <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
                     <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">90</span>
@@ -189,7 +189,7 @@
                         <span class="text-gray-400 mt-1 fw-semibold fs-6">Agosto</span>
                     </h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body py-3">
                     <canvas id="gastos-tipo" class="mh-400px"></canvas>
                 </div>
             </div>
@@ -203,7 +203,7 @@
                         <span class="text-gray-400 mt-1 fw-semibold fs-6">Agosto</span>
                     </h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body py-3">
                     <canvas id="grafico-cobranza" class="mh-400px"></canvas>
                 </div>
             </div>
@@ -217,7 +217,7 @@
                         <span class="text-gray-400 mt-1 fw-semibold fs-6">Agosto</span>
                     </h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body py-2">
                     <table id="tabla-morosidad" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
                         <thead>
                             <tr class="fw-bolder text-uppercase table-dark text-white">
@@ -288,7 +288,7 @@
                         <span class="text-gray-400 mt-1 fw-semibold fs-6">Agosto</span>
                     </h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body py-3">
                     <canvas id="grafico-ingresos-egresos" class="mh-400px"></canvas>
                 </div>
             </div>

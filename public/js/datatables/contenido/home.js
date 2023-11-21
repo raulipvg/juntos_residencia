@@ -250,7 +250,7 @@ var miTabla = $('#tabla-morosidad').DataTable({
     "responsive": false,
     "initComplete": function() {
         $('.filtro').children().addClass('btn-group-sm')
-        $('#tabla-gasto-comun_filter').addClass('p-0 mb-2')
+        $('#tabla-morosidad_filter').addClass('p-0 mb-2')
     }
     //"scrollX": true
 });

@@ -168,15 +168,15 @@ $(document).ready(function() {
             datasets: [{
                 label: 'Ingresos',
                 data: [30, 50, 100, 75, 45, 60, 80, 90, 110, 95, 70, 85],
-                backgroundColor: 'rgba(75, 192, 192, 0.6)', // Color de fondo para ingresos
-                borderColor: 'rgb(75, 192, 192)', // Color del borde para ingresos
+                backgroundColor: 'rgba(80, 205, 137, 0.6)', // Color de fondo para ingresos
+                borderColor: 'rgb(80, 205, 137)', // Color del borde para ingresos
                 borderWidth: 2,
                 hoverOffset: 4,
             }, {
                 label: 'Egresos',
                 data: [20, 40, 80, 55, 35, 50, 70, 80, 100, 85, 60, 75], // Datos de egresos
-                backgroundColor: 'rgba(255, 99, 132, 0.6)', // Color de fondo para egresos
-                borderColor: 'rgb(255, 99, 132)', // Color del borde para egresos
+                backgroundColor: 'rgba(239, 99, 133, 0.6)', // Color de fondo para egresos
+                borderColor: 'rgb(239, 99, 133)', // Color del borde para egresos
                 borderWidth: 2,
                 hoverOffset: 4
             }

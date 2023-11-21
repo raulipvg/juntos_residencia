@@ -14,7 +14,9 @@
     border-top-left-radius: 20px!important;
     border-top-right-radius: 20px !important;
 }
-
+.bg-dark-2{
+    background-color: #404040;
+}
 @media  ( min-width: 768px) {
   .top-md {
     position: relative;
@@ -144,12 +146,12 @@
                                 <!--begin::Item-->
                                 <div class="accordion-item rounded-top-1">
                                     <!--begin::Header-->
-                                    <div class="accordion-header py-2 d-flex bg-gray-300 rounded-top-1" data-bs-toggle="collapse" data-bs-target="#accordion-gastos-adm" aria-expanded="false">
+                                    <div class="accordion-header py-2 d-flex bg-dark-2 rounded-top-1" data-bs-toggle="collapse" data-bs-target="#accordion-gastos-adm" aria-expanded="false">
                                         <span class="accordion-icon"><i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i></span>
                                         <div class="col-12 pe-5">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Administración</h3>
-                                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">
+                                                <h3 class="fs-3 fw-bold mb-0 text-white text-uppercase">Gastos de Administración</h3>
+                                                <div class="fs-3 fw-bold mb-0 pe-7 text-white text-uppercase">
                                                     $ {{ number_format($gasto->TotalAdm, 0, '', '.')}}                                    
                                                 </div>
                                             </div>
@@ -281,12 +283,12 @@
                                 <!--begin::Item-->
                                 <div class="accordion-item">
                                     <!--begin::Header-->
-                                    <div class="accordion-header py-2 d-flex bg-gray-300 collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-gasto-uso" aria-expanded="false">
+                                    <div class="accordion-header py-2 d-flex bg-dark-2 collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-gasto-uso" aria-expanded="false">
                                         <span class="accordion-icon"><i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i></span>
                                         <div class="col-12 pe-5">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Uso o Consumo</h3>
-                                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ {{ number_format($gasto->TotalConsumo, 0, '', '.') }}</div>
+                                                <h3 class="fs-3 fw-bold mb-0 text-white text-uppercase">Gastos de Uso o Consumo</h3>
+                                                <div class="fs-3 fw-bold mb-0 pe-7 text-white text-uppercase">$ {{ number_format($gasto->TotalConsumo, 0, '', '.') }}</div>
                                             </div>
                                         </div>   
                                     </div>
@@ -341,12 +343,12 @@
                                 <!--begin::Item-->
                                 <div class="accordion-item">
                                     <!--begin::Header-->
-                                    <div class="accordion-header py-2 d-flex bg-gray-300 collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-gasto-mantencion" aria-expanded="false">
+                                    <div class="accordion-header py-2 d-flex bg-dark-2 collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-gasto-mantencion" aria-expanded="false">
                                         <span class="accordion-icon"><i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i></span>
                                         <div class="col-12 pe-5">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Mantención</h3>
-                                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ {{ number_format($gasto->TotalMantencion, 0, '', '.') }}</div>
+                                                <h3 class="fs-3 fw-bold mb-0 text-white text-uppercase">Gastos de Mantención</h3>
+                                                <div class="fs-3 fw-bold mb-0 pe-7 text-white text-uppercase">$ {{ number_format($gasto->TotalMantencion, 0, '', '.') }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -397,12 +399,12 @@
                                 <!--begin::Item-->
                                 <div class="accordion-item">
                                     <!--begin::Header-->
-                                    <div class="accordion-header py-2 d-flex bg-gray-300 collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-gasto-reparacion" aria-expanded="false">
+                                    <div class="accordion-header py-2 d-flex bg-dark-2 collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-gasto-reparacion" aria-expanded="false">
                                         <span class="accordion-icon"><i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i></span>
                                         <div class="col-12 pe-5">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h3 class="fs-3 fw-bold mb-0 text-dark text-uppercase">Gastos de Reparación</h3>
-                                                <div class="fs-3 fw-bold mb-0 pe-7 text-dark text-uppercase">$ {{ number_format($gasto->TotalReparacion, 0, '', '.') }}</div>
+                                                <h3 class="fs-3 fw-bold mb-0 text-white text-uppercase">Gastos de Reparación</h3>
+                                                <div class="fs-3 fw-bold mb-0 pe-7 text-white text-uppercase">$ {{ number_format($gasto->TotalReparacion, 0, '', '.') }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -454,16 +456,16 @@
                                 <!--end::Item-->
                             </div>
                             <div class="d-flex align-items-end flex-column">
-                                <div class="d-flex flex-stack bg-gray-300 p-3 rounded-bottom-1">
+                                <div class="d-flex flex-stack bg-dark-2 p-3 rounded-bottom-1">
                                     <!--begin::Content-->
-                                    <div class="fs-3 fw-bold text-dark">
+                                    <div class="fs-3 fw-bold text-white">
                                         <span class="d-block lh-1 mb-2">Total Gastos del Mes</span>
                                         <span class="d-block mb-7">Fondo de Reserva 5%</span>
                                         <span class="d-block fs-2qx lh-1">TOTAL</span>
                                     </div>
                                     <!--end::Content-->
                                     <!--begin::Content-->
-                                    <div class="fs-3 fw-bold text-dark text-end pe-4">
+                                    <div class="fs-3 fw-bold text-white text-end pe-4">
                                         <span class="d-block lh-1 mb-2" >$ {{ number_format($gasto->TotalMes, 0, '', '.') }}</span>
                                         <span class="d-block mb-7">$ {{ number_format($gasto->FondoReserva, 0, '', '.') }}</span>
                                         <span class="d-block fs-2qx lh-1">$ {{ number_format($gasto->Total, 0, '', '.') }}</span>
