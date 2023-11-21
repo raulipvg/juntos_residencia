@@ -78,7 +78,7 @@
 
                     @foreach ($Usuarios as $usuario)
                     <tr class="center-2">
-                        <th>{{ $usuario->Id }}</th>
+                        <td>{{ $usuario->Id }}</td>
                         <td class="text-capitalize">{{ $usuario->Nombre }} {{ $usuario->Apellido }}</td>
                         <td>{{ $usuario->Username }}</td>
                         <td>{{ $usuario->Correo }}</td>
