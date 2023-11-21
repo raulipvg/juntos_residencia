@@ -1,23 +1,34 @@
 $(document).ready(function() {
-    graficoGastosTipo();
-    graficoCobranza();
+    graficoGastosTipo(dataGastosTipo);
+    graficoCobranza(dataCobranzaMes);
     graficoIngresosEgresos();
 
 
 
-    function graficoGastosTipo(){
+    function graficoGastosTipo(dataGastosTipo){
+        //console.log(dataGastosTipo)
+
         var ctx = document.getElementById('gastos-tipo');
         // Define fonts
         var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
 
         // Chart labels
-        const labels = ['Administracion', 'Uso o Consumo', 'Mantencion', 'Reparacion'];
+        //const labels = ['Administracion', 'Uso o Consumo', 'Mantencion', 'Reparacion'];
+        
+        let labels = [];
+		let data2 = [];
 
+		for(let clave in dataGastosTipo){
+			if(dataGastosTipo.hasOwnProperty(clave)){
+				labels.push(dataGastosTipo[clave].Nombre)
+				data2.push(dataGastosTipo[clave].total)
+			}
+		}
         // Chart data
         const data = {
             labels: labels,
             datasets: [{
-                data: [30000, 50000, 10000,40000],
+                data: data2,
                 backgroundColor: [
 				'rgba(0, 0, 0, 0.6)',// NEGRO
 				'rgba(255, 99, 132, 0.6)', //ROJO
@@ -86,17 +97,30 @@ $(document).ready(function() {
         var myChart = new Chart(ctx, config);
     }
 
-    function graficoCobranza(){
+    function graficoCobranza(dataCobranzaMes){
+        console.log(dataCobranzaMes)
         var ctx = document.getElementById('grafico-cobranza');
         // Define fonts
         var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
         // Chart labels
-        const labels = ['Pagado', 'Abonado', 'Impago'];
+        //const labels = ['Pagado', 'Abonado', 'Impago'];
+
+        let labels = [];
+		let data2 = [];
+
+		for(let clave in dataCobranzaMes){
+			if(dataCobranzaMes.hasOwnProperty(clave)){
+				labels.push(dataCobranzaMes[clave].Estado)
+				data2.push(dataCobranzaMes[clave].total)
+			}
+		}
+
+
         // Chart data
         const data = {
             labels: labels,
             datasets: [{
-                data: [30, 50, 100],
+                data: data2,
                 backgroundColor: [
 				'rgba(75, 192, 192, 0.6)', // CALIPSO
 				'rgba(54, 162, 235, 0.6)', //CELESTE

@@ -38,7 +38,7 @@
                 <div class="w-md-125px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
                     <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
                         @foreach ($gastosmeses as $gastomes )
-                            <option data-info="{{$gastomes->EstadoId }}" value="{{ $gastomes->Id }}" @if ( $gastomes->Id == $gasto->Id ) selected @endif >{{ $gastomes->Fecha->format('m-Y') }} </option>
+                            <option data-info="{{$gastomes->EstadoId }}" value="{{ $gastomes->Id }}" @if ( $gastomes->Id == $gasto ) selected @endif >{{ $gastomes->Fecha->format('m-Y') }} </option>
                         @endforeach
                     </select>
                 </div>
@@ -70,7 +70,7 @@
             <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-100" style="background-color: #404040;">
             <div class="card-header pt-2 px-5">
                 <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                    <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">90</span>
+                    <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">{{$propiedadesActivas}}</span>
                     <span class="text-white opacity-75 fw-semibold fs-6">Propiedades Activas</span>
                 </div>
             </div>
@@ -79,12 +79,12 @@
 					<div class="d-flex fw-semibold align-items-center">
                         <div class="bullet w-8px h-3px rounded-2 bg-success me-3"></div>
                         <div class="text-gray-100 flex-grow-1">Propietarios</div>
-                        <div class="fw-bolder text-gray-100 text-xxl-end">32</div>
+                        <div class="fw-bolder text-gray-100 text-xxl-end">{{$propietarios}}</div>
                     </div>
                     <div class="d-flex fw-semibold align-items-center my-3">
                         <div class="bullet w-8px h-3px rounded-2 bg-success me-3"></div>
                         <div class="text-gray-100 flex-grow-1">Arrendatarios</div>
-                        <div class="fw-bolder text-gray-100 text-xxl-end">23</div>
+                        <div class="fw-bolder text-gray-100 text-xxl-end">{{$arrendatarios}}</div>
                     </div>
                 </div>
             </div>
@@ -102,12 +102,12 @@
                                 <span class="path2"></span>
                             </i>
                         </div>
-                        <span class="text-white opacity-75 fw-semibold fs-6">Agosto</span>
+                        <span class="text-white opacity-75 fw-semibold fs-6">{{ ucwords($fecha->Fecha->formatLocalized('%B')) }}</span>
                     </div>
                 </div>
                 <div class="card-body d-flex justify-content-center align-items-center flex-column px-5 pt-0 pb-1">
                     <div class="d-flex">
-                       <span class="fw-semibold text-gray-100" style="font-size: 2.2vw;">$14.000.000</span>
+                       <span class="fw-semibold text-gray-100" style="font-size: 2.2vw;">${{number_format($ingresos, 0, '', '.') }}</span>
                     </div>
                 </div>
 			</div>
@@ -124,12 +124,12 @@
                                 <span class="path2"></span>
                             </i>
                         </div>
-                        <span class="text-white opacity-75 fw-semibold fs-6">Agosto</span>
+                        <span class="text-white opacity-75 fw-semibold fs-6">{{ ucwords($fecha->Fecha->formatLocalized('%B')) }}</span>
                     </div>
                 </div>
                 <div class="card-body d-flex justify-content-center align-items-center flex-column px-5 pt-0 pb-1">
                     <div class="d-flex">
-                        <span class="fw-semibold text-gray-100" style="font-size: 2.2vw;">$14.000.000</span>
+                        <span class="fw-semibold text-gray-100" style="font-size: 2.2vw;">${{number_format($egresos, 0, '', '.') }}</span>
                     </div>
                 </div>
 			</div>
@@ -147,7 +147,7 @@
                                 <span class="path4"></span>
                             </i>
                         </div>
-                        <span class="text-white opacity-75 fw-semibold fs-6">Agosto</span>
+                        <span class="text-white opacity-75 fw-semibold fs-6">{{ ucwords($fecha->Fecha->formatLocalized('%B')) }}</span>
                     </div>
                 </div>
                 <div class="card-body d-flex justify-content-center align-items-center flex-column px-5 pt-0 pb-1">
@@ -186,7 +186,7 @@
                 <div class="card-header pt-2 px-5 min-h-40px">
                     <h3 class="card-title align-items-start flex-row justify-content-between w-100">
                         <span class="card-label fw-bold text-dark">Gastos por Tipo</span>
-                        <span class="text-gray-400 mt-1 fw-semibold fs-6">Agosto</span>
+                        <span class="text-gray-400 mt-1 fw-semibold fs-6">{{ ucwords($fecha->Fecha->formatLocalized('%B')) }}</span>
                     </h3>
                 </div>
                 <div class="card-body py-3">
@@ -200,7 +200,7 @@
                 <div class="card-header pt-2 px-5 min-h-40px">
                     <h3 class="card-title align-items-start flex-row justify-content-between w-100">
                         <span class="card-label fw-bold text-dark">Cobranzas del Mes</span>
-                        <span class="text-gray-400 mt-1 fw-semibold fs-6">Agosto</span>
+                        <span class="text-gray-400 mt-1 fw-semibold fs-6">{{ ucwords($fecha->Fecha->formatLocalized('%B')) }}</span>
                     </h3>
                 </div>
                 <div class="card-body py-3">
@@ -214,7 +214,7 @@
                 <div class="card-header pt-2 px-5 min-h-40px">
                     <h3 class="card-title align-items-start flex-row justify-content-between w-100">
                         <span class="card-label fw-bold text-dark">Ranking Morosidad</span>
-                        <span class="text-gray-400 mt-1 fw-semibold fs-6">Agosto</span>
+                        <span class="text-gray-400 mt-1 fw-semibold fs-6">{{ ucwords($fecha->Fecha->formatLocalized('%B')) }}</span>
                     </h3>
                 </div>
                 <div class="card-body py-2">
@@ -285,7 +285,7 @@
                 <div class="card-header pt-2 px-5 min-h-40px">
                     <h3 class="card-title align-items-start flex-row justify-content-between w-100">
                         <span class="card-label fw-bold text-dark">Evolución Anual Ingresos y Egresos</span>
-                        <span class="text-gray-400 mt-1 fw-semibold fs-6">Agosto</span>
+                        <span class="text-gray-400 mt-1 fw-semibold fs-6">{{ ucwords($fecha->Fecha->formatLocalized('%B')) }}</span>
                     </h3>
                 </div>
                 <div class="card-body py-3">
@@ -312,10 +312,13 @@
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/contenido/home.js?id=2') }}"></script>
     <!--- Eventos de la pagina -->
-    <script src="{{ asset('js/eventos/home.js?id=1') }}"></script>
+    
     <script>
-
+            
+        const dataGastosTipo = @json($egresosTipoGasto);
+        const dataCobranzaMes = @json($cobranzaMes);
     
+        
     </script>
-    
+    <script src="{{ asset('js/eventos/home.js?id=1') }}"></script>
 @endpush
