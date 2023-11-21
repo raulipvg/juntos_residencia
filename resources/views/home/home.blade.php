@@ -284,7 +284,7 @@
             <div class="card">
                 <div class="card-header pt-2 px-5 min-h-40px">
                     <h3 class="card-title align-items-start flex-row justify-content-between w-100">
-                        <span class="card-label fw-bold text-dark">Evolución Ingresos y Egresos</span>
+                        <span class="card-label fw-bold text-dark">Evolución Anual Ingresos y Egresos</span>
                         <span class="text-gray-400 mt-1 fw-semibold fs-6">Agosto</span>
                     </h3>
                 </div>
