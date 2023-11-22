@@ -38,9 +38,7 @@
                 <div class="w-md-125px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Seleccionar Mes">
                     <select id="GastoMesIdInput" name="GastoMesId" class="form-select" data-control="select2" data-placeholder="Seleccione Mes" data-hide-search="false">
                         @foreach ($gastosmeses as $gastomes )
-                        @if($gastomes->EstadoId==2)
                             <option data-info="{{$gastomes->EstadoId }}" value="{{ $gastomes->Id }}" @if ( $gastomes->Id == $gasto ) selected @endif >{{ $gastomes->Fecha->format('m-Y') }} </option>
-                        @endif
                         @endforeach
                     </select>
                 </div>
